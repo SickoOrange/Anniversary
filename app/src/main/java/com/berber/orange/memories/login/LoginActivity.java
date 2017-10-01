@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.ScrollingActivity;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -46,12 +47,14 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     // UI references.
     private AutoCompleteTextView mEmailView;
     private EditText mPasswordView;
-    private Button registerButton;
-    private Button signInWIthEmailButton;
-    private Button signOutButton;
-    private Button signInWithGoogleButton;
 
-    private Button signInWithFacebookButton;
+    private Button signInButton;
+    private Button signOutButton;
+
+
+    // private Button signInWithGoogleButton;
+
+    //private Button signInWithFacebookButton;
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -62,17 +65,43 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         // Set up the login form.
-        mEmailView = (AutoCompleteTextView) findViewById(R.id.email);
+        init();
 
-        mPasswordView = (EditText) findViewById(R.id.password);
 
-        registerButton = (Button) findViewById(R.id.email_register_button);
-        signInWIthEmailButton = (Button) findViewById(R.id.email_sign_in_email_button);
+//
+//        registerButton.setOnClickListener(this);
+//        signInWIthEmailButton.setOnClickListener(this);
+//        signInWithGoogleButton.setOnClickListener(this);
+//        signOutButton.setOnClickListener(this);
+//        signInWithFacebookButton.setOnClickListener(this);
+//
+//        //prepare google sign in
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken(WEB_ID)
+//                .requestEmail()
+//                .build();
+//        // Build a GoogleApiClient with access to the Google Sign-In API and the
+//        // options specified by gso.
+//        mGoogleApiClient = new GoogleApiClient.Builder(this)
+//                .enableAutoManage(this /* FragmentActivity */, this)
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build();
+    }
 
-        signInWithGoogleButton = findViewById(R.id.sign_in_google_button);
-        signOutButton = findViewById(R.id.sign_out_button);
-        signInWithFacebookButton = findViewById(R.id.sign_in_facebook_button);
+    private void init() {
+        //init ui reference
+        mEmailView = findViewById(R.id.email);
+        mPasswordView = findViewById(R.id.password);
+        signInButton = findViewById(R.id.sign_in_button);
+        signOutButton = findViewById(R.id.sign_up_button);
 
+
+        //add button event listener
+        signInButton.setOnClickListener(this);
+        signOutButton.setOnClickListener(this);
+
+
+        //setup fire base parameters
         mAuth = FirebaseAuth.getInstance();
 
         mAuthListener = new FirebaseAuth.AuthStateListener() {
@@ -81,31 +110,13 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
                 FirebaseUser currentUser = firebaseAuth.getCurrentUser();
                 if (currentUser != null) {
                     // USer is signed in
-                    Log.d(TAG, "onAuthStateCHanged:signed in: " + currentUser.getUid());
+                    Log.d(TAG, "onAuthStateCHanged:signed in: " + currentUser.getEmail());
                 } else {
                     // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed_out");
+                    Log.d(TAG, "onAuthStateChanged:signed out");
                 }
             }
         };
-
-        registerButton.setOnClickListener(this);
-        signInWIthEmailButton.setOnClickListener(this);
-        signInWithGoogleButton.setOnClickListener(this);
-        signOutButton.setOnClickListener(this);
-        signInWithFacebookButton.setOnClickListener(this);
-
-        //prepare google sign in
-        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(WEB_ID)
-                .requestEmail()
-                .build();
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(this)
-                .enableAutoManage(this /* FragmentActivity */, this)
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
     }
 
     @Override
@@ -113,7 +124,9 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         super.onStart();
         mAuth.addAuthStateListener(mAuthListener);
 
-        mGoogleApiClient.connect();
+        // TODO: 01.10.2017 check whether the user is login in or not
+
+        //  mGoogleApiClient.connect();
     }
 
     @Override
@@ -121,38 +134,65 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         super.onStop();
         mAuth.removeAuthStateListener(mAuthListener);
 
-        mGoogleApiClient.disconnect();
+        //  mGoogleApiClient.disconnect();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.email_register_button:
-                Log.d(TAG, "creare Account");
-                createAccount();
+            case R.id.sign_in_button:
+                signInWithEmailAndPassword(validate(mEmailView.getText().toString()), mPasswordView.getText().toString());
                 break;
-            case R.id.email_sign_in_email_button:
-                Log.d(TAG, "getCurrentUSer");
-
-                getCurrentUser();
+            case R.id.sign_up_button:
+                startActivity(new Intent(this, UserSignUpActivity.class));
                 break;
 
-            case R.id.sign_in_google_button:
-                signInWithGoogle();
-                break;
-            case R.id.sign_in_facebook_button:
-                signInWithFacebook();
-                break;
-            case R.id.sign_out_button:
-                //FirebaseAuth.getInstance().signOut();
-                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
-                    @Override
-                    public void onResult(@NonNull Status status) {
-                        Log.d(TAG, "status " + status);
-                    }
-                });
-                break;
+//            case R.id.sign_in_google_button:
+//                signInWithGoogle();
+//                break;
+//
+//            case R.id.sign_out_button:
+//                //FirebaseAuth.getInstance().signOut();
+//                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
+//                    @Override
+//                    public void onResult(@NonNull Status status) {
+//                        Log.d(TAG, "status " + status);
+//                    }
+//                });
+//                break;
         }
+    }
+
+    private void signInWithEmailAndPassword(String validateEmail, String password) {
+        mAuth.signInWithEmailAndPassword(validateEmail, password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
+
+                        // If sign in fails, display a message to the user. If sign in succeeds
+                        // the auth state listener will be notified and logic to handle the
+                        // signed in user can be handled in the listener.
+                        if (!task.isSuccessful()) {
+                            Log.e(TAG, "signInWithEmail:failed", task.getException());
+                            Toast.makeText(LoginActivity.this, "Sign in failed:" + "\n" + task.getException(),
+                                    Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            Log.e(TAG, "name: " + currentUser.getDisplayName());
+
+                            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+                        }
+                    }
+
+                });
+    }
+
+    private String validate(String email) {
+        // TODO: 01.10.2017 regular expression to validate the email format
+        return email;
+
     }
 
     private void signInWithFacebook() {
@@ -215,58 +255,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
                 });
     }
 
-    private void createAccount() {
-        final String password = mPasswordView.getText().toString();
-        final String validateEmail = validate(mEmailView.getText().toString());
-        Log.d(TAG, "createUserWithEmail:onComplete:" + validateEmail + password);
-        mAuth.createUserWithEmailAndPassword(validateEmail, password).addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
-
-                // If sign in fails, display a message to the user. If sign in succeeds
-                // the auth state listener will be notified and logic to handle the
-                // signed in user can be handled in the listener.
-                if (!task.isSuccessful()) {
-                    Log.d(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                    Toast.makeText(LoginActivity.this, "Create User Account failed",
-                            Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(LoginActivity.this, "Create User Account succeeds",
-                            Toast.LENGTH_SHORT).show();
-                    signInWithEmailAndPassword(validateEmail, password);
-                }
-
-            }
-        });
-    }
-
-    private void signInWithEmailAndPassword(String validateEmail, String password) {
-        mAuth.signInWithEmailAndPassword(validateEmail, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.w(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "Create User Account failed",
-                                    Toast.LENGTH_SHORT).show();
-                        }
-
-                        // ...
-                    }
-                });
-    }
-
-    private String validate(String email) {
-        //todo regular expression to validate the email format
-        return email;
-
-    }
 
     private void getCurrentUser() {
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
