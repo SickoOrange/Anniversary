@@ -29,7 +29,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.UserSignUpActivity"
+            android:name=".login.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
     </application>
 

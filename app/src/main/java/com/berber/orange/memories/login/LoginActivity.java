@@ -10,20 +10,21 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.ScrollingActivity;
+import com.berber.orange.memories.login.command.GoogleSignInMethod;
+import com.berber.orange.memories.login.service.GoogleSignInCallBack;
+import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -36,10 +37,9 @@ import com.google.firebase.auth.GoogleAuthProvider;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements OnClickListener, GoogleApiClient.OnConnectionFailedListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener, YYLoginListener {
 
     private static final String TAG = "LoginActivity";
-    private static final int RC_SIGN_IN = 9001;
 
     private static final String WEB_ID = "1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com";
 
@@ -48,108 +48,82 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     private EditText mEmailView;
     private EditText mPasswordView;
 
-    private Button signInButton;
-    private Button signOutButton;
-
-
-    // private Button signInWithGoogleButton;
-
-    //private Button signInWithFacebookButton;
-
-    private FirebaseAuth mAuth;
-    private FirebaseAuth.AuthStateListener mAuthListener;
-    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        //init YY Smart Login
+        YYLogin.INSTANCE.Init();
+        YYLogin.INSTANCE.setyyLoginListener(this);
         // Set up the login form.
-        init();
-
-
-//
-//        registerButton.setOnClickListener(this);
-//        signInWIthEmailButton.setOnClickListener(this);
-//        signInWithGoogleButton.setOnClickListener(this);
-//        signOutButton.setOnClickListener(this);
-//        signInWithFacebookButton.setOnClickListener(this);
-//
-//        //prepare google sign in
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken(WEB_ID)
-//                .requestEmail()
-//                .build();
-//        // Build a GoogleApiClient with access to the Google Sign-In API and the
-//        // options specified by gso.
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .enableAutoManage(this /* FragmentActivity */, this)
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
+        initView();
     }
 
-    private void init() {
+    private void initView() {
         //init ui reference
         mEmailView = findViewById(R.id.email_text_view);
         mPasswordView = findViewById(R.id.password_text_view);
-        signInButton = findViewById(R.id.sign_in_button);
-        signOutButton = findViewById(R.id.sign_up_button);
-
+        Button signInButton = findViewById(R.id.sign_in_button);
+        Button signOutButton = findViewById(R.id.sign_up_button);
 
         //add button event listener
         signInButton.setOnClickListener(this);
         signOutButton.setOnClickListener(this);
 
+        //google sign in button
+        ImageButton googleSignInButton = findViewById(R.id.google_sign_in);
+        googleSignInButton.setOnClickListener(this);
 
-        //setup fire base parameters
-        mAuth = FirebaseAuth.getInstance();
+        //facebook sign in button
+        ImageButton facebookSignInButton = findViewById(R.id.facebook_login_in);
+        facebookSignInButton.setOnClickListener(this);
 
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser currentUser = firebaseAuth.getCurrentUser();
-                if (currentUser != null) {
-                    // USer is signed in
-                    Log.d(TAG, "onAuthStateCHanged:signed in: " + currentUser.getEmail());
-                } else {
-                    // User is signed out
-                    Log.d(TAG, "onAuthStateChanged:signed out");
-                }
-            }
-        };
+        //twitter sign in button
+        ImageButton twitterSignInButton = findViewById(R.id.twitter_login_in);
+        twitterSignInButton.setOnClickListener(this);
+
+        ImageView loginImageView = findViewById(R.id.login_bg_image_view);
+
+        Glide.with(this).load(R.drawable.couple_love_silhouettes_happiness_116879_1080x1920).into(loginImageView);
+        ImageView appLogImageView = findViewById(R.id.app_logo_image_view);
+        Glide.with(this).load(R.drawable.logo).into(appLogImageView);
+
+
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        mAuth.addAuthStateListener(mAuthListener);
 
-        // TODO: 01.10.2017 check whether the user is login in or not
+        YYLogin.INSTANCE.checkUserAlreadySigned();
+        YYLogin.INSTANCE.addAuthStateListener();
 
-        //  mGoogleApiClient.connect();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
-        mAuth.removeAuthStateListener(mAuthListener);
 
-        //  mGoogleApiClient.disconnect();
+        YYLogin.INSTANCE.removeAuthStateListener();
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.sign_in_button:
-                signInWithEmailAndPassword(validate(mEmailView.getText().toString()), mPasswordView.getText().toString());
+                String email = mEmailView.getText().toString();
+                String password = mPasswordView.getText().toString();
+                YYLogin.INSTANCE.signIn(LoginType.DEFAULT, LoginActivity.this, email, password);
                 break;
             case R.id.sign_up_button:
-                startActivity(new Intent(this, UserSignUpActivity.class));
+                startActivity(new Intent(this, SignUpActivity.class));
                 break;
 
-//            case R.id.sign_in_google_button:
-//                signInWithGoogle();
-//                break;
+            case R.id.google_sign_in:
+                YYLogin.INSTANCE.signIn(LoginType.GOOGLE, LoginActivity.this, null, null);
+                break;
 //
 //            case R.id.sign_out_button:
 //                //FirebaseAuth.getInstance().signOut();
@@ -163,125 +137,65 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         }
     }
 
-    private void signInWithEmailAndPassword(String validateEmail, String password) {
-        mAuth.signInWithEmailAndPassword(validateEmail, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
-
-                        // If sign in fails, display a message to the user. If sign in succeeds
-                        // the auth state listener will be notified and logic to handle the
-                        // signed in user can be handled in the listener.
-                        if (!task.isSuccessful()) {
-                            Log.e(TAG, "signInWithEmail:failed", task.getException());
-                            Toast.makeText(LoginActivity.this, "Sign in failed:" + "\n" + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-
-                            FirebaseUser currentUser = mAuth.getCurrentUser();
-                            Log.e(TAG, "name: " + currentUser.getDisplayName());
-
-                            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
-                        }
-                    }
-
-                });
-    }
-
-    private String validate(String email) {
-        // TODO: 01.10.2017 regular expression to validate the email format
-        return email;
-
-    }
-
-    private void signInWithFacebook() {
-
-    }
-
-
-    //sign in with google account
-    private void signInWithGoogle() {
-        Intent googleSignInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
-        startActivityForResult(googleSignInIntent, RC_SIGN_IN);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == RC_SIGN_IN) {
+        if (requestCode == GoogleSignInMethod.RC_GOOGLE_SIGN_IN) {
             GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            handleGoogleSignInResult(googleSignInResult);
+            YYLogin.INSTANCE.handleSignInResult(LoginType.GOOGLE, googleSignInResult, new GoogleSignInCallBack() {
+                @Override
+                public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
+                    startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+                }
+
+                @Override
+                public void onGoogleSignInFailure(Status exception) {
+
+                }
+
+                @Override
+                public void onGoogleWithFireBaseAuthFailure(Exception exception) {
+
+                }
+            });
         }
     }
 
-    private void handleGoogleSignInResult(GoogleSignInResult googleSignInResult) {
-        Log.d(TAG, "handleGoogleSignInResult:" + googleSignInResult.isSuccess() + " " + googleSignInResult.getStatus());
-        if (googleSignInResult.isSuccess()) {
-            // Signed in successfully, show authenticated UI.
-            GoogleSignInAccount acct = googleSignInResult.getSignInAccount();
-            Log.d(TAG, "handleGoogleSignInResult:" + acct.getDisplayName() + " " + acct.getPhotoUrl());
-            firebaseAuthWithGoogle(acct);
-            //updateUI(true);
-        } else {
-            // Signed out, show unauthenticated UI.
-            // updateUI(false);
-        }
+
+    //status login manage call back interface
+    @Override
+    public void UserSignIn(FirebaseUser user) {
+
     }
 
-    private void firebaseAuthWithGoogle(GoogleSignInAccount acct) {
-        Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
+    @Override
+    public void UserSignOut() {
 
-        AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            Log.d(TAG, "signInWithCredential:success: " + user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-
-                        }
-
-                        // ...
-                    }
-                });
     }
 
+    @Override
+    public void onLoginSuccess(FirebaseUser currentUser) {
 
-    private void getCurrentUser() {
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        if (currentUser != null) {
-            MyUser myUser = new MyUser();
-            // Name, email address, and profile photo Url
-            String name = currentUser.getDisplayName();
-            String email = currentUser.getEmail();
-            Uri photoUrl = currentUser.getPhotoUrl();
+    }
 
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getToken() instead.
-            String uid = currentUser.getUid();
+    @Override
+    public void onLoginFailure() {
 
-            myUser.setName(name);
-            myUser.setEmail(email);
-            myUser.setPhotoUrl(photoUrl);
-            myUser.setUid(uid);
-            System.out.println(myUser);
-        }
+    }
+
+    @Override
+    public void userAlreadySigned(FirebaseUser currentUser) {
+        //skip login activity
+        startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
     }
 
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Log.d(TAG, "google sign in onConnectionFailed: " + connectionResult.getErrorMessage());
+    public void userNotSigned() {
+        //user not signed, do something...
     }
 }
 

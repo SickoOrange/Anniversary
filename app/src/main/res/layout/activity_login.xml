@@ -18,7 +18,7 @@
 
 
     <ImageView
-        android:id="@+id/imageView3"
+        android:id="@+id/app_logo_image_view"
         android:layout_width="wrap_content"
         android:layout_height="100dp"
         android:layout_alignLeft="@+id/email_text_view"
@@ -39,9 +39,11 @@
         android:id="@+id/email_text_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
+        android:layout_alignLeft="@+id/password_text_view"
+        android:layout_alignStart="@+id/password_text_view"
         android:layout_below="@+id/imageView3"
-        android:layout_marginTop="59dp"
         android:layout_marginRight="10dp"
+        android:layout_marginTop="59dp"
         android:background="@drawable/rounded_border_edittext"
         android:drawableRight="@android:drawable/ic_dialog_email"
         android:hint="@string/prompt_email"
@@ -50,19 +52,17 @@
         android:paddingRight="10dp"
         android:singleLine="true"
         android:textColor="@android:color/white"
-        android:textColorHint="@android:color/white"
-        android:layout_alignLeft="@+id/password_text_view"
-        android:layout_alignStart="@+id/password_text_view" />
+        android:textColorHint="@android:color/white" />
 
     <EditText
         android:id="@+id/password_text_view"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_below="@+id/email_text_view"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:layout_marginTop="23dp"
         android:background="@drawable/rounded_border_edittext"
         android:drawableRight="@android:drawable/ic_lock_idle_lock"
@@ -83,7 +83,7 @@
         android:layout_below="@+id/password_text_view"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="26dp"
-        android:background="@drawable/login_button_bg"
+        android:background="@drawable/round_button_bg"
         android:gravity="center"
         android:text="sign in"
         android:textColor="@android:color/white" />
@@ -98,7 +98,7 @@
         android:layout_alignStart="@+id/sign_in_button"
         android:layout_below="@+id/sign_in_button"
         android:layout_marginTop="26dp"
-        android:background="@drawable/login_button_bg"
+        android:background="@drawable/round_button_bg"
         android:gravity="center"
         android:text="sign up"
         android:textColor="@android:color/white" />
@@ -157,24 +157,29 @@
         android:layout_toRightOf="@+id/login_progress"
         android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/imageView2"
+        <ImageButton
+            android:id="@+id/facebook_login_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
             android:src="@drawable/ic_if_facebook_circle_color_107175" />
 
-        <ImageView
-            android:id="@+id/imageView4"
+        <ImageButton
+            android:id="@+id/twitter_login_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
             android:src="@drawable/ic_if_twitter_circle_color_107170" />
 
-        <ImageView
+        <ImageButton
+            android:id="@+id/google_sign_in"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@null"
+            android:clickable="true"
             android:src="@drawable/ic_if_google_221795" />
 
 

@@ -1,22 +1,16 @@
 package com.berber.orange.memories.login;
 
 import android.content.Intent;
-import android.icu.text.LocaleDisplayNames;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.ScrollingActivity;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,11 +19,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
-public class UserSignUpActivity extends AppCompatActivity {
-    public static final String TAG = "UserSignUpActivity";
+public class SignUpActivity extends AppCompatActivity {
+    public static final String TAG = "SignUpActivity";
 
-    private AutoCompleteTextView mUserNameView;
-    private AutoCompleteTextView mEmailView;
+    private EditText mUserNameView;
+    private EditText mEmailView;
     private EditText mPasswordView;
     private Button signUp;
     private FirebaseAuth mAuth;
@@ -39,7 +33,7 @@ public class UserSignUpActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         // this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);//去掉信息栏
-        setContentView(R.layout.activity_user_sign_up);
+        setContentView(R.layout.activity_sign_up);
 
         initView();
         mAuth = FirebaseAuth.getInstance();
@@ -73,10 +67,10 @@ public class UserSignUpActivity extends AppCompatActivity {
                 // signed in user can be handled in the listener.
                 if (!task.isSuccessful()) {
                     Log.d(TAG, "onComplete: Failed=" + task.getException().getMessage());
-                    Toast.makeText(UserSignUpActivity.this, "Create User Account failed",
+                    Toast.makeText(SignUpActivity.this, "Create User Account failed",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(UserSignUpActivity.this, "Create User Account succeeds",
+                    Toast.makeText(SignUpActivity.this, "Create User Account succeeds",
                             Toast.LENGTH_SHORT).show();
                     FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -91,7 +85,7 @@ public class UserSignUpActivity extends AppCompatActivity {
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()) {
                                 Log.d(TAG, "user profile updated");
-                                startActivity(new Intent(UserSignUpActivity.this, LoginActivity.class));
+                                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                             }
                         }
                     });

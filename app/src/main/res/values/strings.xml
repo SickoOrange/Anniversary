@@ -113,6 +113,10 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_login111">Sign in</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="login_error_dialog_title">Login Error</string>
+    <string name="dialog_ok">OK</string>
+    <string name="google_web_id">1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com</string>
 
 
 </resources>
