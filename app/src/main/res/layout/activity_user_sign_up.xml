@@ -4,36 +4,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.berber.orange.memories.login.UserSignUpActivity"
-   >
+    tools:context="com.berber.orange.memories.login.UserSignUpActivity">
 
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:layout_marginTop="43dp">
+
         <LinearLayout
-            android:gravity="center"
             android:id="@+id/email_login_form"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="15dp"
-            android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
             android:layout_marginLeft="6dp"
             android:layout_marginStart="6dp"
-            android:layout_marginTop="142dp">
+            android:layout_marginTop="142dp"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="15dp">
 
 
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
-                android:background="@color/colorAccent"/>
+                android:background="@color/colorAccent" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -43,6 +43,7 @@
                     android:id="@+id/user_name"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_account_box_white_24dp"
                     android:hint="@string/prompt_name"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -58,6 +59,7 @@
                     android:id="@+id/email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_chrome_reader_mode_white_24dp"
                     android:hint="@string/prompt_email"
                     android:inputType="textEmailAddress"
                     android:maxLines="1"
@@ -73,6 +75,7 @@
                     android:id="@+id/password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:drawableLeft="@drawable/ic_lock_outline_white_24dp"
                     android:hint="@string/prompt_password"
                     android:imeActionId="@+id/login"
                     android:imeActionLabel="@string/action_sign_in_short"

@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 
 
     // UI references.
-    private AutoCompleteTextView mEmailView;
+    private EditText mEmailView;
     private EditText mPasswordView;
 
     private Button signInButton;
@@ -90,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 
     private void init() {
         //init ui reference
-        mEmailView = findViewById(R.id.email);
-        mPasswordView = findViewById(R.id.password);
+        mEmailView = findViewById(R.id.email_text_view);
+        mPasswordView = findViewById(R.id.password_text_view);
         signInButton = findViewById(R.id.sign_in_button);
         signOutButton = findViewById(R.id.sign_up_button);
 
