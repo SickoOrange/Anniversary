@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -202,6 +203,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         @Override
         public void facebookLoginWithFireBaseSucceed(FirebaseUser user) {
             startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            Log.d(TAG, user.getPhotoUrl().toString());
             LoginActivity.this.finish();
         }
 

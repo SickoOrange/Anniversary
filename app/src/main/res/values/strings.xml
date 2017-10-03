@@ -118,12 +118,11 @@
     <string name="dialog_ok">OK</string>
 
 
-
     <string name="google_web_id">1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com</string>
 
     <string name="facebook_app_id">143112729638036</string>
     <string name="fb_login_protocol_scheme">fb143112729638036</string>
-    <string name="error_gif">error</string>
+    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
 
 
 </resources>

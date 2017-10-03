@@ -5,18 +5,27 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.berber.orange.memories.login.activity.LoginActivity;
+import com.berber.orange.memories.login.activity.SignUpActivity;
 import com.berber.orange.memories.login.command.DefaultLoginInMethod;
 import com.berber.orange.memories.login.command.FacebookLoginInMethod;
 import com.berber.orange.memories.login.command.GoogleLoginInMethod;
 import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.login.service.DefaultCreateAccountListener;
 import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
 import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
 import com.berber.orange.memories.login.service.UserExistingListener;
+import com.berber.orange.memories.login.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 
 /**
  * Created by yinya
@@ -36,7 +45,6 @@ public enum YYLoginServer {
     private GoogleLoginInMethod googleLoginIn;
 
 
-    public YYLoginListener yyLoginListener;
     private FacebookLoginInMethod facebookLoginIn;
 
     YYLoginServer() {
@@ -109,11 +117,6 @@ public enum YYLoginServer {
         }
     }
 
-    public void setyyLoginListener(YYLoginListener yyLoginListener) {
-        if (yyLoginListener != null) {
-            this.yyLoginListener = yyLoginListener;
-        }
-    }
 
     public void checkUserAlreadySigned(UserExistingListener userExistingListener) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -139,5 +142,43 @@ public enum YYLoginServer {
         if (facebookLoginIn != null) {
             facebookLoginIn.handleFacebookResult(requestCode, resultCode, data);
         }
+    }
+
+    public void createAccount(Activity activity, final MyFireBaseUser user, final DefaultCreateAccountListener defaultCreateAccountListener) {
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassworld()).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+
+                // If sign in fails, display a message to the user. If sign in succeeds
+                // the auth state listener will be notified and logic to handle the
+                // signed in user can be handled in the listener.
+                if (!task.isSuccessful()) {
+                    defaultCreateAccountListener.onCreateAccountFailure(task);
+                } else {
+
+                    defaultCreateAccountListener.onCreateAccountSucceed(mAuth.getCurrentUser());
+
+                    //update user profile
+                    UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                            .setDisplayName(user.getDisplayName())
+                            // TODO: 01.10.2017 convert local image to uri
+                            .setPhotoUri(user.getPhotoUri())
+                            .build();
+                    mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                defaultCreateAccountListener.onUploadProfileSucceed(task);
+                            } else {
+                                defaultCreateAccountListener.onUploadProfileFailure(task);
+                            }
+                        }
+                    });
+
+                }
+
+            }
+        });
     }
 }

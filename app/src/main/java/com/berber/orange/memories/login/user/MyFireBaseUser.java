@@ -1,5 +1,9 @@
 package com.berber.orange.memories.login.user;
 
+import android.net.Uri;
+
+import java.net.URI;
+
 /**
  * Created by yinya
  * on 02.10.2017.
@@ -7,8 +11,10 @@ package com.berber.orange.memories.login.user;
 
 public class MyFireBaseUser {
     private String displayName;
-    private String photoUri;
+    private Uri photoUri;
     private String email;
+    private String passworld;
+    private String confirmPassworld;
     private String uid;
 
 
@@ -16,12 +22,20 @@ public class MyFireBaseUser {
     }
 
 
-    public MyFireBaseUser(String displayName, String photoUri, String email, String uid) {
+    public String getPassworld() {
+        return passworld;
+    }
 
-        this.displayName = displayName;
-        this.photoUri = photoUri;
-        this.email = email;
-        this.uid = uid;
+    public void setPassworld(String passworld) {
+        this.passworld = passworld;
+    }
+
+    public String getConfirmPassworld() {
+        return confirmPassworld;
+    }
+
+    public void setConfirmPassworld(String confirmPassworld) {
+        this.confirmPassworld = confirmPassworld;
     }
 
     public String getDisplayName() {
@@ -32,11 +46,11 @@ public class MyFireBaseUser {
         this.displayName = displayName;
     }
 
-    public String getPhotoUri() {
+    public Uri getPhotoUri() {
         return photoUri;
     }
 
-    public void setPhotoUri(String photoUri) {
+    public void setPhotoUri(Uri photoUri) {
         this.photoUri = photoUri;
     }
 
