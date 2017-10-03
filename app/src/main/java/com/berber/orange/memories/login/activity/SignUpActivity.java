@@ -33,9 +33,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText mEmailView;
     private EditText mPasswordView;
     private Button signUp;
-    private FirebaseAuth mAuth;
     private EditText mConfirmPassword;
-    private EditText mNameView;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -55,7 +53,6 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         initView();
-        mAuth = FirebaseAuth.getInstance();
 
 
     }
@@ -66,26 +63,32 @@ public class SignUpActivity extends AppCompatActivity {
         mEmailView = findViewById(R.id.email);
         mPasswordView = findViewById(R.id.password);
         mConfirmPassword = findViewById(R.id.editText);
-        mNameView = findViewById(R.id.user_name);
 
         signUp = findViewById(R.id.sign_up_start_button);
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
+
+
+
+
+
                 final String password = mPasswordView.getText().toString();
 
                 final String validateEmail = Utils.validateEmail(mEmailView.getText().toString());
 
                 String cPassword = mConfirmPassword.getText().toString();
 
-                String userName = mNameView.getText().toString();
+                String userName = mUserNameView.getText().toString();
 
 
                 MyFireBaseUser myFireBaseUser = new MyFireBaseUser();
                 myFireBaseUser.setEmail(validateEmail);
                 myFireBaseUser.setPassworld(password);
 
-                // TODO: 03.10.2017  passworld and confirm passworld
+                // TODO: 03.10.2017  password and confirm password
                 myFireBaseUser.setDisplayName(userName);
 
                 // TODO: 03.10.2017 set photo uri
