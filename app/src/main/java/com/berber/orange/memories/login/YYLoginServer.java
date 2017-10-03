@@ -5,16 +5,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
-import com.berber.orange.memories.login.activity.LoginActivity;
-import com.berber.orange.memories.login.activity.SignUpActivity;
 import com.berber.orange.memories.login.command.DefaultLoginInMethod;
 import com.berber.orange.memories.login.command.FacebookLoginInMethod;
 import com.berber.orange.memories.login.command.GoogleLoginInMethod;
 import com.berber.orange.memories.login.service.BaseLoginInCallBack;
 import com.berber.orange.memories.login.service.DefaultCreateAccountListener;
-import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
 import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
 import com.berber.orange.memories.login.service.UserExistingListener;
 import com.berber.orange.memories.login.user.MyFireBaseUser;
