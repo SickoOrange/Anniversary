@@ -32,11 +32,6 @@ public class GoogleSignInMethod extends BaseSignInMethod {
     public static final int RC_GOOGLE_SIGN_IN = 9001;
     private static final String TAG = "GoogleSignInMethod";
 
-    public void setGoogleSignInCallBack(GoogleSignInCallBack googleSignInCallBack) {
-        if (googleSignInCallBack != null) {
-            this.googleSignInCallBack = googleSignInCallBack;
-        }
-    }
 
     private GoogleSignInCallBack googleSignInCallBack;
 
@@ -69,10 +64,6 @@ public class GoogleSignInMethod extends BaseSignInMethod {
                 .build();
     }
 
-    @Override
-    public void login(String email, String password) {
-
-    }
 
     @Override
     public void login() {

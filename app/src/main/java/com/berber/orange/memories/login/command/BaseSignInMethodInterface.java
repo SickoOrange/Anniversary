@@ -1,5 +1,7 @@
 package com.berber.orange.memories.login.command;
 
+import com.berber.orange.memories.login.service.BaseSignInCallBack;
+
 /**
  * Created by yinya
  * on 02.10.2017.
@@ -7,7 +9,7 @@ package com.berber.orange.memories.login.command;
 
 public interface BaseSignInMethodInterface {
 
-    void login(String email, String password);
+    void login(String email, String password, BaseSignInCallBack callBack);
 
     void login();
 

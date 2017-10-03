@@ -9,6 +9,8 @@ import android.util.Log;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.ScrollingActivity;
 import com.berber.orange.memories.login.YYLoginListener;
+import com.berber.orange.memories.login.service.BaseSignInCallBack;
+import com.berber.orange.memories.login.service.DefaultSignInCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,13 +24,20 @@ import com.google.firebase.auth.FirebaseUser;
 
 public class DefaultSignInMethod extends BaseSignInMethod {
     private static final String TAG = "DefaultSignInMethod";
+    private DefaultSignInCallBack defaultSignInCallBack;
 
     public DefaultSignInMethod(FirebaseAuth mAuth, Activity activity, YYLoginListener yyLoginListener) {
         super(mAuth, activity, yyLoginListener);
     }
 
     @Override
-    public void login(String email, String password) {
+    public void login(String email, String password, final BaseSignInCallBack callBack) {
+
+        if (callBack instanceof DefaultSignInCallBack) {
+            defaultSignInCallBack = (DefaultSignInCallBack) callBack;
+        }
+
+
         getmAuth().signInWithEmailAndPassword(email, password).addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
@@ -42,22 +51,19 @@ public class DefaultSignInMethod extends BaseSignInMethod {
                 if (!task.isSuccessful()) {
                     Log.e(TAG, "Sign in:failed", task.getException());
 
-                    new AlertDialog.Builder(getActivity())
-                            .setTitle(getStringFromResource(R.string.login_error_dialog_title))
-                            .setMessage("Sign in failed:" + "\n" + task.getException())
-                            .setPositiveButton(getStringFromResource(R.string.dialog_ok), null)
-                            .show();
 
-                    getYyLoginListener().onLoginFailure();
+
+                    defaultSignInCallBack.loginFailure(task);
+                    //getYyLoginListener().onLoginFailure();
                 } else {
                     FirebaseUser currentUser = getmAuth().getCurrentUser();
                     Log.e(TAG, "Sign in succeeds, user name: " + currentUser.getDisplayName());
-                    getActivity().startActivity(new Intent(getActivity(), ScrollingActivity.class));
-                    getYyLoginListener().onLoginSuccess(currentUser);
+                    defaultSignInCallBack.loginSucceeds(currentUser);
+
+
                 }
             }
         });
     }
-
 
 }

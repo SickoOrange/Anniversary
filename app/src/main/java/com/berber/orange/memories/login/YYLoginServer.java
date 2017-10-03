@@ -1,36 +1,30 @@
 package com.berber.orange.memories.login;
 
+import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.berber.orange.memories.login.command.BaseSignInMethod;
 import com.berber.orange.memories.login.command.DefaultSignInMethod;
 import com.berber.orange.memories.login.command.GoogleSignInMethod;
+import com.berber.orange.memories.login.service.DefaultSignInCallBack;
 import com.berber.orange.memories.login.service.GoogleSignInCallBack;
 import com.berber.orange.memories.utils.Utils;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
  * Created by yinya
  * on 02.10.2017.
  */
 
-public enum YYLogin {
+public enum YYLoginServer {
     INSTANCE;
 
 
-    private static final String TAG = "YYLogin";
+    private static final String TAG = "YYLoginServer";
 
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
@@ -41,8 +35,8 @@ public enum YYLogin {
 
     public YYLoginListener yyLoginListener;
 
-    YYLogin() {
-        Log.d(TAG, "YYLogin Constructor");
+    YYLoginServer() {
+        Log.d(TAG, "YYLoginServer Constructor");
     }
 
     public void Init() {
@@ -69,7 +63,7 @@ public enum YYLogin {
     }
 
 
-    public void signIn(LoginType type, @Nullable android.app.Activity activity, String email, String password) {
+    public void signIn(LoginType type, @Nullable Activity activity, String email, String password, DefaultSignInCallBack defaultSignInCallBack) {
 
 
         switch (type) {
@@ -87,7 +81,7 @@ public enum YYLogin {
                 }
 
                 defaultSignIn = new DefaultSignInMethod(mAuth, activity, yyLoginListener);
-                defaultSignIn.login(email, password);
+                defaultSignIn.login(email, password, defaultSignInCallBack);
                 break;
             case GOOGLE:
                 googleSignIn = new GoogleSignInMethod(mAuth, activity, yyLoginListener);

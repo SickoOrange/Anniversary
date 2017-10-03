@@ -1,13 +1,11 @@
 package com.berber.orange.memories.login;
 
 import android.content.Intent;
-import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 
-import android.net.Uri;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -18,21 +16,16 @@ import android.widget.ImageView;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.ScrollingActivity;
 import com.berber.orange.memories.login.command.GoogleSignInMethod;
+import com.berber.orange.memories.login.service.DefaultSignInCallBack;
 import com.berber.orange.memories.login.service.GoogleSignInCallBack;
 import com.bumptech.glide.Glide;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.Status;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.auth.GoogleAuthProvider;
 
 /**
  * A login screen that offers login via email/password.
@@ -55,8 +48,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         setContentView(R.layout.activity_login);
 
         //init YY Smart Login
-        YYLogin.INSTANCE.Init();
-        YYLogin.INSTANCE.setyyLoginListener(this);
+        YYLoginServer.INSTANCE.Init();
+        YYLoginServer.INSTANCE.setyyLoginListener(this);
         // Set up the login form.
         initView();
     }
@@ -97,8 +90,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     protected void onStart() {
         super.onStart();
 
-        YYLogin.INSTANCE.checkUserAlreadySigned();
-        YYLogin.INSTANCE.addAuthStateListener();
+        YYLoginServer.INSTANCE.checkUserAlreadySigned();
+        YYLoginServer.INSTANCE.addAuthStateListener();
 
     }
 
@@ -106,7 +99,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     protected void onStop() {
         super.onStop();
 
-        YYLogin.INSTANCE.removeAuthStateListener();
+        YYLoginServer.INSTANCE.removeAuthStateListener();
     }
 
     @Override
@@ -115,14 +108,14 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
             case R.id.sign_in_button:
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
-                YYLogin.INSTANCE.signIn(LoginType.DEFAULT, LoginActivity.this, email, password);
+                YYLoginServer.INSTANCE.signIn(LoginType.DEFAULT, LoginActivity.this, email, password, defaultSignInCallBack);
                 break;
             case R.id.sign_up_button:
                 startActivity(new Intent(this, SignUpActivity.class));
                 break;
 
             case R.id.google_sign_in:
-                YYLogin.INSTANCE.signIn(LoginType.GOOGLE, LoginActivity.this, null, null);
+                YYLoginServer.INSTANCE.signIn(LoginType.GOOGLE, LoginActivity.this, null, null, null);
                 break;
 //
 //            case R.id.sign_out_button:
@@ -145,24 +138,45 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
         if (requestCode == GoogleSignInMethod.RC_GOOGLE_SIGN_IN) {
             GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
-            YYLogin.INSTANCE.handleSignInResult(LoginType.GOOGLE, googleSignInResult, new GoogleSignInCallBack() {
-                @Override
-                public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
-                    startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
-                }
-
-                @Override
-                public void onGoogleSignInFailure(Status exception) {
-
-                }
-
-                @Override
-                public void onGoogleWithFireBaseAuthFailure(Exception exception) {
-
-                }
-            });
+            YYLoginServer.INSTANCE.handleSignInResult(LoginType.GOOGLE, googleSignInResult, googleSignInCallBack);
         }
     }
+
+
+    DefaultSignInCallBack defaultSignInCallBack = new DefaultSignInCallBack() {
+        @Override
+        public void loginSucceeds(FirebaseUser currentUser) {
+            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            LoginActivity.this.finish();
+        }
+
+        @Override
+        public void loginFailure(Task<AuthResult> task) {
+            new AlertDialog.Builder(LoginActivity.this)
+                    .setTitle(getString(R.string.login_error_dialog_title))
+                    .setMessage("Sign in failed:" + "\n" + task.getException())
+                    .setPositiveButton(getString(R.string.dialog_ok), null)
+                    .show();
+        }
+    };
+
+    GoogleSignInCallBack googleSignInCallBack = new GoogleSignInCallBack() {
+        @Override
+        public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
+            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            LoginActivity.this.finish();
+        }
+
+        @Override
+        public void onGoogleSignInFailure(Status exception) {
+
+        }
+
+        @Override
+        public void onGoogleWithFireBaseAuthFailure(Exception exception) {
+
+        }
+    };
 
 
     //status login manage call back interface
