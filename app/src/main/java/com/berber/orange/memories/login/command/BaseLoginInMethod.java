@@ -1,13 +1,9 @@
 package com.berber.orange.memories.login.command;
 
 import android.app.Activity;
-import android.util.Log;
 
 import com.berber.orange.memories.login.YYLoginListener;
-import com.berber.orange.memories.login.service.BaseSignInCallBack;
-import com.berber.orange.memories.login.service.GoogleSignInCallBack;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.berber.orange.memories.login.service.BaseLoginInCallBack;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**
@@ -15,17 +11,17 @@ import com.google.firebase.auth.FirebaseAuth;
  * on 02.10.2017.
  */
 
-public class BaseSignInMethod implements BaseSignInMethodInterface {
+public class BaseLoginInMethod implements BaseLoginInMethodInterface {
 
 
     private final FirebaseAuth mAuth;
-    private final YYLoginListener yyLoginListener;
+    private final BaseLoginInCallBack baseLoginInCallBack;
     private Activity activity;
 
-    public BaseSignInMethod(FirebaseAuth mAuth, Activity activity, YYLoginListener yyLoginListener) {
+    public BaseLoginInMethod(FirebaseAuth mAuth, Activity activity, BaseLoginInCallBack baseLoginInCallBack) {
         this.mAuth = mAuth;
         this.activity = activity;
-        this.yyLoginListener = yyLoginListener;
+        this.baseLoginInCallBack = baseLoginInCallBack;
     }
 
 
@@ -45,13 +41,13 @@ public class BaseSignInMethod implements BaseSignInMethodInterface {
         return mAuth;
     }
 
-    public YYLoginListener getYyLoginListener() {
-        return yyLoginListener;
+    public BaseLoginInCallBack getCallBack() {
+        return baseLoginInCallBack;
     }
 
 
     @Override
-    public void login(String email, String password, BaseSignInCallBack callBack) {
+    public void login(String email, String password, BaseLoginInCallBack callBack) {
 
     }
 

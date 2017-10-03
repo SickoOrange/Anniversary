@@ -1,4 +1,4 @@
-package com.berber.orange.memories.login;
+package com.berber.orange.memories.login.activity;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -15,10 +15,15 @@ import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.ScrollingActivity;
-import com.berber.orange.memories.login.command.GoogleSignInMethod;
-import com.berber.orange.memories.login.service.DefaultSignInCallBack;
-import com.berber.orange.memories.login.service.GoogleSignInCallBack;
+import com.berber.orange.memories.login.LoginType;
+import com.berber.orange.memories.login.YYLoginServer;
+import com.berber.orange.memories.login.command.GoogleLoginInMethod;
+import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
+import com.berber.orange.memories.login.service.FacebookLoginInCallBack;
+import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
+import com.berber.orange.memories.login.service.UserExistingListener;
 import com.bumptech.glide.Glide;
+import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -30,11 +35,9 @@ import com.google.firebase.auth.FirebaseUser;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements OnClickListener, YYLoginListener {
+public class LoginActivity extends AppCompatActivity implements OnClickListener {
 
     private static final String TAG = "LoginActivity";
-
-    private static final String WEB_ID = "1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com";
 
 
     // UI references.
@@ -45,11 +48,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
         setContentView(R.layout.activity_login);
 
         //init YY Smart Login
         YYLoginServer.INSTANCE.Init();
-        YYLoginServer.INSTANCE.setyyLoginListener(this);
         // Set up the login form.
         initView();
     }
@@ -66,16 +70,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         signOutButton.setOnClickListener(this);
 
         //google sign in button
-        ImageButton googleSignInButton = findViewById(R.id.google_sign_in);
+        ImageButton googleSignInButton = findViewById(R.id.google_login_in);
         googleSignInButton.setOnClickListener(this);
 
         //facebook sign in button
         ImageButton facebookSignInButton = findViewById(R.id.facebook_login_in);
         facebookSignInButton.setOnClickListener(this);
+//
+//        //twitter sign in button
+//        ImageButton twitterSignInButton = findViewById(R.id.twitter_login_in);
+//        twitterSignInButton.setOnClickListener(this);
 
-        //twitter sign in button
-        ImageButton twitterSignInButton = findViewById(R.id.twitter_login_in);
-        twitterSignInButton.setOnClickListener(this);
 
         ImageView loginImageView = findViewById(R.id.login_bg_image_view);
 
@@ -86,11 +91,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 
     }
 
+
     @Override
     protected void onStart() {
         super.onStart();
 
-        YYLoginServer.INSTANCE.checkUserAlreadySigned();
+        YYLoginServer.INSTANCE.checkUserAlreadySigned(userExistingListener);
         YYLoginServer.INSTANCE.addAuthStateListener();
 
     }
@@ -108,25 +114,19 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
             case R.id.sign_in_button:
                 String email = mEmailView.getText().toString();
                 String password = mPasswordView.getText().toString();
-                YYLoginServer.INSTANCE.signIn(LoginType.DEFAULT, LoginActivity.this, email, password, defaultSignInCallBack);
+                YYLoginServer.INSTANCE.loginWithDefault(LoginActivity.this, email, password, defaultSignInCallBack);
                 break;
             case R.id.sign_up_button:
                 startActivity(new Intent(this, SignUpActivity.class));
                 break;
 
-            case R.id.google_sign_in:
-                YYLoginServer.INSTANCE.signIn(LoginType.GOOGLE, LoginActivity.this, null, null, null);
+            case R.id.google_login_in:
+                YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this);
                 break;
-//
-//            case R.id.sign_out_button:
-//                //FirebaseAuth.getInstance().signOut();
-//                Auth.GoogleSignInApi.signOut(mGoogleApiClient).setResultCallback(new ResultCallback<Status>() {
-//                    @Override
-//                    public void onResult(@NonNull Status status) {
-//                        Log.d(TAG, "status " + status);
-//                    }
-//                });
-//                break;
+
+            case R.id.facebook_login_in:
+                YYLoginServer.INSTANCE.loginWithFacebook(LoginActivity.this, facebookLoginInCallBack);
+                break;
         }
     }
 
@@ -136,14 +136,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         super.onActivityResult(requestCode, resultCode, data);
 
         // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
-        if (requestCode == GoogleSignInMethod.RC_GOOGLE_SIGN_IN) {
+        if (requestCode == GoogleLoginInMethod.RC_GOOGLE_SIGN_IN) {
             GoogleSignInResult googleSignInResult = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
             YYLoginServer.INSTANCE.handleSignInResult(LoginType.GOOGLE, googleSignInResult, googleSignInCallBack);
         }
+
+        //handle facebook result
+        YYLoginServer.INSTANCE.handleFacebookResult(requestCode, resultCode, data);
     }
 
 
-    DefaultSignInCallBack defaultSignInCallBack = new DefaultSignInCallBack() {
+    DefaultLoginInCallBack defaultSignInCallBack = new DefaultLoginInCallBack() {
         @Override
         public void loginSucceeds(FirebaseUser currentUser) {
             startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
@@ -160,7 +163,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         }
     };
 
-    GoogleSignInCallBack googleSignInCallBack = new GoogleSignInCallBack() {
+    GoogleLoginInCallBack googleSignInCallBack = new GoogleLoginInCallBack() {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
             startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
@@ -178,39 +181,46 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         }
     };
 
-
-    //status login manage call back interface
-    @Override
-    public void UserSignIn(FirebaseUser user) {
-
-    }
-
-    @Override
-    public void UserSignOut() {
-
-    }
-
-    @Override
-    public void onLoginSuccess(FirebaseUser currentUser) {
-
-    }
-
-    @Override
-    public void onLoginFailure() {
-
-    }
-
-    @Override
-    public void userAlreadySigned(FirebaseUser currentUser) {
-        //skip login activity
-        startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
-    }
+    FacebookLoginInCallBack facebookLoginInCallBack = new FacebookLoginInCallBack() {
 
 
-    @Override
-    public void userNotSigned() {
-        //user not signed, do something...
-    }
+        @Override
+        public void facebookLoginSucceed(LoginResult loginResult) {
+
+        }
+
+        @Override
+        public void facebookLoginCancel() {
+
+        }
+
+        @Override
+        public void facebookLoginOnError() {
+
+        }
+
+        @Override
+        public void facebookLoginWithFireBaseSucceed(FirebaseUser user) {
+            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            LoginActivity.this.finish();
+        }
+
+        @Override
+        public void facebookLoginWithFireBaseFailure(Task<AuthResult> task) {
+
+        }
+    };
+
+    UserExistingListener userExistingListener = new UserExistingListener() {
+        @Override
+        public void isUserExisting(boolean b, FirebaseUser currentUser) {
+            if (b) {
+                startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+                LoginActivity.this.finish();
+            }
+        }
+    };
+
 }
 
 

@@ -1,15 +1,18 @@
 package com.berber.orange.memories.login;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.berber.orange.memories.login.command.DefaultSignInMethod;
-import com.berber.orange.memories.login.command.GoogleSignInMethod;
-import com.berber.orange.memories.login.service.DefaultSignInCallBack;
-import com.berber.orange.memories.login.service.GoogleSignInCallBack;
+import com.berber.orange.memories.login.command.DefaultLoginInMethod;
+import com.berber.orange.memories.login.command.FacebookLoginInMethod;
+import com.berber.orange.memories.login.command.GoogleLoginInMethod;
+import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
+import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
+import com.berber.orange.memories.login.service.UserExistingListener;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,11 +32,12 @@ public enum YYLoginServer {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener mAuthListener;
 
-    private DefaultSignInMethod defaultSignIn;
-    private GoogleSignInMethod googleSignIn;
+    private DefaultLoginInMethod defaultLoginIn;
+    private GoogleLoginInMethod googleLoginIn;
 
 
     public YYLoginListener yyLoginListener;
+    private FacebookLoginInMethod facebookLoginIn;
 
     YYLoginServer() {
         Log.d(TAG, "YYLoginServer Constructor");
@@ -51,11 +55,11 @@ public enum YYLoginServer {
                 if (currentUser != null) {
                     //user is signed in
                     Log.d(TAG, "onAuthStateCHanged:signed in: " + currentUser.getEmail());
-                    yyLoginListener.UserSignIn(currentUser);
+                    //yyLoginListener.UserSignIn(currentUser);
                 } else {
                     // user is signed out
                     Log.d(TAG, "onAuthStateChanged:signed out");
-                    yyLoginListener.UserSignOut();
+                    // yyLoginListener.UserSignOut();
                 }
 
             }
@@ -63,37 +67,31 @@ public enum YYLoginServer {
     }
 
 
-    public void signIn(LoginType type, @Nullable Activity activity, String email, String password, DefaultSignInCallBack defaultSignInCallBack) {
-
-
-        switch (type) {
-            case DEFAULT:
-                if (TextUtils.isEmpty(email)) {
-                    throw new IllegalArgumentException("email can't be null or empty");
-                }
-
-                if (!Utils.validate(email)) {
-                    throw new IllegalArgumentException("email format is incorrect");
-                }
-
-                if (TextUtils.isEmpty(password)) {
-                    throw new IllegalArgumentException("password can't be null or empty");
-                }
-
-                defaultSignIn = new DefaultSignInMethod(mAuth, activity, yyLoginListener);
-                defaultSignIn.login(email, password, defaultSignInCallBack);
-                break;
-            case GOOGLE:
-                googleSignIn = new GoogleSignInMethod(mAuth, activity, yyLoginListener);
-                googleSignIn.login();
-
-                break;
-            case FACEBOOK:
-                break;
-            case TWITTER:
-                break;
+    public void loginWithDefault(Activity activity, String email, String password, BaseLoginInCallBack baseLoginInCallBack) {
+        if (TextUtils.isEmpty(email)) {
+            throw new IllegalArgumentException("email can't be null or empty");
         }
 
+        if (!Utils.validate(email)) {
+            throw new IllegalArgumentException("email format is incorrect");
+        }
+
+        if (TextUtils.isEmpty(password)) {
+            throw new IllegalArgumentException("password can't be null or empty");
+        }
+
+        defaultLoginIn = new DefaultLoginInMethod(mAuth, activity, baseLoginInCallBack);
+        defaultLoginIn.login(email, password, baseLoginInCallBack);
+    }
+
+    public void loginWithGoogle(Activity activity) {
+        googleLoginIn = new GoogleLoginInMethod(mAuth, activity, null);
+        googleLoginIn.login();
+    }
+
+    public void loginWithFacebook(Activity activity, BaseLoginInCallBack baseLoginInCallBack) {
+        facebookLoginIn = new FacebookLoginInMethod(mAuth, activity, baseLoginInCallBack);
+        facebookLoginIn.login();
     }
 
 
@@ -117,24 +115,29 @@ public enum YYLoginServer {
         }
     }
 
-    public void checkUserAlreadySigned() {
+    public void checkUserAlreadySigned(UserExistingListener userExistingListener) {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
-            yyLoginListener.userAlreadySigned(currentUser);
+            userExistingListener.isUserExisting(true, currentUser);
         } else {
-            yyLoginListener.userNotSigned();
+            userExistingListener.isUserExisting(false, null);
         }
 
     }
 
 
-    public void handleSignInResult(LoginType type, GoogleSignInResult googleSignInResult, GoogleSignInCallBack callback) {
+    public void handleSignInResult(LoginType type, GoogleSignInResult googleSignInResult, GoogleLoginInCallBack callback) {
         switch (type) {
             case GOOGLE:
-                googleSignIn.handleGoogleSignResult(googleSignInResult, callback);
+                googleLoginIn.handleGoogleSignResult(googleSignInResult, callback);
                 break;
         }
     }
 
 
+    public void handleFacebookResult(int requestCode, int resultCode, Intent data) {
+        if (facebookLoginIn != null) {
+            facebookLoginIn.handleFacebookResult(requestCode, resultCode, data);
+        }
+    }
 }

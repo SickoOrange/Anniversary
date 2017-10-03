@@ -1,16 +1,11 @@
 package com.berber.orange.memories.login.command;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
-import com.berber.orange.memories.R;
-import com.berber.orange.memories.ScrollingActivity;
-import com.berber.orange.memories.login.YYLoginListener;
-import com.berber.orange.memories.login.service.BaseSignInCallBack;
-import com.berber.orange.memories.login.service.DefaultSignInCallBack;
+import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -22,19 +17,19 @@ import com.google.firebase.auth.FirebaseUser;
  * on 02.10.2017.
  */
 
-public class DefaultSignInMethod extends BaseSignInMethod {
-    private static final String TAG = "DefaultSignInMethod";
-    private DefaultSignInCallBack defaultSignInCallBack;
+public class DefaultLoginInMethod extends BaseLoginInMethod {
+    private static final String TAG = "DefaultLoginInMethod";
+    private DefaultLoginInCallBack defaultSignInCallBack;
 
-    public DefaultSignInMethod(FirebaseAuth mAuth, Activity activity, YYLoginListener yyLoginListener) {
-        super(mAuth, activity, yyLoginListener);
+    public DefaultLoginInMethod(FirebaseAuth mAuth, Activity activity, BaseLoginInCallBack baseLoginInCallBack) {
+        super(mAuth, activity, baseLoginInCallBack);
     }
 
     @Override
-    public void login(String email, String password, final BaseSignInCallBack callBack) {
+    public void login(String email, String password, final BaseLoginInCallBack callBack) {
 
-        if (callBack instanceof DefaultSignInCallBack) {
-            defaultSignInCallBack = (DefaultSignInCallBack) callBack;
+        if (callBack instanceof DefaultLoginInCallBack) {
+            defaultSignInCallBack = (DefaultLoginInCallBack) callBack;
         }
 
 

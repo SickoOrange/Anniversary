@@ -3,15 +3,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.berber.orange.memories.login.SignUpActivity">
+    tools:context="com.berber.orange.memories.login.activity.SignUpActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/pick_photo"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:src="@drawable/profile"
         android:layout_above="@+id/user_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="26dp" />
+        android:layout_marginBottom="26dp"
+        android:src="@drawable/profile" />
 
 
     <EditText

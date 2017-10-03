@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser;
  * on 03.10.2017.
  */
 
-public interface DefaultSignInCallBack extends BaseSignInCallBack{
+public interface DefaultLoginInCallBack extends BaseLoginInCallBack {
     void loginSucceeds(FirebaseUser currentUser);
 
     void loginFailure(Task<AuthResult> task);

@@ -9,7 +9,7 @@ import com.google.firebase.auth.FirebaseUser;
  * on 02.10.2017.
  */
 
-public interface GoogleSignInCallBack extends BaseSignInCallBack{
+public interface GoogleLoginInCallBack extends BaseLoginInCallBack {
 
     void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser);
 

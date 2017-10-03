@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.login.YYLoginListener;
-import com.berber.orange.memories.login.service.GoogleSignInCallBack;
+import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -28,19 +30,16 @@ import com.google.firebase.auth.GoogleAuthProvider;
  * on 02.10.2017.
  */
 
-public class GoogleSignInMethod extends BaseSignInMethod {
+public class GoogleLoginInMethod extends BaseLoginInMethod {
     public static final int RC_GOOGLE_SIGN_IN = 9001;
-    private static final String TAG = "GoogleSignInMethod";
-
-
-    private GoogleSignInCallBack googleSignInCallBack;
+    private static final String TAG = "GoogleLoginInMethod";
 
 
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInOptions gso;
 
-    public GoogleSignInMethod(FirebaseAuth mAuth, Activity activity, YYLoginListener yyLoginListener) {
-        super(mAuth, activity, yyLoginListener);
+    public GoogleLoginInMethod(FirebaseAuth mAuth, Activity activity, BaseLoginInCallBack baseLoginInCallBack) {
+        super(mAuth, activity, baseLoginInCallBack);
         prepareLogin();
     }
 
@@ -81,7 +80,7 @@ public class GoogleSignInMethod extends BaseSignInMethod {
 
     }
 
-    public void handleGoogleSignResult(Object result, GoogleSignInCallBack callback) {
+    public void handleGoogleSignResult(Object result, GoogleLoginInCallBack callback) {
         GoogleSignInResult googleSignInResult = (GoogleSignInResult) result;
         Log.d(TAG, "handleGoogleSignInResult:" + googleSignInResult.isSuccess() + " " + googleSignInResult.getStatus());
         if (googleSignInResult.isSuccess()) {
@@ -96,10 +95,12 @@ public class GoogleSignInMethod extends BaseSignInMethod {
         }
     }
 
-    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct, final GoogleSignInCallBack callback) {
+    private void firebaseAuthWithGoogle(final GoogleSignInAccount acct, final GoogleLoginInCallBack callback) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
+
+
         getmAuth().signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override

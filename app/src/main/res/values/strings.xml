@@ -121,5 +121,9 @@
 
     <string name="google_web_id">1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com</string>
 
+    <string name="facebook_app_id">143112729638036</string>
+    <string name="fb_login_protocol_scheme">fb143112729638036</string>
+    <string name="error_gif">error</string>
+
 
 </resources>

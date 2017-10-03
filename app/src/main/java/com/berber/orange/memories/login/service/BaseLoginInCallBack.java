@@ -5,5 +5,5 @@ package com.berber.orange.memories.login.service;
  * on 03.10.2017.
  */
 
-public interface BaseSignInCallBack {
+public interface BaseLoginInCallBack {
 }
