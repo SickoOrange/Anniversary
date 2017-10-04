@@ -21,8 +21,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="#ffffff"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
             <ImageView
                 android:id="@+id/image_content"
                 android:layout_width="match_parent"
@@ -34,12 +35,14 @@
                 android:id="@+id/toolbar"
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
+                android:theme="@style/ToolbarTheme"
                 app:layout_collapseMode="pin"
-                app:popupTheme="@style/AppTheme.PopupOverlay" />
-
+                app:popupTheme="@style/AppTheme.PopupOverlay"
+                app:titleTextColor="@color/black"></android.support.v7.widget.Toolbar>
 
 
         </android.support.design.widget.CollapsingToolbarLayout>
+
         <android.support.design.widget.TabLayout
             android:id="@+id/tab"
             android:layout_width="match_parent"
@@ -48,22 +51,22 @@
             android:background="#ffffff"
             android:fillViewport="false"
             app:layout_scrollFlags="scroll"
-            app:tabIndicatorColor="#0835f8"
-            app:tabIndicatorHeight="2.0dp"
-            app:tabSelectedTextColor="#0835f8"
-            app:tabTextColor="#ced0d3" />
+            app:tabIndicatorColor="#E91E63"
+            app:tabIndicatorHeight="1.0dp"
+            app:tabSelectedTextColor="#E91E63"
+            app:tabTextColor="#757575" />
 
     </android.support.design.widget.AppBarLayout>
 
     <include layout="@layout/content_recycler_view" />
 
     <!--<android.support.design.widget.FloatingActionButton-->
-        <!--android:id="@+id/fab"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_margin="@dimen/fab_margin"-->
-        <!--app:layout_anchor="@id/app_bar"-->
-        <!--app:layout_anchorGravity="bottom|end"-->
-        <!--app:srcCompat="@drawable/ic_pets_white_24dp" />-->
+    <!--android:id="@+id/fab"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_margin="@dimen/fab_margin"-->
+    <!--app:layout_anchor="@id/app_bar"-->
+    <!--app:layout_anchorGravity="bottom|end"-->
+    <!--app:srcCompat="@drawable/ic_pets_white_24dp" />-->
 
 </android.support.design.widget.CoordinatorLayout>
