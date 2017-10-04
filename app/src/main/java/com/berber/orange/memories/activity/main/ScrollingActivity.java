@@ -103,7 +103,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private List<String> getData() {
         List<String> datas = new ArrayList<>();
         for (int i = 0; i < 100; i++) {
-            datas.add("This is berberber from index: " + i);
+            datas.add("今晚是老婆的生日");
         }
         return datas;
     }

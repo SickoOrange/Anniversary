@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
@@ -54,7 +55,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("hello ");
             }
         });
     }
@@ -69,7 +69,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         TextView mTitle;
         TimeLineMarker mTimeLine;
-        LinearLayout itemRoot;
+        RelativeLayout itemRoot;
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
