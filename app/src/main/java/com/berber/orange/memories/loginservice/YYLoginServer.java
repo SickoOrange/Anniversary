@@ -1,19 +1,21 @@
-package com.berber.orange.memories.login;
+package com.berber.orange.memories.loginservice;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.berber.orange.memories.login.command.DefaultLoginInMethod;
-import com.berber.orange.memories.login.command.FacebookLoginInMethod;
-import com.berber.orange.memories.login.command.GoogleLoginInMethod;
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
-import com.berber.orange.memories.login.service.DefaultCreateAccountListener;
-import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
-import com.berber.orange.memories.login.service.UserExistingListener;
-import com.berber.orange.memories.login.user.MyFireBaseUser;
+import com.berber.orange.memories.loginservice.command.DefaultLoginInMethod;
+import com.berber.orange.memories.loginservice.command.FacebookLoginInMethod;
+import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
+import com.berber.orange.memories.loginservice.command.LoginType;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.DefaultCreateAccountListener;
+import com.berber.orange.memories.loginservice.service.GoogleLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.UserExistingListener;
+import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -141,7 +143,7 @@ public enum YYLoginServer {
     }
 
     public void createAccount(Activity activity, final MyFireBaseUser user, final DefaultCreateAccountListener defaultCreateAccountListener) {
-        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassworld()).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
+        mAuth.createUserWithEmailAndPassword(user.getEmail(), user.getPassword()).addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
                 Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
@@ -159,7 +161,7 @@ public enum YYLoginServer {
                     UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
                             .setDisplayName(user.getDisplayName())
                             // TODO: 01.10.2017 convert local image to uri
-                            .setPhotoUri(user.getPhotoUri())
+                            .setPhotoUri(Uri.parse(user.getPhotoUri()))
                             .build();
                     mAuth.getCurrentUser().updateProfile(profileUpdates).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override

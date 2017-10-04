@@ -1,10 +1,12 @@
-package com.berber.orange.memories.login.activity;
+package com.berber.orange.memories.activity.login;
 
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,14 +14,13 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.ScrollingActivity;
-import com.berber.orange.memories.login.YYLoginServer;
-import com.berber.orange.memories.login.service.DefaultCreateAccountListener;
-import com.berber.orange.memories.login.user.MyFireBaseUser;
+import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.loginservice.YYLoginServer;
+import com.berber.orange.memories.loginservice.service.DefaultCreateAccountListener;
+import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 
@@ -69,26 +70,50 @@ public class SignUpActivity extends AppCompatActivity {
             public void onClick(View view) {
 
 
-
-
-
-
-
                 final String password = mPasswordView.getText().toString();
 
-                final String validateEmail = Utils.validateEmail(mEmailView.getText().toString());
+                final boolean validateEmail = Utils.validate(mEmailView.getText().toString());
 
                 String cPassword = mConfirmPassword.getText().toString();
 
                 String userName = mUserNameView.getText().toString();
 
+                if (!validateEmail) {
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(getString(R.string.sign_up_error_dialog_title))
+                            .setMessage("Email Format Error!")
+                            .setPositiveButton(getString(R.string.dialog_ok), null)
+                            .show();
+                    return;
+                }
+
+
+                //user name, password and confirm password can't be empty
+                if (TextUtils.isEmpty(password) && TextUtils.isEmpty(cPassword)) {
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(getString(R.string.sign_up_error_dialog_title))
+                            .setMessage("Password and Confirm Password can't be empty")
+                            .setPositiveButton(getString(R.string.dialog_ok), null)
+                            .show();
+                    return;
+                }
+
+                if (!password.endsWith(cPassword)) {
+                    new AlertDialog.Builder(SignUpActivity.this)
+                            .setTitle(getString(R.string.sign_up_error_dialog_title))
+                            .setMessage("Password and Confirm Password not match")
+                            .setPositiveButton(getString(R.string.dialog_ok), null)
+                            .show();
+                    return;
+                }
+
 
                 MyFireBaseUser myFireBaseUser = new MyFireBaseUser();
-                myFireBaseUser.setEmail(validateEmail);
-                myFireBaseUser.setPassworld(password);
 
-                // TODO: 03.10.2017  password and confirm password
+                myFireBaseUser.setEmail(mEmailView.getText().toString());
+                myFireBaseUser.setPassword(password);
                 myFireBaseUser.setDisplayName(userName);
+                myFireBaseUser.setConfirmPassword(cPassword);
 
                 // TODO: 03.10.2017 set photo uri
                 //myFireBaseUser.setPhotoUri(//);
@@ -106,6 +131,7 @@ public class SignUpActivity extends AppCompatActivity {
                     @Override
                     public void onCreateAccountFailure(Task<AuthResult> task) {
                         Log.d(TAG, "onCreateAccountFailure" + task.getException().getMessage());
+                        // TODO: 04.10.2017 give the error dialog for showing the reason, while user cant create a account.
                         Toast.makeText(SignUpActivity.this, "Create User Account failed",
                                 Toast.LENGTH_SHORT).show();
                     }

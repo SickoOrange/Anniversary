@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.berber.orange.memories.login.activity.SignUpActivity">
+    tools:context="com.berber.orange.memories.activity.login.SignUpActivity">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/pick_photo"

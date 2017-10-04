@@ -1,9 +1,11 @@
-package com.berber.orange.memories.login.service;
+package com.berber.orange.memories.loginservice.service;
 
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONObject;
 
 /**
  * Created by yinya
@@ -19,7 +21,7 @@ public interface FacebookLoginInCallBack extends BaseLoginInCallBack {
     void facebookLoginOnError();
 
 
-    void facebookLoginWithFireBaseSucceed(FirebaseUser user);
+    void facebookLoginWithFireBaseSucceed(FirebaseUser user, JSONObject object);
 
     void facebookLoginWithFireBaseFailure(Task<AuthResult> task);
 }

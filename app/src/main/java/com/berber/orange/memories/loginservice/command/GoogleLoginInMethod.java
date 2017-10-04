@@ -1,16 +1,14 @@
-package com.berber.orange.memories.login.command;
+package com.berber.orange.memories.loginservice.command;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.login.YYLoginListener;
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
-import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.GoogleLoginInCallBack;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -45,22 +43,27 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
 
     private void prepareLogin() {
         //prepare google sign in
-        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(getStringFromResource(R.string.google_web_id))
-                .requestEmail()
-                .build();
+        if (gso == null) {
+            gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getStringFromResource(R.string.google_web_id))
+                    .requestEmail()
+                    .build();
+        }
 
-        // Build a GoogleApiClient with access to the Google Sign-In API and the
-        // options specified by gso.
-        mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
-                .enableAutoManage((FragmentActivity) getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        // TODO: 02.10.2017  google sign in, on connection failed to something
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+
+        if (mGoogleApiClient == null) {
+            // Build a GoogleApiClient with access to the Google Sign-In API and the
+            // options specified by gso.
+            mGoogleApiClient = new GoogleApiClient.Builder(getActivity())
+                    .enableAutoManage((FragmentActivity) getActivity() /* FragmentActivity */, new GoogleApiClient.OnConnectionFailedListener() {
+                        @Override
+                        public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+                            // TODO: 02.10.2017  google sign in, on connection failed to something
+                        }
+                    })
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
     }
 
 

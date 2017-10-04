@@ -1,4 +1,4 @@
-package com.berber.orange.memories.login;
+package com.berber.orange.memories.loginservice.user;
 
 import android.net.Uri;
 

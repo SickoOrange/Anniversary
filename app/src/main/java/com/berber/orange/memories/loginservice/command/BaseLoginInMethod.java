@@ -1,9 +1,8 @@
-package com.berber.orange.memories.login.command;
+package com.berber.orange.memories.loginservice.command;
 
 import android.app.Activity;
 
-import com.berber.orange.memories.login.YYLoginListener;
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
 import com.google.firebase.auth.FirebaseAuth;
 
 /**

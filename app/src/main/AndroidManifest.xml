@@ -18,11 +18,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".ScrollingActivity"
+            android:name=".activity.main.ScrollingActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".login.activity.LoginActivity"
+            android:name=".activity.login.LoginActivity"
             android:label="@string/title_activity_login"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -32,7 +32,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".login.activity.SignUpActivity"
+            android:name=".activity.login.SignUpActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data

@@ -1,17 +1,20 @@
-package com.berber.orange.memories.login.command;
+package com.berber.orange.memories.loginservice.command;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
-import com.berber.orange.memories.login.service.FacebookLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.FacebookLoginInCallBack;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,6 +24,10 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Arrays;
 
@@ -54,8 +61,9 @@ public class FacebookLoginInMethod extends BaseLoginInMethod {
             @Override
             public void onSuccess(LoginResult loginResult) {
                 Log.d(TAG, "facebook:onSuccess111:" + loginResult);
+
                 facebookLoginInCallBack.facebookLoginSucceed(loginResult);
-                handleFacebookAccessToken(loginResult.getAccessToken());
+                handleFacebookAccessToken(loginResult);
             }
 
             @Override
@@ -74,11 +82,11 @@ public class FacebookLoginInMethod extends BaseLoginInMethod {
     }
 
 
-    private void handleFacebookAccessToken(AccessToken token) {
-        Log.d(TAG, "handleFacebookAccessToken:" + token);
+    private void handleFacebookAccessToken(final LoginResult loginResult) {
+        Log.d(TAG, "handleFacebookAccessToken:" + loginResult.getAccessToken());
 
 
-        final AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
+        final AuthCredential credential = FacebookAuthProvider.getCredential(loginResult.getAccessToken().getToken());
 
         FirebaseAuth.getInstance().signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
@@ -87,9 +95,29 @@ public class FacebookLoginInMethod extends BaseLoginInMethod {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                            final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-                            facebookLoginInCallBack.facebookLoginWithFireBaseSucceed(user);
+
+                            GraphRequest request = GraphRequest.newMeRequest(loginResult.getAccessToken(), new GraphRequest.GraphJSONObjectCallback() {
+                                @Override
+                                public void onCompleted(JSONObject object, GraphResponse response) {
+                                    // Application code
+                                    try {
+                                        String email = object.getString("email");
+
+
+                                        facebookLoginInCallBack.facebookLoginWithFireBaseSucceed(user,object);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            });
+                            Bundle parameters = new Bundle();
+                            parameters.putString("fields", "id,name,email,gender,birthday");
+                            request.setParameters(parameters);
+                            request.executeAsync();
+
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
@@ -106,7 +134,7 @@ public class FacebookLoginInMethod extends BaseLoginInMethod {
     @Override
     public void login() {
 
-        LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("public_profile"));
+        LoginManager.getInstance().logInWithReadPermissions(getActivity(), Arrays.asList("public_profile", "email", "user_birthday", "user_friends"));
 
     }
 

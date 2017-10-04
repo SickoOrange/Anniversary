@@ -1,6 +1,6 @@
-package com.berber.orange.memories.login.command;
+package com.berber.orange.memories.loginservice.command;
 
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
 
 /**
  * Created by yinya

@@ -1,6 +1,6 @@
-package com.berber.orange.memories.login;
+package com.berber.orange.memories.loginservice.service;
 
-import com.berber.orange.memories.login.user.MyFireBaseUser;
+import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 
 /**
  * Created by yinya

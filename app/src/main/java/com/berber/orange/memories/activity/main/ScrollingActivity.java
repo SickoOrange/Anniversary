@@ -1,5 +1,6 @@
-package com.berber.orange.memories;
+package com.berber.orange.memories.activity.main;
 
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -17,15 +18,21 @@ import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.berber.orange.memories.R;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
+import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ScrollingActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
+    private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
 
     @Override
@@ -45,6 +52,20 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+
+        View headerView = navigationView.getHeaderView(0);
+
+        CircleImageView user_photo = headerView.findViewById(R.id.user_display_photo);
+        TextView user_name = headerView.findViewById(R.id.user_display_name);
+
+        //get user information
+        MyFireBaseUser user = getIntent().getParcelableExtra("user");
+        String displayName = user.getDisplayName();
+        Uri photoUri = Uri.parse(user.getPhotoUri());
+
+        Glide.with(this).load(photoUri.toString()).into(user_photo);
+        user_name.setText("Hello, dear " + displayName);
+
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,18 +79,18 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         tab.addTab(tab.newTab().setText("hello"));
         tab.addTab(tab.newTab().setText("hello"));
 
-//        Glide.with(this).load("https://cdn.pixabay.com/photo/2016/10/28/11/57/tic-tac-toe-1777859_960_720.jpg")
-//                .into(imageView);
-
 
         ImageView imageView = findViewById(R.id.image_content);
         Glide.with(this).load("https://cdn.pixabay.com/photo/2016/10/28/11/57/tic-tac-toe-1777859_960_720.jpg").into(imageView);
         initRecycler();
+
+
     }
+
 
     private void initRecycler() {
 
-        recycler = (RecyclerView) findViewById(R.id.time_line_recycler);
+        recycler = findViewById(R.id.time_line_recycler);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
@@ -77,8 +98,6 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(adapter);
-
-
     }
 
     private List<String> getData() {

@@ -1,4 +1,4 @@
-package com.berber.orange.memories.login.service;
+package com.berber.orange.memories.loginservice.service;
 
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.common.api.Status;

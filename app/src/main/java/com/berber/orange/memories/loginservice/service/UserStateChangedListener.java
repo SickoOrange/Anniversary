@@ -1,4 +1,4 @@
-package com.berber.orange.memories.login.service;
+package com.berber.orange.memories.loginservice.service;
 
 /**
  * Created by yinya

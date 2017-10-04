@@ -1,11 +1,11 @@
-package com.berber.orange.memories.login.command;
+package com.berber.orange.memories.loginservice.command;
 
 import android.app.Activity;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.berber.orange.memories.login.service.BaseLoginInCallBack;
-import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.DefaultLoginInCallBack;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -42,7 +42,6 @@ public class DefaultLoginInMethod extends BaseLoginInMethod {
                 // the auth state listener will be notified and logic to handle the
                 // signed in user can be handled in the listener.
 
-                // TODO: 02.10.2017 expose the callback to the user
                 if (!task.isSuccessful()) {
                     Log.e(TAG, "Sign in:failed", task.getException());
 

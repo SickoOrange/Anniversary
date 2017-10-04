@@ -1,4 +1,4 @@
-package com.berber.orange.memories.login.activity;
+package com.berber.orange.memories.activity.login;
 
 import android.content.Intent;
 import android.support.v7.app.AlertDialog;
@@ -15,14 +15,15 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.ScrollingActivity;
-import com.berber.orange.memories.login.LoginType;
-import com.berber.orange.memories.login.YYLoginServer;
-import com.berber.orange.memories.login.command.GoogleLoginInMethod;
-import com.berber.orange.memories.login.service.DefaultLoginInCallBack;
-import com.berber.orange.memories.login.service.FacebookLoginInCallBack;
-import com.berber.orange.memories.login.service.GoogleLoginInCallBack;
-import com.berber.orange.memories.login.service.UserExistingListener;
+import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.loginservice.command.LoginType;
+import com.berber.orange.memories.loginservice.YYLoginServer;
+import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
+import com.berber.orange.memories.loginservice.service.DefaultLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.FacebookLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.GoogleLoginInCallBack;
+import com.berber.orange.memories.loginservice.service.UserExistingListener;
+import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.bumptech.glide.Glide;
 import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
@@ -31,7 +32,11 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * A login screen that offers login via email/password.
@@ -96,9 +101,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     @Override
     protected void onStart() {
         super.onStart();
-
-        YYLoginServer.INSTANCE.checkUserAlreadySigned(userExistingListener);
         YYLoginServer.INSTANCE.addAuthStateListener();
+        YYLoginServer.INSTANCE.checkUserAlreadySigned(userExistingListener);
 
     }
 
@@ -201,10 +205,25 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
 
         @Override
-        public void facebookLoginWithFireBaseSucceed(FirebaseUser user) {
-            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
-            Log.d(TAG, user.getPhotoUrl().toString());
+        public void facebookLoginWithFireBaseSucceed(FirebaseUser user, JSONObject object) {
+
+            MyFireBaseUser myUser = new MyFireBaseUser();
+            try {
+                myUser.setEmail(object.getString("email"));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            myUser.setDisplayName(user.getDisplayName());
+            myUser.setPhotoUri(user.getPhotoUrl().toString());
+            Intent intent = new Intent(LoginActivity.this, ScrollingActivity.class);
+            intent.putExtra("user", myUser);
+
+
+            //start to go to new activity
+            LoginActivity.this.startActivity(intent);
+            //finish current activity
             LoginActivity.this.finish();
+
         }
 
         @Override
@@ -217,7 +236,16 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         @Override
         public void isUserExisting(boolean b, FirebaseUser currentUser) {
             if (b) {
-                startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+
+                MyFireBaseUser user = new MyFireBaseUser();
+                user.setEmail(currentUser.getEmail());
+                user.setDisplayName(currentUser.getDisplayName());
+                user.setPhotoUri(currentUser.getPhotoUrl().toString());
+                Intent intent = new Intent(LoginActivity.this, ScrollingActivity.class);
+                intent.putExtra("user", user);
+                //start to go to new activity
+                LoginActivity.this.startActivity(intent);
+                //finish current activity
                 LoginActivity.this.finish();
             }
         }
