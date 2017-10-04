@@ -113,6 +113,16 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     <string name="title_activity_login111">Sign in</string>
+    <string name="prompt_confirm_password">Confirm Password</string>
+    <string name="login_error_dialog_title">Login Error</string>
+    <string name="dialog_ok">OK</string>
+
+
+    <string name="google_web_id">1007045828483-limqn92o7logo67ddrqejj3hn7fcurnr.apps.googleusercontent.com</string>
+
+    <string name="facebook_app_id">143112729638036</string>
+    <string name="fb_login_protocol_scheme">fb143112729638036</string>
+    <string name="error_gif">x or y bound size should be at least %1$dpx and file size should be no more than %2$sM</string>
 
 
 </resources>
