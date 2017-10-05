@@ -1,18 +1,20 @@
 package com.berber.orange.memories.adapter;
 
+import android.app.Application;
 import android.content.Context;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.model.ItemType;
 import com.berber.orange.memories.widget.TimeLineMarker;
+
 
 import java.util.List;
 
@@ -74,9 +76,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
 
+
             itemRoot = itemView.findViewById(R.id.item_layout);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
+            System.out.println(mContext.getAssets().toString());
 
             if (type == ItemType.ATOM) {
                 mTimeLine.setBeginLine(null);

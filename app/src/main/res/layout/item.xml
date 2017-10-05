@@ -20,7 +20,7 @@
         android:background="@drawable/dot_text_view"
         android:padding="9dp"
         android:text="Apr 23"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="12sp"
         android:textStyle="bold" />
 
@@ -88,20 +88,21 @@
             android:paddingLeft="5dp"
             android:text="英国 伦敦"
             android:textColor="#757575"
-            android:textSize="10sp" />
+            android:textSize="12sp" />
 
         <TextView
             android:id="@+id/left_day_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignEnd="@+id/place_label"
-            android:layout_alignRight="@+id/place_label"
+            android:layout_alignLeft="@+id/place_label"
+            android:layout_alignStart="@+id/place_label"
             android:layout_below="@+id/circleImageView"
-            android:background="@drawable/dot_text_view"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/dot_text_view_left_day"
             android:gravity="center"
             android:padding="2dp"
-
-            android:text="+ 365 Days"
+            android:text="+ 365"
             android:textColor="@android:color/white"
             android:textSize="10sp" />
 
