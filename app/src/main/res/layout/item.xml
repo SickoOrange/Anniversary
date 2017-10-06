@@ -117,7 +117,7 @@
             android:layout_toEndOf="@+id/left_day_label"
             android:layout_toRightOf="@+id/left_day_label"
             android:src="@drawable/ic_favorite_white_18dp"
-            android:tint="#FF4081" />
+            android:tint="@color/colorGray" />
 
         <!--<ImageView-->
         <!--android:id="@+id/share"-->
@@ -137,7 +137,7 @@
             android:layout_toEndOf="@+id/favorite"
             android:layout_toRightOf="@+id/favorite"
             android:src="@drawable/ic_access_alarm_white_18dp"
-            android:tint="#FF4081"
+            android:tint="@color/colorGray"
 
             />
 

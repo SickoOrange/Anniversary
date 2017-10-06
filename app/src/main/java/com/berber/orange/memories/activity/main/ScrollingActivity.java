@@ -1,5 +1,6 @@
 package com.berber.orange.memories.activity.main;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.bumptech.glide.Glide;
@@ -72,6 +74,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                startActivity(new Intent(ScrollingActivity.this, ItemEditActivity.class));
             }
         });
 
