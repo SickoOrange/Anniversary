@@ -29,7 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="250dp"
                 android:scaleType="centerCrop"
-                android:src="@color/colorPrimary" />
+                android:src="@color/white" />
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

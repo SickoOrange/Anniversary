@@ -19,15 +19,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:fitsSystemWindows="true"
-            app:contentScrim="?attr/colorPrimary"
+            app:contentScrim="@android:color/white"
             app:layout_scrollFlags="scroll|exitUntilCollapsed">
 
-            <!--<CalendarView-->
-            <!--android:id="@+id/item_date_picker"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:dateTextAppearance="@style/CalenderViewDateCustomText"-->
-            <!--android:weekDayTextAppearance="@style/CalenderViewWeekCustomText" />-->
             <com.prolificinteractive.materialcalendarview.MaterialCalendarView xmlns:app="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/calendarView"
                 android:layout_width="match_parent"
@@ -35,8 +29,8 @@
                 android:background="@color/white"
                 app:mcv_dateTextAppearance="@style/CalenderViewWeekCustomText"
                 app:mcv_headerTextAppearance="@style/CalenderViewWeekCustomText"
+                app:mcv_selectionColor="#EEEEEE"
                 app:mcv_weekDayTextAppearance="@style/CalenderViewWeekCustomText" />
-
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

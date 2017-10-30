@@ -21,13 +21,19 @@ import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
+import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -36,11 +42,18 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
     private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
+    private DaoSession daoSession;
+    private AnniversaryDao anniversaryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+
+        daoSession = ((APP) getApplication()).getDaoSession();
+        anniversaryDao = daoSession.getAnniversaryDao();
+
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -61,9 +74,11 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         TextView user_name = headerView.findViewById(R.id.user_display_name);
 
         //get user information
+        // TODO: 30.10.17 添加记事，返回主界面，空指针异常
         MyFireBaseUser user = getIntent().getParcelableExtra("user");
         String displayName = user.getDisplayName();
         Uri photoUri = Uri.parse(user.getPhotoUri());
+        //FirebaseAuth.getInstance().getCurrentUser()
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
