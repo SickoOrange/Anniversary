@@ -44,7 +44,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     private Date selectedDate;
     private AnniversaryDao anniversaryDao;
 
-    private final int REQUEST_CODE = 9000;
+    private final int REQUEST_CODE_FOR_ADD_ITEM = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -189,7 +189,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
         intent.putExtra("object", convertToDTO(anniversary));
 
         //startActivityForResult(intent, 100);
-        setResult(100, intent);
+        setResult(REQUEST_CODE_FOR_ADD_ITEM, intent);
         finish();
 
     }

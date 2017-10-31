@@ -103,7 +103,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class),100);
+                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class),REQUEST_CODE_FOR_ADD_ITEM);
 
             }
         });
@@ -185,12 +185,10 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Toast.makeText(this, "result value" + requestCode, Toast.LENGTH_LONG).show();
         switch (requestCode) {
             case REQUEST_CODE_FOR_ADD_ITEM:
                 AnniversaryDTO dto = data.getParcelableExtra("object");
                 System.out.println("onActivityResult1" + dto);
-
                 break;
         }
     }
