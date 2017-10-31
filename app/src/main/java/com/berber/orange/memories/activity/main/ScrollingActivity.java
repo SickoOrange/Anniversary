@@ -102,8 +102,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         });
 
         TabLayout tab = findViewById(R.id.tab);
-        tab.addTab(tab.newTab().setText("hello"));
-        tab.addTab(tab.newTab().setText("hello"));
+        tab.addTab(tab.newTab().setText("Time Line"));
+        tab.addTab(tab.newTab().setText("Grid Line"));
 
 
         ImageView imageView = findViewById(R.id.image_content);
@@ -126,12 +126,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         recycler.setAdapter(adapter);
     }
 
-    private List<String> getData() {
-        List<String> datas = new ArrayList<>();
-        for (int i = 0; i < 100; i++) {
-            datas.add("今晚是老婆的生日");
-        }
-        return datas;
+    private List<Anniversary> getData() {
+        return anniversaryDao.queryBuilder().list();
     }
 
     @Override
@@ -180,9 +176,4 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         return true;
     }
 
-    public void read() {
-
-        adapter.readTable(anniversaryDao);
-
-    }
 }

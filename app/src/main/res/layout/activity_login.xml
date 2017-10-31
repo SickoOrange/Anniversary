@@ -14,7 +14,8 @@
         android:layout_toEndOf="@+id/login_progress"
         android:layout_toRightOf="@+id/login_progress"
         android:scaleType="centerCrop"
-        android:src="@drawable/couple_love_silhouettes_happiness_116879_1080x1920" />
+        />
+    <!--android:src="@drawable/couple_love_silhouettes_happiness_116879_1080x1920"-->
 
 
     <ImageView

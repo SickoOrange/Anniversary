@@ -131,18 +131,14 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void submit() {
-      int i=10;
-        for (int i1 = 0; i1 < i; i1++) {
-            Anniversary anniversary=new Anniversary();
-            anniversary.setTitle(mTitleView.getText().toString()+i);
-            anniversary.setLocation(mLocationView.getText().toString()+i);
-            anniversary.setDescription(mDescriptionView.getText().toString()+i);
-            //anniversary.setDate(selectedDate);
-            //anniversary.setRemindDate(null);
-            anniversaryDao.insert(anniversary);
-        }
-
-        startActivity(new Intent(ItemEditActivity.this,ScrollingActivity.class));
+        Anniversary anniversary = new Anniversary();
+        anniversary.setTitle(mTitleView.getText().toString());
+        anniversary.setLocation(mLocationView.getText().toString() );
+        anniversary.setDescription(mDescriptionView.getText().toString());
+        anniversary.setDate(selectedDate);
+        //anniversary.setRemindDate(null);
+        anniversaryDao.insert(anniversary);
+        startActivity(new Intent(ItemEditActivity.this, ScrollingActivity.class));
 
     }
 

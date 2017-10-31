@@ -26,10 +26,10 @@ import java.util.List;
  */
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> {
-    private List<String> mDateSets;
+    private List<Anniversary> mDateSets;
     private Context mContext;
 
-    public TimeLineAdapter(List<String> mDateSets, Context context) {
+    public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {
         this.mDateSets = mDateSets;
         mContext = context;
     }
@@ -55,7 +55,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
-        holder.mTitle.setText(mDateSets.get(position));
+        String title = mDateSets.get(position).getTitle();
+        holder.mTitle.setText(title);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -101,8 +102,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     }
 
 
-    public void readTable(AnniversaryDao anniversaryDao){
-        List<Anniversary> list = anniversaryDao.queryBuilder().list();
+    public void readTable(AnniversaryDao anniversaryDao) {
+       // List<Anniversary> list = anniversaryDao.queryBuilder().list();
+        //mDateSets.clear();
+        //mDateSets.addAll(list);
     }
 
 
