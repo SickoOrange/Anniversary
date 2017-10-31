@@ -31,6 +31,7 @@ import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -44,6 +45,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private RecyclerView recycler;
     private DaoSession daoSession;
     private AnniversaryDao anniversaryDao;
+    private TimeLineAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,12 +75,18 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         CircleImageView user_photo = headerView.findViewById(R.id.user_display_photo);
         TextView user_name = headerView.findViewById(R.id.user_display_name);
 
-        //get user information
-        // TODO: 30.10.17 添加记事，返回主界面，空指针异常
+
+        String displayName;
+        Uri photoUri;
         MyFireBaseUser user = getIntent().getParcelableExtra("user");
-        String displayName = user.getDisplayName();
-        Uri photoUri = Uri.parse(user.getPhotoUri());
-        //FirebaseAuth.getInstance().getCurrentUser()
+        if (user == null) {
+            FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
+            displayName = currentUser.getDisplayName();
+            photoUri = Uri.parse(String.valueOf(currentUser.getPhotoUrl()));
+        } else {
+            displayName = user.getDisplayName();
+            photoUri = Uri.parse(user.getPhotoUri());
+        }
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
@@ -112,7 +120,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        TimeLineAdapter adapter = new TimeLineAdapter(getData(), this.getApplicationContext());
+        adapter = new TimeLineAdapter(getData(), this.getApplicationContext());
 
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(adapter);
@@ -170,5 +178,11 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void read() {
+
+        adapter.readTable(anniversaryDao);
+
     }
 }

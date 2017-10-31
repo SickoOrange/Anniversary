@@ -12,8 +12,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.CalendarMode;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;
@@ -36,11 +39,15 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     private TextView mTitleView;
 
     private Date selectedDate;
+    private AnniversaryDao anniversaryDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_edit);
+
+
+        anniversaryDao = ((APP) getApplication()).getDaoSession().getAnniversaryDao();
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         initView();
@@ -124,14 +131,19 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void submit() {
-        Intent intent = new Intent(ItemEditActivity.this, ScrollingActivity.class);
-        AnniversaryDTO dto = new AnniversaryDTO();
-        dto.setTitle(mTitleView.getText().toString());
-        dto.setDescription(mDescriptionView.getText().toString());
-        dto.setLocation(mLocationView.getText().toString());
-        dto.setDate(selectedDate);
-        intent.putExtra("object", dto);
-        startActivity(intent);
+      int i=10;
+        for (int i1 = 0; i1 < i; i1++) {
+            Anniversary anniversary=new Anniversary();
+            anniversary.setTitle(mTitleView.getText().toString()+i);
+            anniversary.setLocation(mLocationView.getText().toString()+i);
+            anniversary.setDescription(mDescriptionView.getText().toString()+i);
+            //anniversary.setDate(selectedDate);
+            //anniversary.setRemindDate(null);
+            anniversaryDao.insert(anniversary);
+        }
+
+        startActivity(new Intent(ItemEditActivity.this,ScrollingActivity.class));
+
     }
 
     private void cancel() {
@@ -149,7 +161,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
                 .positiveText("submit")
                 .input(
                         "title",
-                        "description",
+                        "title",
                         false,
                         new MaterialDialog.InputCallback() {
                             @Override
