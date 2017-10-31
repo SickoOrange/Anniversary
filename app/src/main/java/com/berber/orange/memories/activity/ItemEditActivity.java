@@ -1,8 +1,10 @@
 package com.berber.orange.memories.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,6 +12,7 @@ import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
@@ -41,6 +44,8 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     private Date selectedDate;
     private AnniversaryDao anniversaryDao;
 
+    private final int REQUEST_CODE = 9000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,8 +62,6 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
 
         calendarView = findViewById(R.id.calendarView);
         calendarView.setOnDateChangedListener(new OnDateSelectedListener() {
-
-
             @Override
             public void onDateSelected(@NonNull MaterialCalendarView widget, @NonNull CalendarDay date, boolean selected) {
                 selectedDate = date.getDate();
@@ -75,6 +78,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
                 //System.out.println(FORMATTER.format(mDateView.getDate()));
             }
         });
+        setCurrentDate();
     }
 
     private void initView() {
@@ -100,28 +104,33 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
     }
 
     public void setCurrentDate() {
-        calendarView.state().edit()
-                .setFirstDayOfWeek(Calendar.WEDNESDAY)
-                .setMinimumDate(CalendarDay.from(2016, 4, 3))
-                .setMaximumDate(CalendarDay.from(2016, 5, 12))
-                .setCalendarDisplayMode(CalendarMode.WEEKS)
-                .commit();
+
+        calendarView.setDateSelected(new Date(), true);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.title_value_label:
-                alertTitleInputDialog();
+                String[] titleParams = new String[]{
+                        "input", "add title for your anniversary", "2", "50", "submit", ""
+                };
+                alertInputDialog(titleParams, "TITLE");
                 break;
             case R.id.location_value_label:
-                alertLocationInputDialog();
+                String[] locationParams = new String[]{
+                        "input", "where is your location", "2", "20", "submit", ""
+                };
+                alertInputDialog(locationParams, "LOCATION");
                 break;
             case R.id.btn_add_description:
-                alertDescriptionDialog();
+                String[] desParams = new String[]{
+                        "input", "add description for your anniversary", "2", "150", "submit", ""
+                };
+                alertInputDialog(desParams, "DESCRIPTION");
                 break;
             case R.id.add_btn_cancel:
-                cancel();
+                //cancel();
                 break;
             case R.id.add_btn_submit:
                 submit();
@@ -130,88 +139,80 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
         }
     }
 
+    private void alertInputDialog(String[] params, final String type) {
+        new MaterialDialog.Builder(this)
+                .title(params[0])
+                .content(params[1])
+                .inputType(
+                        InputType.TYPE_CLASS_TEXT
+                                | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE)
+                .inputRange(Integer.valueOf(params[2]), Integer.valueOf(params[3]))
+                .positiveText(params[4])
+                .input(
+                        params[5],
+                        params[5],
+                        false,
+                        new MaterialDialog.InputCallback() {
+                            @Override
+                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+                                switch (type) {
+                                    case "TITLE":
+                                        mTitleView.setText(input.toString());
+                                        break;
+                                    case "LOCATION":
+                                        mLocationView.setText(input.toString());
+                                        break;
+                                    case "DESCRIPTION":
+                                        mDescriptionView.setText(input.toString());
+                                        break;
+
+                                }
+                            }
+                        })
+                .show();
+    }
+
     private void submit() {
+        //insert data into database
         Anniversary anniversary = new Anniversary();
         anniversary.setTitle(mTitleView.getText().toString());
-        anniversary.setLocation(mLocationView.getText().toString() );
+        anniversary.setLocation(mLocationView.getText().toString());
         anniversary.setDescription(mDescriptionView.getText().toString());
         anniversary.setDate(selectedDate);
         //anniversary.setRemindDate(null);
         anniversaryDao.insert(anniversary);
-        startActivity(new Intent(ItemEditActivity.this, ScrollingActivity.class));
 
+        //convert anniversary to dto object
+
+
+        Intent intent = new Intent(ItemEditActivity.this, ScrollingActivity.class);
+        intent.putExtra("object", convertToDTO(anniversary));
+
+        //startActivityForResult(intent, 100);
+        setResult(100, intent);
+        finish();
+
+    }
+
+    private AnniversaryDTO convertToDTO(Anniversary anniversary) {
+        AnniversaryDTO dto = new AnniversaryDTO();
+        dto.setTitle(anniversary.getTitle());
+        dto.setLocation(anniversary.getLocation());
+        dto.setDescription(anniversary.getDescription());
+        dto.setDate(anniversary.getDate());
+        dto.setRemindDate(anniversary.getRemindDate());
+        dto.setCreateDate(anniversary.getCreateDate());
+        return dto;
     }
 
     private void cancel() {
         onBackPressed();
+        finish();
     }
 
-    private void alertTitleInputDialog() {
-        new MaterialDialog.Builder(this)
-                .title("Input")
-                .content("add title for your anniversary")
-                .inputType(
-                        InputType.TYPE_CLASS_TEXT
-                                | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE)
-                .inputRange(2, 16)
-                .positiveText("submit")
-                .input(
-                        "title",
-                        "title",
-                        false,
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mTitleView.setText(input.toString());
-                            }
-                        })
-                .show();
-    }
-
-    private void alertDescriptionDialog() {
-        new MaterialDialog.Builder(this)
-                .title("Input")
-                .content("add description for your anniversary")
-                .inputType(
-                        InputType.TYPE_CLASS_TEXT
-                                | InputType.TYPE_TEXT_FLAG_IME_MULTI_LINE)
-                .inputRange(2, 160)
-                .positiveText("submit")
-                .input(
-                        "description",
-                        "description",
-                        false,
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mDescriptionView.setText(input.toString());
-                            }
-                        })
-                .show();
-
-    }
-
-    private void alertLocationInputDialog() {
-        new MaterialDialog.Builder(this)
-                .title("Input")
-                .content("where is your location")
-                .inputType(
-                        InputType.TYPE_CLASS_TEXT
-                                | InputType.TYPE_TEXT_VARIATION_PERSON_NAME
-                                | InputType.TYPE_TEXT_FLAG_CAP_WORDS)
-                .inputRange(2, 16)
-                .positiveText("submit")
-                .input(
-                        "London",
-                        "London",
-                        false,
-                        new MaterialDialog.InputCallback() {
-                            @Override
-                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-                                mLocationView.setText(input.toString());
-                            }
-                        })
-                .show();
-
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "onActivityResult from item", Toast.LENGTH_LONG).show();
     }
 }

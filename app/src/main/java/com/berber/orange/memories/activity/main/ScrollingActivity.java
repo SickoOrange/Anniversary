@@ -3,6 +3,7 @@ package com.berber.orange.memories.activity.main;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -15,14 +16,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.AnniversaryDTO;
 import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
@@ -46,6 +50,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private DaoSession daoSession;
     private AnniversaryDao anniversaryDao;
     private TimeLineAdapter adapter;
+    private final int REQUEST_CODE_FOR_ADD_ITEM = 100;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +103,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivity(new Intent(ScrollingActivity.this, ItemEditActivity.class));
+                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class),100);
+
             }
         });
 
@@ -110,14 +117,13 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         Glide.with(this).load("https://cdn.pixabay.com/photo/2016/10/28/11/57/tic-tac-toe-1777859_960_720.jpg").into(imageView);
         initRecycler();
 
-
     }
 
 
     private void initRecycler() {
 
         recycler = findViewById(R.id.time_line_recycler);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         adapter = new TimeLineAdapter(getData(), this.getApplicationContext());
@@ -176,4 +182,16 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         return true;
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        Toast.makeText(this, "result value" + requestCode, Toast.LENGTH_LONG).show();
+        switch (requestCode) {
+            case REQUEST_CODE_FOR_ADD_ITEM:
+                AnniversaryDTO dto = data.getParcelableExtra("object");
+                System.out.println("onActivityResult1" + dto);
+
+                break;
+        }
+    }
 }

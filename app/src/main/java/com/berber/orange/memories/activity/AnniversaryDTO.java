@@ -9,10 +9,16 @@ import java.util.Date;
 
 public class AnniversaryDTO implements Parcelable{
     private String Title;
+
     private String Description;
+
     private String Location;
+
     private Date date;
-    private boolean isRemind;
+
+    private Date remindDate;
+
+    private Date createDate;
 
     public AnniversaryDTO(){}
 
@@ -22,7 +28,8 @@ public class AnniversaryDTO implements Parcelable{
         Location = in.readString();
         long tmpDate = in.readLong();
         date = tmpDate != -1 ? new Date(tmpDate) : null;
-        isRemind = in.readByte() != 0x00;
+        remindDate = tmpDate != -1 ? new Date(tmpDate) : null;
+        createDate = tmpDate != -1 ? new Date(tmpDate) : null;
     }
 
     @Override
@@ -36,7 +43,8 @@ public class AnniversaryDTO implements Parcelable{
         dest.writeString(Description);
         dest.writeString(Location);
         dest.writeLong(date != null ? date.getTime() : -1L);
-        dest.writeByte((byte) (isRemind ? 0x01 : 0x00));
+        dest.writeLong(remindDate != null ? remindDate.getTime() : -1L);
+        dest.writeLong(createDate != null ? createDate.getTime() : -1L);
     }
 
     @SuppressWarnings("unused")
@@ -85,11 +93,19 @@ public class AnniversaryDTO implements Parcelable{
         this.date = date;
     }
 
-    public boolean isRemind() {
-        return isRemind;
+    public Date getRemindDate() {
+        return remindDate;
     }
 
-    public void setRemind(boolean remind) {
-        isRemind = remind;
+    public void setRemindDate(Date remindDate) {
+        this.remindDate = remindDate;
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
 }

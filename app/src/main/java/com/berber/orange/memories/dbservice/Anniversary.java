@@ -23,21 +23,27 @@ public class Anniversary {
 
     private Date remindDate;
 
+    private Date createDate;
+
+
 
     public Anniversary() {
     }
 
 
-    @Generated(hash = 1432829989)
+
+    @Generated(hash = 1130164621)
     public Anniversary(Long id, String Title, String Description, String Location,
-            Date date, Date remindDate) {
+            Date date, Date remindDate, Date createDate) {
         this.id = id;
         this.Title = Title;
         this.Description = Description;
         this.Location = Location;
         this.date = date;
         this.remindDate = remindDate;
+        this.createDate = createDate;
     }
+
 
 
     public Long getId() {
@@ -45,9 +51,11 @@ public class Anniversary {
     }
 
 
+
     public void setId(Long id) {
         this.id = id;
     }
+
 
 
     public String getTitle() {
@@ -55,9 +63,11 @@ public class Anniversary {
     }
 
 
+
     public void setTitle(String Title) {
         this.Title = Title;
     }
+
 
 
     public String getDescription() {
@@ -65,9 +75,11 @@ public class Anniversary {
     }
 
 
+
     public void setDescription(String Description) {
         this.Description = Description;
     }
+
 
 
     public String getLocation() {
@@ -75,9 +87,11 @@ public class Anniversary {
     }
 
 
+
     public void setLocation(String Location) {
         this.Location = Location;
     }
+
 
 
     public Date getDate() {
@@ -85,9 +99,11 @@ public class Anniversary {
     }
 
 
+
     public void setDate(Date date) {
         this.date = date;
     }
+
 
 
     public Date getRemindDate() {
@@ -95,8 +111,23 @@ public class Anniversary {
     }
 
 
+
     public void setRemindDate(Date remindDate) {
         this.remindDate = remindDate;
     }
+
+
+
+    public Date getCreateDate() {
+        return this.createDate;
+    }
+
+
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
+
+
     
 }
