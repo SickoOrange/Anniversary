@@ -69,6 +69,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.mDate.setText(date.split(",")[0]);
         }
 
+        //calculate left date
+        // TODO: 03.11.17  calculate left date
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

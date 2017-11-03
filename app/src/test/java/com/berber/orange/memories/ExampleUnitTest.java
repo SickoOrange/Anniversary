@@ -3,6 +3,7 @@ package com.berber.orange.memories;
 import org.junit.Test;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -38,17 +39,23 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void calculateLeftDays() {
+    public void calculateLeftDays() throws ParseException {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 11, 3);
-        long destination = calendar.getTimeInMillis();
+        calendar.set(2017,11,5,0,0,0);
 
-        long current = System.currentTimeMillis();
+        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d2=sdf.parse("2017-11-10 00:00:00");
+        long time = calendar.getTime().getTime();
+        System.out.println((time-System.currentTimeMillis())/ (1000 * 3600 * 24));
 
-        if (current < destination) {
-            long l1 = (destination - current )/ (1000 * 3600 * 24);
-            System.out.println(l1);
-        }
+        //long destination = calendar.getTime().getTime();
+        //long current = System.currentTimeMillis();
+
+//        if (current < destination) {
+//            long timeStamp = destination - current;
+//            long l1 = timeStamp / (1000 * 3600 * 24);
+//            System.out.println(l1);
+//        }
 
 
     }
