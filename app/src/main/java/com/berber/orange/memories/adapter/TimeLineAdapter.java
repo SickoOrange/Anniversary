@@ -20,6 +20,8 @@ import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.TimeLineMarker;
 
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -57,8 +59,17 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
-        String title = mDateSets.get(position).getTitle();
-        holder.mTitle.setText(title);
+        //get target object
+        Anniversary anniversary = mDateSets.get(position);
+        holder.mTitle.setText(anniversary.getTitle());
+
+        //set object date
+        if (anniversary.getDate() != null) {
+            String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
+            holder.mDate.setText(date.split(",")[0]);
+        }
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,6 +101,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TextView mTitle;
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
+        TextView mDate;
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
@@ -98,7 +110,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             itemRoot = itemView.findViewById(R.id.item_layout);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
-            System.out.println(mContext.getAssets().toString());
+            mDate = itemView.findViewById(R.id.date_label);
 
             if (type == ItemType.ATOM) {
                 mTimeLine.setBeginLine(null);
