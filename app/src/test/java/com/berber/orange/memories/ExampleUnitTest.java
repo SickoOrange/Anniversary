@@ -36,4 +36,21 @@ public class ExampleUnitTest {
             System.out.println(s.trim());
         }
     }
+
+    @Test
+    public void calculateLeftDays() {
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(2017, 11, 3);
+        long destination = calendar.getTimeInMillis();
+
+        long current = System.currentTimeMillis();
+
+        if (current < destination) {
+            long l1 = (destination - current )/ (1000 * 3600 * 24);
+            System.out.println(l1);
+        }
+
+
+    }
+
 }
