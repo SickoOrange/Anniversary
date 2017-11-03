@@ -1,7 +1,10 @@
 package com.berber.orange.memories.utils;
 
+import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.net.ContentHandler;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,5 +30,9 @@ public class Utils {
 
     public static String validateEmail(String im) {
         return im;
+    }
+
+    public static void showToast(Context context, String msg, Integer duratoin) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 }

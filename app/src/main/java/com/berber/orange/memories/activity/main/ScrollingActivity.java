@@ -33,6 +33,7 @@ import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
+import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -103,7 +104,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class),REQUEST_CODE_FOR_ADD_ITEM);
+                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class), REQUEST_CODE_FOR_ADD_ITEM);
 
             }
         });
@@ -187,8 +188,12 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_CODE_FOR_ADD_ITEM:
+                if (data == null) {
+                    return;
+                }
                 AnniversaryDTO dto = data.getParcelableExtra("object");
-                System.out.println("onActivityResult1" + dto);
+                adapter.addNewItem(dto, adapter);
+                Utils.showToast(ScrollingActivity.this, "add new item", Toast.LENGTH_LONG);
                 break;
         }
     }

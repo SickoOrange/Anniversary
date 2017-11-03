@@ -12,9 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
+import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.TimeLineMarker;
 
 
@@ -70,6 +72,19 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return mDateSets.size();
     }
 
+    public void addNewItem(AnniversaryDTO dto, TimeLineAdapter adapter) {
+
+        Anniversary newItem = new Anniversary();
+        newItem.setTitle(dto.getTitle());
+        newItem.setLocation(dto.getLocation());
+        newItem.setDescription(dto.getDescription());
+        newItem.setDate(dto.getDate());
+        newItem.setCreateDate(dto.getCreateDate());
+        newItem.setRemindDate(dto.getRemindDate());
+        mDateSets.add(newItem);
+        adapter.notifyDataSetChanged();
+    }
+
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
         TextView mTitle;
@@ -103,7 +118,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
 
     public void readTable(AnniversaryDao anniversaryDao) {
-       // List<Anniversary> list = anniversaryDao.queryBuilder().list();
+        // List<Anniversary> list = anniversaryDao.queryBuilder().list();
         //mDateSets.clear();
         //mDateSets.addAll(list);
     }
