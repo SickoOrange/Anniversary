@@ -61,7 +61,6 @@
     </style>
 
 
-
     <style name="CalenderViewCustom" parent="Theme.AppCompat">
         <item name="android:textColor">@android:color/black</item>
     </style>

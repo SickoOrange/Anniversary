@@ -26,6 +26,7 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.AddActivity;
 import com.berber.orange.memories.activity.AnniversaryDTO;
 import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
@@ -104,8 +105,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class), REQUEST_CODE_FOR_ADD_ITEM);
-
+                //startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class), REQUEST_CODE_FOR_ADD_ITEM);
+                    startActivity(new Intent(ScrollingActivity.this, AddActivity.class));
             }
         });
 
