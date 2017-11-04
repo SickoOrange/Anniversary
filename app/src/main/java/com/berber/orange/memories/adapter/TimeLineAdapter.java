@@ -70,7 +70,14 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
         //calculate left date
-        // TODO: 03.11.17  calculate left date
+        long restMillis = anniversary.getDate().getTime() - System.currentTimeMillis();
+        long restDays = restMillis / (24 * 60 * 60 * 1000);
+        if (restDays >= 0) {
+            holder.mLeftDay.setText("+ " + restDays);
+        } else {
+            holder.mLeftDay.setText("- " + restDays);
+
+        }
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -101,6 +108,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
+        TextView mLeftDay;
         TextView mTitle;
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
@@ -114,6 +122,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
             mDate = itemView.findViewById(R.id.date_label);
+            mLeftDay = itemView.findViewById(R.id.left_day_label);
 
             if (type == ItemType.ATOM) {
                 mTimeLine.setBeginLine(null);
