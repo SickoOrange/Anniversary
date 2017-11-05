@@ -1,8 +1,6 @@
 package com.berber.orange.memories.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,8 +8,10 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.utils.ScreenUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,20 +40,42 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private void init() {
+        LinearLayout.LayoutParams layoutParams12 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 2.0f));
+
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
         List<View> viewList = new ArrayList<>();
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < pageCount; i++) {
-            RecyclerView inflate = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, viewPager, false);
-            inflate.setLayoutManager(new GridLayoutManager(AddItemActivity.this, 5));
+            RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, viewPager, false);
+            recyclerView.setLayoutManager(new GridLayoutManager(AddItemActivity.this, 5));
             //add adapter to every recycler view
-
-            viewList.add(inflate);
+            AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
+            recyclerView.setAdapter(anniversaryTypeRecyclerViewAdapter);
+            viewList.add(recyclerView);
         }
+
+        ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
+        viewPager.setAdapter(viewPagerAdapter);
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                // TODO: 2017/11/05  switch  indicator
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     private void initView() {
-        viewPager = findViewById(R.id.add_entrance_vp);
+        viewPager = findViewById(R.id.anniversary_type_vp);
     }
 
     private void initAnniversaryTypeData() {
