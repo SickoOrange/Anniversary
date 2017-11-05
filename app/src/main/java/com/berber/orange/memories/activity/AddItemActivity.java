@@ -11,7 +11,6 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.utils.ScreenUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,26 +34,17 @@ public class AddItemActivity extends AppCompatActivity {
 
         initAnniversaryTypeData();
         initView();
-
         init();
 
     }
 
     private void init() {
-        LinearLayout.LayoutParams layoutParams12 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 2.0f));
-        LinearLayout.LayoutParams entrancelayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 2.0f + 70));
-
-        homeEntrance.setLayoutParams(entrancelayoutParams);
-        viewPager.setLayoutParams(layoutParams12);
-
-
-
 
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
         List<View> viewList = new ArrayList<>();
         LayoutInflater inflater = LayoutInflater.from(this);
         for (int i = 0; i < pageCount; i++) {
-            RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, viewPager, false);
+            RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, null, false);
             recyclerView.setLayoutManager(new GridLayoutManager(AddItemActivity.this, 5));
             //add adapter to every recycler view
             AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
@@ -86,7 +76,6 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void initView() {
         viewPager = findViewById(R.id.anniversary_type_vp);
-        homeEntrance = findViewById(R.id.home_entrance);
     }
 
     private void initAnniversaryTypeData() {

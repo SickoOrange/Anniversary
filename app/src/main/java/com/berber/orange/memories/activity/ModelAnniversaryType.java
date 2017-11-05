@@ -8,6 +8,14 @@ class ModelAnniversaryType {
     private String name = "";
     private int imageResource;
 
+    @Override
+    public String toString() {
+        return "ModelAnniversaryType{" +
+                "name='" + name + '\'' +
+                ", imageResource=" + imageResource +
+                '}';
+    }
+
     public ModelAnniversaryType(String name, int imageResource) {
         this.name = name;
         this.imageResource = imageResource;

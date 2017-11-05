@@ -2,6 +2,7 @@ package com.berber.orange.memories.activity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,8 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
     private final LayoutInflater inflater;
 
     AnniversaryTypeRecyclerViewAdapter(Context context, ArrayList<ModelAnniversaryType> modelAnniversaryTypes, int i, int homeItemSize) {
+        Log.e("TAG", "AnniversaryTypeRecyclerViewAdapter");
+
         this.mContext = context;
         this.mDatas = modelAnniversaryTypes;
         this.mIndex = i;
@@ -34,12 +37,15 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
 
     @Override
     public ItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Log.e("TAG", "onCreateViewHolder");
         return new ItemsViewHolder(inflater.inflate(R.layout.item_anniversary_type, null));
     }
 
     @Override
     public void onBindViewHolder(ItemsViewHolder holder, int position) {
+        Log.e("TAG", "onBindViewHolder: " + position);
         final int pos = position + mIndex * mPageSize;
+        System.out.println(mDatas.get(pos).toString());
         holder.anniversaryTypesImageResource.setImageResource(mDatas.get(pos).getImageResource());
         holder.anniversaryTypesText.setText(mDatas.get(pos).getName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +61,9 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
 
     @Override
     public int getItemCount() {
+        int i = mDatas.size() > (mIndex + 1) * mPageSize ? mPageSize : (mDatas.size() - mIndex * mPageSize);
+        Log.e("TAG", "getItemCount: " + i);
+
         return mDatas.size() > (mIndex + 1) * mPageSize ? mPageSize : (mDatas.size() - mIndex * mPageSize);
     }
 
@@ -72,8 +81,6 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
             super(itemView);
             anniversaryTypesText = itemView.findViewById(R.id.anniversary_title);
             anniversaryTypesImageResource = itemView.findViewById(R.id.anniversary_image);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 4.0f));
-            itemView.setLayoutParams(layoutParams);
         }
     }
 }
