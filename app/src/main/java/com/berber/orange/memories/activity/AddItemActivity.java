@@ -22,6 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryType> modelAnniversaryTypes;
+    private LinearLayout homeEntrance;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,10 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void init() {
         LinearLayout.LayoutParams layoutParams12 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 2.0f));
+        LinearLayout.LayoutParams entrancelayoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, (int) ((float) ScreenUtil.getScreenWidth() / 2.0f + 70));
+
+        homeEntrance.setLayoutParams(entrancelayoutParams);
+        viewPager.setLayoutParams(layoutParams12);
 
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
         List<View> viewList = new ArrayList<>();
@@ -51,7 +56,9 @@ public class AddItemActivity extends AppCompatActivity {
             //add adapter to every recycler view
             AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
             recyclerView.setAdapter(anniversaryTypeRecyclerViewAdapter);
+
             viewList.add(recyclerView);
+            //viewList.add(inflater.inflate(R.layout.test, viewPager, false));
         }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
@@ -76,6 +83,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void initView() {
         viewPager = findViewById(R.id.anniversary_type_vp);
+        homeEntrance = findViewById(R.id.home_entrance);
     }
 
     private void initAnniversaryTypeData() {
