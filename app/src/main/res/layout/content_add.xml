@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.berber.orange.memories.activity.AddActivity"
+    tools:context="com.berber.orange.memories.activity.AddItemActivity"
     tools:showIn="@layout/activity_add">
 
     <LinearLayout
@@ -35,11 +35,11 @@
         </LinearLayout>
 
         <android.support.v4.view.ViewPager
+            android:id="@+id/add_entrance_vp"
             android:layout_width="match_parent"
             android:layout_height="150dp"
             android:layout_marginTop="2dp"
             android:background="@color/bggreen" />
-
     </LinearLayout>
 
 </android.support.v4.widget.NestedScrollView>
