@@ -47,6 +47,9 @@ public class AddItemActivity extends AppCompatActivity {
         homeEntrance.setLayoutParams(entrancelayoutParams);
         viewPager.setLayoutParams(layoutParams12);
 
+
+
+
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
         List<View> viewList = new ArrayList<>();
         LayoutInflater inflater = LayoutInflater.from(this);
