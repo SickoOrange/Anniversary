@@ -3,7 +3,6 @@ package com.berber.orange.memories.activity.main;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -16,7 +15,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,9 +24,8 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.AddActivity;
+import com.berber.orange.memories.activity.AddItemActivity;
 import com.berber.orange.memories.activity.AnniversaryDTO;
-import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -39,8 +36,6 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -106,7 +101,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
                 //startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class), REQUEST_CODE_FOR_ADD_ITEM);
-                    startActivity(new Intent(ScrollingActivity.this, AddActivity.class));
+                    startActivity(new Intent(ScrollingActivity.this, AddItemActivity.class));
             }
         });
 
