@@ -27,9 +27,9 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/toolbar"
+        android:background="@android:color/white"
         android:orientation="horizontal"
-        android:padding="10dp"
-        android:background="@android:color/white">
+        android:padding="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
             android:layout_width="30dp"
@@ -46,107 +46,148 @@
 
     </LinearLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/anniversary_type_vp"
+
+    <android.support.v4.widget.NestedScrollView
+        android:id="@+id/scrollView"
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:layout_below="@+id/top_bar"
-        android:layout_marginTop="5dp"
-        android:background="@android:color/white"
-        />
-
-    <LinearLayout
-        android:id="@+id/data_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/anniversary_type_vp"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/date_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-            android:text="2017年10月15日"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/item_ripple"
-            android:drawableStart="@drawable/ic_date_range_black_18dp"
-            android:drawableLeft="@drawable/ic_date_range_black_18dp" />
-
-        <TextView
-            android:id="@+id/time_value_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-            android:clickable="true"
-            android:background="@drawable/item_ripple"
-            android:text="23:00" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/location_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/data_layout"
-        android:layout_marginTop="5dp">
-
-        <TextView
-            android:id="@+id/location_label"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="2"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingTop="10dp"
-            android:text="请选择地点"
-            android:gravity="center"
-            android:clickable="true"
-            android:background="@drawable/item_ripple"
-            android:drawableStart="@drawable/ic_place_black_18dp"
-            android:drawableLeft="@drawable/ic_place_black_18dp" />
-
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="15dp"
-            android:paddingTop="10dp"
-            android:clickable="true"
-            android:gravity="end"
-            android:background="@drawable/item_ripple"
-            android:text="X" />
-
-    </LinearLayout>
+        android:layout_height="match_parent"
+        android:layout_below="@id/top_bar"
+        android:fillViewport="true">
 
 
-    <EditText
-        android:layout_below="@id/location_layout"
-        android:layout_margin="5dp"
-        android:elevation="5dp"
-        android:id="@+id/add_content"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:enabled="true"
-        android:gravity="top"
-        android:inputType="textMultiLine"
-        android:minLines="8"
-        android:maxLines="10"
-        android:scrollbars="vertical"
-        android:background="@drawable/edit_bg"
-        android:padding="5dp"
-        android:hint="请输入详细的描述...."
-        >
-    </EditText>
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+           <android.support.v4.view.ViewPager
+               android:id="@+id/anniversary_type_vp"
+               android:layout_width="match_parent"
+               android:layout_height="170dp"
+               android:layout_below="@+id/top_bar"
+               android:layout_marginTop="5dp"
+               android:background="@android:color/white" />
+
+           <LinearLayout
+               android:id="@+id/my_indicator"
+               android:layout_width="match_parent"
+               android:layout_height="30dp"
+               android:layout_below="@id/anniversary_type_vp"
+               android:orientation="horizontal"
+               android:gravity="center"
+               android:background="@color/white">
+
+
+               <View
+                   android:layout_width="5dp"
+                   android:layout_height="5dp"
+                   android:background="@drawable/dot"
+                   android:layout_margin="5dp"
+                   />
+               <View
+                   android:layout_width="5dp"
+                   android:layout_height="5dp"
+                   android:background="@drawable/dot"
+                   android:layout_margin="5dp"
+                   />
+
+
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/data_layout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/my_indicator"
+               android:layout_marginTop="5dp">
+
+               <TextView
+                   android:id="@+id/date_label"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:background="@drawable/item_ripple"
+                   android:clickable="true"
+                   android:drawableLeft="@drawable/ic_date_range_black_18dp"
+                   android:drawableStart="@drawable/ic_date_range_black_18dp"
+                   android:gravity="center"
+                   android:paddingBottom="10dp"
+                   android:paddingLeft="15dp"
+                   android:paddingTop="10dp"
+                   android:text="2017年10月15日" />
+
+               <TextView
+                   android:id="@+id/time_value_label"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:background="@drawable/item_ripple"
+                   android:clickable="true"
+                   android:paddingBottom="10dp"
+                   android:paddingLeft="15dp"
+                   android:paddingTop="10dp"
+                   android:text="23:00" />
+
+           </LinearLayout>
+
+           <LinearLayout
+               android:id="@+id/location_layout"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/data_layout"
+               android:layout_marginTop="5dp">
+
+               <TextView
+                   android:id="@+id/location_label"
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="2"
+                   android:background="@drawable/item_ripple"
+                   android:clickable="true"
+                   android:drawableLeft="@drawable/ic_place_black_18dp"
+                   android:drawableStart="@drawable/ic_place_black_18dp"
+                   android:gravity="center"
+                   android:paddingBottom="10dp"
+                   android:paddingLeft="15dp"
+                   android:paddingTop="10dp"
+                   android:text="请选择地点" />
+
+               <TextView
+                   android:layout_width="0dp"
+                   android:layout_height="wrap_content"
+                   android:layout_weight="1"
+                   android:background="@drawable/item_ripple"
+                   android:clickable="true"
+                   android:gravity="end"
+                   android:paddingBottom="10dp"
+                   android:paddingLeft="15dp"
+                   android:paddingRight="15dp"
+                   android:paddingTop="10dp"
+                   android:text="X" />
+
+           </LinearLayout>
+
+
+           <EditText
+               android:id="@+id/add_content"
+               android:layout_width="fill_parent"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/location_layout"
+               android:layout_margin="5dp"
+               android:background="@drawable/edit_bg"
+               android:elevation="5dp"
+               android:enabled="true"
+               android:gravity="top"
+               android:hint="请输入详细的描述...."
+               android:inputType="textMultiLine"
+               android:maxLines="10"
+               android:minLines="8"
+               android:padding="5dp"
+               android:scrollbars="vertical" />
+       </RelativeLayout>
+
+    </android.support.v4.widget.NestedScrollView>
+
+
 
 
 </RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.LinearLayout;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.widget.IndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,7 +22,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryType> modelAnniversaryTypes;
-    private LinearLayout homeEntrance;
+    private IndicatorView indicatorView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class AddItemActivity extends AppCompatActivity {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
         viewPager.setAdapter(viewPagerAdapter);
+
+        //indicatorView.setIndicatorCount(viewPager.getAdapter() == null ? 0 : viewPager.getAdapter().getCount());
+        //indicatorView.setCurrentIndicator(viewPager.getCurrentItem());
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -65,6 +70,7 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 // TODO: 2017/11/05  switch  indicator
+                //indicatorView.setCurrentIndicator(position);
             }
 
             @Override
@@ -76,6 +82,7 @@ public class AddItemActivity extends AppCompatActivity {
 
     private void initView() {
         viewPager = findViewById(R.id.anniversary_type_vp);
+        //indicatorView = findViewById(R.id.indicator);
     }
 
     private void initAnniversaryTypeData() {
