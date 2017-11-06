@@ -217,7 +217,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void openNotificationTimePickerDialog() {
-
+        BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
+        View dialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
+        dialog.setContentView(dialogView);
+        dialog.show();
     }
 
     private void openTimePickerDialog() {
