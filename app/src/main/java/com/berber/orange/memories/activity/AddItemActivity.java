@@ -25,8 +25,12 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.IndicatorView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,6 +49,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private String currentAnniversaryTitle;
     private EditText anniversaryDescriptionEditText;
     private String currentAnniversaryDescription;
+    private String currentPickDateString;
+    private String currentPickTimeString;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -208,6 +214,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         if (minute.length() == 1) {
                             minute = minute + "0";
                         }
+                        currentPickTimeString = String.format("%s:%s", hour, minute);
 
                         anniversaryTimeTextView.setText(String.format("%s:%s", hour, minute));
                         Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
@@ -232,11 +239,25 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         String currentMonth = String.valueOf(datePicker.getMonth() + 1);
                         String day = String.valueOf(datePicker.getDayOfMonth());
                         anniversaryDateTextView.setText(String.format("%s/%s/%s", day, currentMonth, year));
+                        currentPickDateString = String.format("%s/%s/%s", day, currentMonth, year);
                         Utils.showToast(AddItemActivity.this, year + " " + currentMonth + " " + day, 1);
                     }
                 })
                 .negativeText(android.R.string.cancel);
         builder.show();
+    }
 
+    private Date getCurrentAnniversaryDate() {
+
+        String dateString = currentPickDateString + " " + currentPickTimeString;
+        Date currentDate = null;
+        try {
+            currentDate = new SimpleDateFormat("dd-mm-yyyy hh:mm", Locale.ENGLISH).parse(dateString);
+            currentPickTimeString = "";
+            currentPickTimeString = "";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return currentDate;
     }
 }
