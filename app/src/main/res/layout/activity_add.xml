@@ -205,7 +205,7 @@
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
                     android:drawableLeft="@drawable/ic_access_alarms_black_18dp"
-                    android:drawableStart="@drawable/iic_access_alarms_black_18dp"
+                    android:drawableStart="@drawable/ic_access_alarms_black_18dp"
                     android:gravity="center"
                     android:paddingBottom="10dp"
                     android:paddingLeft="15dp"

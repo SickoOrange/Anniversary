@@ -4,6 +4,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -51,6 +52,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private String currentAnniversaryDescription;
     private String currentPickDateString;
     private String currentPickTimeString;
+    private TextView anniversaryNotificationTimeTextView;
+    private TextView anniversaryNotificationTypeTextView;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -106,7 +109,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             @Override
             public void onPageSelected(int position) {
-                // TODO: 2017/11/05  switch  indicator
                 indicatorContainer.getChildAt(prePosition).setSelected(false);
                 indicatorContainer.getChildAt(position).setSelected(true);
                 prePosition = position;
@@ -127,7 +129,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         CircleImageView anniversaryTypeImage = findViewById(R.id.anniversary_add_type_image);
         TextView anniversaryTypeName = findViewById(R.id.anniversary_add_type_name);
 
-        //anniversary tile edittext
+        //anniversary tile edit text
         anniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
 
         //anniversary date
@@ -140,6 +142,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //anniversary location
         TextView anniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
         anniversaryLocation.setOnClickListener(this);
+
+        //anniversary notification
+        anniversaryNotificationTimeTextView = findViewById(R.id.anniversary_add_anni_notification_time);
+        anniversaryNotificationTimeTextView.setOnClickListener(this);
+        anniversaryNotificationTypeTextView = findViewById(R.id.anniversary_add_anni_notification_type);
+        anniversaryNotificationTypeTextView.setOnClickListener(this);
 
         //anniversary description
         anniversaryDescriptionEditText = findViewById(R.id.anniversary_add_anni_description);
@@ -190,8 +198,26 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
                 break;
 
+            case R.id.anniversary_add_anni_notification_time:
+                openNotificationTimePickerDialog();
+                break;
+            case R.id.anniversary_add_anni_notification_type:
+                openNotificationTypePickerDialog();
+                break;
+
 
         }
+    }
+
+    private void openNotificationTypePickerDialog() {
+        BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
+        View dialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_picker, null);
+        dialog.setContentView(dialogView);
+        dialog.show();
+    }
+
+    private void openNotificationTimePickerDialog() {
+
     }
 
     private void openTimePickerDialog() {
