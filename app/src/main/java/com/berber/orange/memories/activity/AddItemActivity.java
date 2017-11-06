@@ -1,6 +1,9 @@
 package com.berber.orange.memories.activity;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,6 +11,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.berber.orange.memories.R;
@@ -23,7 +27,9 @@ public class AddItemActivity extends AppCompatActivity {
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryType> modelAnniversaryTypes;
     private IndicatorView indicatorView;
+    private LinearLayout indicatorContainer;
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +45,8 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void init() {
 
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
@@ -52,7 +60,16 @@ public class AddItemActivity extends AppCompatActivity {
             recyclerView.setAdapter(anniversaryTypeRecyclerViewAdapter);
 
             viewList.add(recyclerView);
-            //viewList.add(inflater.inflate(R.layout.test, viewPager, false));
+
+            //create indicator
+            View dot = new View(AddItemActivity.this);
+            //  ViewGroup.LayoutParams params = dot.getLayoutParams();
+            //  params.height=5;
+            //  params.width=5;
+            //  dot.setLayoutParams(params);
+            dot.setBackground(getDrawable(R.drawable.dot));
+            indicatorContainer.addView(dot);
+
         }
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
@@ -83,6 +100,7 @@ public class AddItemActivity extends AppCompatActivity {
     private void initView() {
         viewPager = findViewById(R.id.anniversary_type_vp);
         //indicatorView = findViewById(R.id.indicator);
+        indicatorContainer = findViewById(R.id.my_indicator_container);
     }
 
     private void initAnniversaryTypeData() {

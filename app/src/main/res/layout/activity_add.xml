@@ -62,12 +62,11 @@
                android:id="@+id/anniversary_type_vp"
                android:layout_width="match_parent"
                android:layout_height="170dp"
-               android:layout_below="@+id/top_bar"
                android:layout_marginTop="5dp"
                android:background="@android:color/white" />
 
            <LinearLayout
-               android:id="@+id/my_indicator"
+               android:id="@+id/my_indicator_container"
                android:layout_width="match_parent"
                android:layout_height="30dp"
                android:layout_below="@id/anniversary_type_vp"
@@ -76,18 +75,18 @@
                android:background="@color/white">
 
 
-               <View
-                   android:layout_width="5dp"
-                   android:layout_height="5dp"
-                   android:background="@drawable/dot"
-                   android:layout_margin="5dp"
-                   />
-               <View
-                   android:layout_width="5dp"
-                   android:layout_height="5dp"
-                   android:background="@drawable/dot"
-                   android:layout_margin="5dp"
-                   />
+               <!--<View-->
+                   <!--android:layout_width="5dp"-->
+                   <!--android:layout_height="5dp"-->
+                   <!--android:background="@drawable/dot"-->
+                   <!--android:layout_margin="5dp"-->
+                   <!--/>-->
+               <!--<View-->
+                   <!--android:layout_width="5dp"-->
+                   <!--android:layout_height="5dp"-->
+                   <!--android:background="@drawable/dot"-->
+                   <!--android:layout_margin="5dp"-->
+                   <!--/>-->
 
 
 
@@ -97,7 +96,7 @@
                android:id="@+id/data_layout"
                android:layout_width="match_parent"
                android:layout_height="wrap_content"
-               android:layout_below="@id/my_indicator"
+               android:layout_below="@id/my_indicator_container"
                android:layout_marginTop="5dp">
 
                <TextView
