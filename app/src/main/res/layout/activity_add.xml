@@ -159,6 +159,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/data_layout"
                 android:layout_marginTop="5dp">
+
                 <TextView
                     android:id="@+id/anniversary_add_anni_location"
                     android:layout_width="0dp"
@@ -173,6 +174,7 @@
                     android:paddingLeft="15dp"
                     android:paddingTop="10dp"
                     android:text="请选择地点" />
+
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -188,12 +190,48 @@
 
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/notification_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/location_layout"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:id="@+id/anniversary_add_anni_notification_time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/item_ripple"
+                    android:clickable="true"
+                    android:drawableLeft="@drawable/ic_access_alarms_black_18dp"
+                    android:drawableStart="@drawable/iic_access_alarms_black_18dp"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:text="15 min before" />
+
+                <TextView
+                    android:id="@+id/anniversary_add_anni_notification_type"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@drawable/item_ripple"
+                    android:clickable="true"
+                    android:paddingBottom="10dp"
+                    android:paddingLeft="15dp"
+                    android:paddingTop="10dp"
+                    android:text="Notification" />
+
+            </LinearLayout>
+
 
             <EditText
                 android:id="@+id/anniversary_add_anni_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/location_layout"
+                android:layout_below="@id/notification_layout"
                 android:layout_margin="5dp"
                 android:background="@drawable/edit_bg"
                 android:elevation="5dp"

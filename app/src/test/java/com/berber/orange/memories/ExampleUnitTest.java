@@ -7,6 +7,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import static org.junit.Assert.*;
 
@@ -41,12 +42,12 @@ public class ExampleUnitTest {
     @Test
     public void calculateLeftDays() throws ParseException {
         Calendar calendar = Calendar.getInstance();
-        calendar.set(2017,11,5,0,0,0);
+        calendar.set(2017, 11, 5, 0, 0, 0);
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date d2=sdf.parse("2017-11-10 00:00:00");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date d2 = sdf.parse("2017-11-10 00:00:00");
         long time = calendar.getTime().getTime();
-        System.out.println((time-System.currentTimeMillis())/ (1000 * 3600 * 24));
+        System.out.println((time - System.currentTimeMillis()) / (1000 * 3600 * 24));
 
         //long destination = calendar.getTime().getTime();
         //long current = System.currentTimeMillis();
@@ -56,8 +57,19 @@ public class ExampleUnitTest {
 //            long l1 = timeStamp / (1000 * 3600 * 24);
 //            System.out.println(l1);
 //        }
+    }
 
+    @Test
+    public void getCurrentDate() {
+        String dateString = "2017-5-7" + " " + "24:00";
+        Date currentDate = null;
+        try {
+            currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH).parse(dateString);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
 
+        System.out.println(currentDate.toString());
     }
 
 }
