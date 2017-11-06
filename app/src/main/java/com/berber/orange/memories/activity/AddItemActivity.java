@@ -215,8 +215,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                             minute = minute + "0";
                         }
                         currentPickTimeString = String.format("%s:%s", hour, minute);
-
-                        anniversaryTimeTextView.setText(String.format("%s:%s", hour, minute));
+                        anniversaryTimeTextView.setText(currentPickTimeString);
                         Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
                     }
                 })
@@ -238,8 +237,9 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         String year = String.valueOf(datePicker.getYear());
                         String currentMonth = String.valueOf(datePicker.getMonth() + 1);
                         String day = String.valueOf(datePicker.getDayOfMonth());
-                        anniversaryDateTextView.setText(String.format("%s/%s/%s", day, currentMonth, year));
-                        currentPickDateString = String.format("%s/%s/%s", day, currentMonth, year);
+                        currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
+                        anniversaryDateTextView.setText(currentPickDateString);
+
                         Utils.showToast(AddItemActivity.this, year + " " + currentMonth + " " + day, 1);
                     }
                 })
@@ -252,7 +252,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         String dateString = currentPickDateString + " " + currentPickTimeString;
         Date currentDate = null;
         try {
-            currentDate = new SimpleDateFormat("dd-mm-yyyy hh:mm", Locale.ENGLISH).parse(dateString);
+            currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm hh:mm", Locale.ENGLISH).parse(dateString);
             currentPickTimeString = "";
             currentPickTimeString = "";
         } catch (ParseException e) {
