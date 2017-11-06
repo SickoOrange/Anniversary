@@ -96,7 +96,7 @@
             android:layout_height="wrap_content">
 
             <TextView
-                android:id="@+id/date_label"
+                android:id="@+id/anniversary_add_anni_date"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="3"

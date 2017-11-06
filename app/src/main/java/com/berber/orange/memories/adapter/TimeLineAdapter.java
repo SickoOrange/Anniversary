@@ -1,8 +1,6 @@
 package com.berber.orange.memories.adapter;
 
-import android.app.Application;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,12 +14,10 @@ import com.berber.orange.memories.activity.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
-import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.TimeLineMarker;
 
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -121,7 +117,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             itemRoot = itemView.findViewById(R.id.item_layout);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
-            mDate = itemView.findViewById(R.id.date_label);
+            mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
             mLeftDay = itemView.findViewById(R.id.left_day_label);
 
             if (type == ItemType.ATOM) {

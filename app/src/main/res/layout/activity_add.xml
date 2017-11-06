@@ -32,12 +32,14 @@
         android:padding="10dp">
 
         <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/anniversary_add_type_image"
             android:layout_width="30dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:src="@mipmap/ic_category_3" />
 
         <TextView
+            android:id="@+id/anniversary_add_type_name"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
@@ -45,12 +47,6 @@
             android:text="KTV" />
 
     </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"></LinearLayout>
-
 
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/scrollView"
@@ -65,7 +61,7 @@
             android:layout_height="match_parent">
 
             <android.support.v4.view.ViewPager
-                android:id="@+id/anniversary_type_vp"
+                android:id="@+id/anniversary_add_type_vp"
                 android:layout_width="match_parent"
                 android:layout_height="170dp"
                 android:layout_marginTop="5dp"
@@ -75,30 +71,13 @@
                 android:id="@+id/my_indicator_container"
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
-                android:layout_below="@id/anniversary_type_vp"
+                android:layout_below="@id/anniversary_add_type_vp"
                 android:background="@color/white"
                 android:gravity="center"
-                android:orientation="horizontal">
-
-
-                <!--<View-->
-                <!--android:layout_width="5dp"-->
-                <!--android:layout_height="5dp"-->
-                <!--android:background="@drawable/dot"-->
-                <!--android:layout_margin="5dp"-->
-                <!--/>-->
-                <!--<View-->
-                <!--android:layout_width="5dp"-->
-                <!--android:layout_height="5dp"-->
-                <!--android:background="@drawable/dot"-->
-                <!--android:layout_margin="5dp"-->
-                <!--/>-->
-
-
-            </LinearLayout>
+                android:orientation="horizontal" />
 
             <LinearLayout
-                android:id="@+id/anni_title"
+                android:id="@+id/anni_title_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_indicator_container"
@@ -123,7 +102,7 @@
                 <!--android:paddingTop="10dp"-->
                 <!--android:text="I LOVE YOU FOREVER BABY" />-->
                 <EditText
-                    android:id="@+id/edit_title"
+                    android:id="@+id/anniversary_add_anni_title"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/location_layout"
@@ -142,11 +121,11 @@
                 android:id="@+id/data_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/anni_title"
+                android:layout_below="@id/anni_title_layout"
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:id="@+id/date_label"
+                    android:id="@+id/anniversary_add_anni_date"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -161,7 +140,7 @@
                     android:text="2017年10月15日" />
 
                 <TextView
-                    android:id="@+id/time_value_label"
+                    android:id="@+id/anniversary_add_anni_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -180,9 +159,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/data_layout"
                 android:layout_marginTop="5dp">
-
                 <TextView
-                    android:id="@+id/location_label"
+                    android:id="@+id/anniversary_add_anni_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
@@ -195,7 +173,6 @@
                     android:paddingLeft="15dp"
                     android:paddingTop="10dp"
                     android:text="请选择地点" />
-
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -213,7 +190,7 @@
 
 
             <EditText
-                android:id="@+id/add_content"
+                android:id="@+id/anniversary_add_anni_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/location_layout"
@@ -230,13 +207,15 @@
                 android:scrollbars="vertical" />
 
             <Button
-                android:id="@+id/anniversary_edit_save"
+                android:id="@+id/anniversary_add_btn_save"
                 android:layout_width="200dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/add_content"
+                android:layout_below="@id/anniversary_add_anni_description"
                 android:layout_centerHorizontal="true"
                 android:text="Save"
                 android:textAllCaps="false" />
+
+
         </RelativeLayout>
 
     </android.support.v4.widget.NestedScrollView>

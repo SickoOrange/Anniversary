@@ -1,8 +1,8 @@
 package com.berber.orange.memories.activity;
 
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -11,17 +11,26 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+import android.widget.TimePicker;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.IndicatorView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AddItemActivity extends AppCompatActivity {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class AddItemActivity extends AppCompatActivity implements View.OnClickListener {
 
     private static final int HOME_ITEM_SIZE = 10;
 
@@ -30,6 +39,12 @@ public class AddItemActivity extends AppCompatActivity {
     private IndicatorView indicatorView;
     private LinearLayout indicatorContainer;
     private int prePosition;
+    private TextView anniversaryTimeTextView;
+    private TextView anniversaryDateTextView;
+    private EditText anniversaryTitleEditText;
+    private String currentAnniversaryTitle;
+    private EditText anniversaryDescriptionEditText;
+    private String currentAnniversaryDescription;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -47,8 +62,6 @@ public class AddItemActivity extends AppCompatActivity {
 
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void init() {
 
         int pageCount = (int) Math.ceil(modelAnniversaryTypes.size() * 1.0 / HOME_ITEM_SIZE);
@@ -65,12 +78,8 @@ public class AddItemActivity extends AppCompatActivity {
 
             //create indicator
             ImageView dot = new ImageView(AddItemActivity.this);
-            //  ViewGroup.LayoutParams params = dot.getLayoutParams();
-            //  params.height=5;
-            //  params.width=5;
-            //  dot.setLayoutParams(params);
             LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(13, 13);
-            params.setMarginStart(15);
+            params.setMargins(15, 0, 0, 0);
             dot.setLayoutParams(params);
             dot.setImageResource(R.drawable.dot);
             indicatorContainer.addView(dot);
@@ -82,9 +91,6 @@ public class AddItemActivity extends AppCompatActivity {
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
         viewPager.setAdapter(viewPagerAdapter);
-
-        //indicatorView.setIndicatorCount(viewPager.getAdapter() == null ? 0 : viewPager.getAdapter().getCount());
-        //indicatorView.setCurrentIndicator(viewPager.getCurrentItem());
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -108,9 +114,33 @@ public class AddItemActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        viewPager = findViewById(R.id.anniversary_type_vp);
+        viewPager = findViewById(R.id.anniversary_add_type_vp);
         //indicatorView = findViewById(R.id.indicator);
         indicatorContainer = findViewById(R.id.my_indicator_container);
+
+        CircleImageView anniversaryTypeImage = findViewById(R.id.anniversary_add_type_image);
+        TextView anniversaryTypeName = findViewById(R.id.anniversary_add_type_name);
+
+        //anniversary tile edittext
+        anniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
+
+        //anniversary date
+        anniversaryDateTextView = findViewById(R.id.anniversary_add_anni_date);
+        anniversaryDateTextView.setOnClickListener(this);
+        //anniversary time
+        anniversaryTimeTextView = findViewById(R.id.anniversary_add_anni_time);
+        anniversaryTimeTextView.setOnClickListener(this);
+
+        //anniversary location
+        TextView anniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
+        anniversaryLocation.setOnClickListener(this);
+
+        //anniversary description
+        anniversaryDescriptionEditText = findViewById(R.id.anniversary_add_anni_description);
+
+        // save into database button
+        Button btnSave = findViewById(R.id.anniversary_add_btn_save);
+        btnSave.setOnClickListener(this);
     }
 
     private void initAnniversaryTypeData() {
@@ -133,4 +163,80 @@ public class AddItemActivity extends AppCompatActivity {
         modelAnniversaryTypes.add(new ModelAnniversaryType("全部分类", R.mipmap.ic_category_15));
     }
 
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.anniversary_add_anni_date:
+                //get current anniversary date
+                openDatePickerDialog();
+                break;
+            case R.id.anniversary_add_anni_time:
+                //get current anniversary time
+                openTimePickerDialog();
+                break;
+
+            case R.id.anniversary_add_anni_title:
+                //get current title
+                currentAnniversaryTitle = anniversaryTitleEditText.getText().toString();
+                break;
+            case R.id.anniversary_add_anni_description:
+                //get current description
+                currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+                break;
+
+
+        }
+    }
+
+    private void openTimePickerDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .title(R.string.time_picker_title)
+                .customView(R.layout.dialog_timepicker, false)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        View customView = dialog.getCustomView();
+                        TimePicker timePicker = customView.findViewById(R.id.timePicker);
+                        String hour = String.valueOf(timePicker.getCurrentHour());
+                        String minute = String.valueOf(timePicker.getCurrentMinute());
+
+                        if (hour.length() == 1) {
+                            hour = "0" + hour;
+                        }
+
+                        if (minute.length() == 1) {
+                            minute = minute + "0";
+                        }
+
+                        anniversaryTimeTextView.setText(String.format("%s:%s", hour, minute));
+                        Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
+                    }
+                })
+                .negativeText(android.R.string.cancel);
+        builder.show();
+
+    }
+
+    private void openDatePickerDialog() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+                .title(R.string.date_picker_title)
+                .customView(R.layout.dialog_datepicker, false)
+                .positiveText(android.R.string.ok)
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        View customView = dialog.getCustomView();
+                        DatePicker datePicker = customView.findViewById(R.id.datePicker);
+                        String year = String.valueOf(datePicker.getYear());
+                        String currentMonth = String.valueOf(datePicker.getMonth() + 1);
+                        String day = String.valueOf(datePicker.getDayOfMonth());
+                        anniversaryDateTextView.setText(String.format("%s/%s/%s", day, currentMonth, year));
+                        Utils.showToast(AddItemActivity.this, year + " " + currentMonth + " " + day, 1);
+                    }
+                })
+                .negativeText(android.R.string.cancel);
+        builder.show();
+
+    }
 }
