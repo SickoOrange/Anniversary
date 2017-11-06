@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.berber.orange.memories.R;
@@ -28,6 +29,7 @@ public class AddItemActivity extends AppCompatActivity {
     private ArrayList<ModelAnniversaryType> modelAnniversaryTypes;
     private IndicatorView indicatorView;
     private LinearLayout indicatorContainer;
+    private int prePosition;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -62,15 +64,21 @@ public class AddItemActivity extends AppCompatActivity {
             viewList.add(recyclerView);
 
             //create indicator
-            View dot = new View(AddItemActivity.this);
+            ImageView dot = new ImageView(AddItemActivity.this);
             //  ViewGroup.LayoutParams params = dot.getLayoutParams();
             //  params.height=5;
             //  params.width=5;
             //  dot.setLayoutParams(params);
-            dot.setBackground(getDrawable(R.drawable.dot));
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(13, 13);
+            params.setMarginStart(15);
+            dot.setLayoutParams(params);
+            dot.setImageResource(R.drawable.dot);
             indicatorContainer.addView(dot);
 
         }
+
+        prePosition = 0;
+        indicatorContainer.getChildAt(prePosition).setSelected(true);
 
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(viewList);
         viewPager.setAdapter(viewPagerAdapter);
@@ -87,7 +95,9 @@ public class AddItemActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                 // TODO: 2017/11/05  switch  indicator
-                //indicatorView.setCurrentIndicator(position);
+                indicatorContainer.getChildAt(prePosition).setSelected(false);
+                indicatorContainer.getChildAt(position).setSelected(true);
+                prePosition = position;
             }
 
             @Override
