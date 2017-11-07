@@ -76,4 +76,13 @@ public class NotificationSendingDTO implements Parcelable {
     public void setRecipient(String recipient) {
         this.recipient = recipient;
     }
+
+    @Override
+    public String toString() {
+        return "NotificationSendingDTO{" +
+                "sendingDate=" + sendingDate +
+                ", notificationType=" + notificationType +
+                ", recipient='" + recipient + '\'' +
+                '}';
+    }
 }

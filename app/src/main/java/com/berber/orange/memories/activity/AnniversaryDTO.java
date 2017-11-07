@@ -20,17 +20,9 @@ public class AnniversaryDTO implements Parcelable {
 
     private Date createDate;
 
-    public AnniversaryDTO() {
-    }
+    private NotificationSendingDTO notificationSendingDTO;
 
-    protected AnniversaryDTO(Parcel in) {
-        Title = in.readString();
-        Description = in.readString();
-        Location = in.readString();
-        long tmpDate = in.readLong();
-        date = tmpDate != -1 ? new Date(tmpDate) : null;
-        remindDate = tmpDate != -1 ? new Date(tmpDate) : null;
-        createDate = tmpDate != -1 ? new Date(tmpDate) : null;
+    public AnniversaryDTO() {
     }
 
     @Override
@@ -40,19 +32,32 @@ public class AnniversaryDTO implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(Title);
-        dest.writeString(Description);
-        dest.writeString(Location);
-        dest.writeLong(date != null ? date.getTime() : -1L);
-        dest.writeLong(remindDate != null ? remindDate.getTime() : -1L);
-        dest.writeLong(createDate != null ? createDate.getTime() : -1L);
+        dest.writeString(this.Title);
+        dest.writeString(this.Description);
+        dest.writeString(this.Location);
+        dest.writeLong(this.date != null ? this.date.getTime() : -1);
+        dest.writeLong(this.remindDate != null ? this.remindDate.getTime() : -1);
+        dest.writeLong(this.createDate != null ? this.createDate.getTime() : -1);
+        dest.writeParcelable(this.notificationSendingDTO, flags);
     }
 
-    @SuppressWarnings("unused")
-    public static final Parcelable.Creator<AnniversaryDTO> CREATOR = new Parcelable.Creator<AnniversaryDTO>() {
+    protected AnniversaryDTO(Parcel in) {
+        this.Title = in.readString();
+        this.Description = in.readString();
+        this.Location = in.readString();
+        long tmpDate = in.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        long tmpRemindDate = in.readLong();
+        this.remindDate = tmpRemindDate == -1 ? null : new Date(tmpRemindDate);
+        long tmpCreateDate = in.readLong();
+        this.createDate = tmpCreateDate == -1 ? null : new Date(tmpCreateDate);
+        this.notificationSendingDTO = in.readParcelable(NotificationSendingDTO.class.getClassLoader());
+    }
+
+    public static final Creator<AnniversaryDTO> CREATOR = new Creator<AnniversaryDTO>() {
         @Override
-        public AnniversaryDTO createFromParcel(Parcel in) {
-            return new AnniversaryDTO(in);
+        public AnniversaryDTO createFromParcel(Parcel source) {
+            return new AnniversaryDTO(source);
         }
 
         @Override
@@ -60,7 +65,6 @@ public class AnniversaryDTO implements Parcelable {
             return new AnniversaryDTO[size];
         }
     };
-
 
     public String getTitle() {
         return Title;
@@ -108,5 +112,26 @@ public class AnniversaryDTO implements Parcelable {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    public NotificationSendingDTO getNotificationSendingDTO() {
+        return notificationSendingDTO;
+    }
+
+    public void setNotificationSendingDTO(NotificationSendingDTO notificationSendingDTO) {
+        this.notificationSendingDTO = notificationSendingDTO;
+    }
+
+    @Override
+    public String toString() {
+        return "AnniversaryDTO{" +
+                "Title='" + Title + '\'' +
+                ", Description='" + Description + '\'' +
+                ", Location='" + Location + '\'' +
+                ", date=" + date +
+                ", remindDate=" + remindDate +
+                ", createDate=" + createDate +
+                ", notificationSendingDTO=" + notificationSendingDTO +
+                '}';
     }
 }

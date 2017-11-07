@@ -1,6 +1,7 @@
 package com.berber.orange.memories.activity;
 
 import android.app.Notification;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -28,6 +29,7 @@ import android.widget.TimePicker;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.IndicatorView;
 
@@ -66,6 +68,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private CircleImageView anniversaryTypeImage;
     private TextView anniversaryTypeName;
     private long notificationTimeBeforeInMillis;
+    private final int REQUEST_NEW_ITEM = 9001;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -347,6 +350,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 notificationSendingDTO.setRecipient(" ");
                 String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
                 notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
+                dto.setNotificationSendingDTO(notificationSendingDTO);
+
+                Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
+                intent.putExtra("object", dto);
+                setResult(REQUEST_NEW_ITEM, intent);
+                finish();
                 break;
 
         }
@@ -412,14 +421,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private long calculateNotificationIndex(String msg) {
         String[] strings = msg.split(" ");
-        int prefixIndex = Integer.getInteger(strings[0]);
+        int prefixIndex = Integer.valueOf(strings[0]);
         long hourIndex = 0;
         switch (strings[1]) {
             case "minute":
                 hourIndex = prefixIndex * 60 * 1000;
                 break;
             case "hour":
-                hourIndex = prefixIndex * 1 * 60 * 60 * 1000;
+                hourIndex = prefixIndex * 60 * 60 * 1000;
                 break;
             case "week":
                 hourIndex = prefixIndex * 24 * 7 * 3600 * 1000;
@@ -497,7 +506,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         String dateString = currentPickDateString + " " + currentPickTimeString;
         Date currentDate = null;
         try {
-            currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm hh:mm", Locale.ENGLISH).parse(dateString);
+            currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH).parse(dateString);
             currentPickTimeString = "";
             currentPickTimeString = "";
         } catch (ParseException e) {
@@ -507,7 +516,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private Date calculateAnniversaryNotificationDate(Date currentDate, long hourIndex) {
-        long timeInMillis = currentDate.getTime() - (hourIndex * 3600 * 1000);
+        long timeInMillis = 0;
+        if (currentDate != null) {
+            timeInMillis = currentDate.getTime() - (hourIndex);
+        }
         return new Date(timeInMillis);
     }
 

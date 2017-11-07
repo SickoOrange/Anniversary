@@ -61,7 +61,7 @@ public class ExampleUnitTest {
 
     @Test
     public void getCurrentDate() {
-        String dateString = "2017-5-7" + " " + "24:00";
+        String dateString = "2017-11-22" + " " + "06:10";
         Date currentDate = null;
         try {
             currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH).parse(dateString);

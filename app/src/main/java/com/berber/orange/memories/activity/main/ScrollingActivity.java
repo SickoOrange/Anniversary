@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -33,6 +34,7 @@ import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.AdditionalUserInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -47,7 +49,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private DaoSession daoSession;
     private AnniversaryDao anniversaryDao;
     private TimeLineAdapter adapter;
-    private final int REQUEST_CODE_FOR_ADD_ITEM = 100;
+    private final int REQUEST_NEW_ITEM = 9001;
     private LinearLayoutManager linearLayoutManager;
 
     @Override
@@ -65,7 +67,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
 
@@ -100,8 +102,8 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
             public void onClick(View view) {
                 Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
-                //startActivityForResult(new Intent(ScrollingActivity.this, ItemEditActivity.class), REQUEST_CODE_FOR_ADD_ITEM);
-                    startActivity(new Intent(ScrollingActivity.this, AddItemActivity.class));
+                startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
+                //  startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class));
             }
         });
 
@@ -183,13 +185,14 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case REQUEST_CODE_FOR_ADD_ITEM:
+            case REQUEST_NEW_ITEM:
                 if (data == null) {
                     return;
                 }
                 AnniversaryDTO dto = data.getParcelableExtra("object");
-                adapter.addNewItem(dto, adapter);
+                // adapter.addNewItem(dto, adapter);
                 Utils.showToast(ScrollingActivity.this, "add new item", Toast.LENGTH_LONG);
+                Log.e("TAG", dto.toString());
                 break;
         }
     }
