@@ -20,14 +20,14 @@
             android:padding="5dp"
             android:text="请设置通知时间" />
 
-        <Switch
-            android:id="@+id/bottom_sheet_enable_btn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:checked="false" />
+        <!--<Switch-->
+        <!--android:id="@+id/bottom_sheet_enable_btn"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentRight="true"-->
+        <!--android:layout_centerVertical="true"-->
+        <!--android:layout_marginRight="10dp"-->
+        <!--android:checked="false" />-->
 
     </RelativeLayout>
 
@@ -35,8 +35,7 @@
     <android.support.v4.widget.NestedScrollView
         android:id="@+id/bottom_sheet_notification_scroll_view"
         android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:visibility="gone">
+        android:layout_height="320dp">
 
 
         <LinearLayout

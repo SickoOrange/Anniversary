@@ -57,6 +57,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private String currentPickTimeString;
     private TextView anniversaryNotificationTimeTextView;
     private TextView anniversaryNotificationTypeTextView;
+    private Switch enableNotificationButton;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -158,6 +159,9 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         // save into database button
         Button btnSave = findViewById(R.id.anniversary_add_btn_save);
         btnSave.setOnClickListener(this);
+
+        //enable notification button
+        enableNotificationButton = findViewById(R.id.notification_enable_btn);
     }
 
     private void initAnniversaryTypeData() {
@@ -202,10 +206,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.anniversary_add_anni_notification_time:
-                openNotificationTimePickerDialog();
+                if (enableNotificationButton.isChecked()) {
+                    openNotificationTimePickerDialog();
+                }
                 break;
             case R.id.anniversary_add_anni_notification_type:
-                openNotificationTypePickerDialog();
+                if (enableNotificationButton.isChecked()) {
+                    openNotificationTypePickerDialog();
+                }
                 break;
 
             case R.id.notification_type_picker_ll1:
@@ -218,10 +226,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.notification_type_picker_ll3:
                 Utils.showToast(AddItemActivity.this, "All type", 1);
                 break;
-
-            case R.id.bottom_sheet_enable_btn:
-                break;
-
 
         }
     }
@@ -242,22 +246,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private void openNotificationTimePickerDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
         View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
-        final Switch enableNotificationButton = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_enable_btn);
-        final NestedScrollView bottomSheetNotificationScrollView = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_scroll_view);
-        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    bottomSheetNotificationScrollView.setVisibility(View.VISIBLE);
-                    anniversaryNotificationTypeTextView.setClickable(true);
-                    System.out.println(true);
-                } else {
-                    bottomSheetNotificationScrollView.setVisibility(View.GONE);
-                    anniversaryNotificationTypeTextView.setClickable(false);
-                    System.out.println(false);
-                }
-            }
-        });
         dialog.setContentView(notificationTimePickerDialogView);
         dialog.show();
     }

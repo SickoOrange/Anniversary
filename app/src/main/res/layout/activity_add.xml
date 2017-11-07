@@ -164,7 +164,7 @@
                     android:id="@+id/anniversary_add_anni_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="2"
+                    android:layout_weight="7"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
                     android:drawableLeft="@drawable/ic_place_black_18dp"
@@ -175,18 +175,13 @@
                     android:paddingTop="10dp"
                     android:text="请选择地点" />
 
-                <TextView
+                <Switch
+                    android:id="@+id/location_enable_btn"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:background="@drawable/item_ripple"
-                    android:clickable="true"
-                    android:gravity="end"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingRight="15dp"
-                    android:paddingTop="10dp"
-                    android:text="X" />
+                    android:checked="false" />
 
             </LinearLayout>
 
@@ -201,7 +196,7 @@
                     android:id="@+id/anniversary_add_anni_notification_time"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="3"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
                     android:drawableLeft="@drawable/ic_access_alarms_black_18dp"
@@ -216,13 +211,21 @@
                     android:id="@+id/anniversary_add_anni_notification_type"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="4"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
                     android:paddingBottom="10dp"
                     android:paddingLeft="15dp"
                     android:paddingTop="10dp"
                     android:text="Notification Type" />
+
+                <Switch
+                    android:id="@+id/notification_enable_btn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="10dp"
+                    android:layout_weight="1"
+                    android:checked="false" />
 
             </LinearLayout>
 
