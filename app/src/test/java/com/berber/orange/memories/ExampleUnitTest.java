@@ -79,4 +79,36 @@ public class ExampleUnitTest {
         System.out.println(new Date(timeInMillis));
     }
 
+    private double calculateHourIndex(String msg) {
+        String[] strings = msg.split(" ");
+        System.out.println(strings);
+        int prefixIndex = Integer.valueOf(strings[0]);
+        double hourIndex = 0;
+        switch (strings[1]) {
+            case "minute":
+                hourIndex = prefixIndex / 60;
+                break;
+            case "hour":
+                hourIndex = prefixIndex * 1;
+                break;
+            case "week":
+                hourIndex = prefixIndex * 24 * 7;
+                break;
+            case "day":
+                hourIndex = prefixIndex * 24;
+                break;
+            case "month":
+                break;
+        }
+
+
+        return hourIndex;
+    }
+
+    @Test
+    public void test(){
+        double l = calculateHourIndex("20 minute before");
+        System.out.println(l);
+    }
+
 }

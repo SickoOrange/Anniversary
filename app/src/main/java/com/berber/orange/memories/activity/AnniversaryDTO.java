@@ -7,7 +7,7 @@ import com.berber.orange.memories.dbservice.Anniversary;
 
 import java.util.Date;
 
-public class AnniversaryDTO implements Parcelable{
+public class AnniversaryDTO implements Parcelable {
     private String Title;
 
     private String Description;
@@ -20,7 +20,8 @@ public class AnniversaryDTO implements Parcelable{
 
     private Date createDate;
 
-    public AnniversaryDTO(){}
+    public AnniversaryDTO() {
+    }
 
     protected AnniversaryDTO(Parcel in) {
         Title = in.readString();

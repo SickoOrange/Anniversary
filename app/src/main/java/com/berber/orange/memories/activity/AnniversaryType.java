@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity.main;
+package com.berber.orange.memories.activity;
 
 /**
  * Created by orange on 2017/11/7.

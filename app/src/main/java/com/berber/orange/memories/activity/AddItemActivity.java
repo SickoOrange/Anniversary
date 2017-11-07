@@ -1,5 +1,6 @@
 package com.berber.orange.memories.activity;
 
+import android.app.Notification;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -63,6 +65,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton selectedButton;
     private CircleImageView anniversaryTypeImage;
     private TextView anniversaryTypeName;
+    private long notificationTimeBeforeInMillis;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -312,9 +315,66 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.anniversary_add_btn_save:
                 //save all information into entity
                 AnniversaryDTO dto = new AnniversaryDTO();
+
+                // handle anniversary title
+                String anniversaryTitle = anniversaryTitleEditText.getText().toString();
+                if (TextUtils.isEmpty(anniversaryTitle)) {
+                    alertWarningDialog("Anniversary  title can't be empty");
+                    return;
+                }
+                dto.setTitle(anniversaryTitle);
+
+                //handle location
+                dto.setLocation("London");
+
+                //handle date
+                Date currentAnniversaryDate = getCurrentAnniversaryDate();
+                if (currentAnniversaryDate != null) {
+                    dto.setDate(currentAnniversaryDate);
+                }
+
+                //handle create Date
+                dto.setCreateDate(new Date());
+
+                //handle description
+                String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+                dto.setDescription(anniversaryDescription);
+
+                //handle remind date
+                Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
+                NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
+                notificationSendingDTO.setSendingDate(notificationDate);
+                notificationSendingDTO.setRecipient(" ");
+                String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
+                notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
                 break;
 
         }
+    }
+
+    private NotificationType getNotificationType(String notificationTypeString) {
+        NotificationType notificationType = null;
+        switch (notificationTypeString) {
+            case "Notification":
+                notificationType = NotificationType.NOTIFICATION;
+                break;
+            case "Email":
+                notificationType = NotificationType.EMAIL;
+                break;
+            case "All":
+                notificationType = NotificationType.ALL;
+                break;
+        }
+        return notificationType;
+    }
+
+    private void alertWarningDialog(String content) {
+        new MaterialDialog.Builder(this)
+                .title("Warning")
+                .content(content)
+                .positiveText("OK")
+                .build()
+                .show();
     }
 
     private void openNotificationCustomTimeSettingDialog() {
@@ -343,10 +403,34 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                 String msg = customTimeEditView.getText().toString() + " " + selectedButton.getText().toString() + " before";
                 anniversaryNotificationTimeTextView.setText(msg);
+                notificationTimeBeforeInMillis = calculateNotificationIndex(msg);
             }
         });
         dialog.show();
 
+    }
+
+    private long calculateNotificationIndex(String msg) {
+        String[] strings = msg.split(" ");
+        int prefixIndex = Integer.getInteger(strings[0]);
+        long hourIndex = 0;
+        switch (strings[1]) {
+            case "minute":
+                hourIndex = prefixIndex * 60 * 1000;
+                break;
+            case "hour":
+                hourIndex = prefixIndex * 1 * 60 * 60 * 1000;
+                break;
+            case "week":
+                hourIndex = prefixIndex * 24 * 7 * 3600 * 1000;
+                break;
+            case "day":
+                hourIndex = prefixIndex * 24 * 3600 * 1000;
+                break;
+            case "month":
+                break;
+        }
+        return hourIndex;
     }
 
 
@@ -405,6 +489,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private Date getCurrentAnniversaryDate() {
 
+        if (TextUtils.isEmpty(currentPickDateString) || TextUtils.isEmpty(currentPickTimeString)) {
+            alertWarningDialog("you must pick a certain date and time");
+            return null;
+        }
+
         String dateString = currentPickDateString + " " + currentPickTimeString;
         Date currentDate = null;
         try {
@@ -417,8 +506,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         return currentDate;
     }
 
-    private Date calculateAnniversaryNotificationDate(Date currentDate, int hourIndex) {
-        long timeInMillis = currentDate.getTime() - (long) (hourIndex * 3600 * 1000);
+    private Date calculateAnniversaryNotificationDate(Date currentDate, long hourIndex) {
+        long timeInMillis = currentDate.getTime() - (hourIndex * 3600 * 1000);
         return new Date(timeInMillis);
     }
 
