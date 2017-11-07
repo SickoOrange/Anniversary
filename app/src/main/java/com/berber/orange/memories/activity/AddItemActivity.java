@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +13,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -58,6 +56,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private TextView anniversaryNotificationTimeTextView;
     private TextView anniversaryNotificationTypeTextView;
     private Switch enableNotificationButton;
+    private BottomSheetDialog notificationTypePickerDialog;
+    private BottomSheetDialog notificationTimePickerDialog;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -162,7 +162,32 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         //enable notification button
         enableNotificationButton = findViewById(R.id.notification_enable_btn);
+
     }
+
+
+    private void openNotificationTypePickerDialog() {
+        notificationTypePickerDialog = new BottomSheetDialog(AddItemActivity.this);
+        View notificationTypePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_type_picker, null);
+        LinearLayout ll1 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll1);
+        ll1.setOnClickListener(this);
+        LinearLayout ll2 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll2);
+        ll2.setOnClickListener(this);
+        LinearLayout ll3 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll3);
+        ll3.setOnClickListener(this);
+        notificationTypePickerDialog.setContentView(notificationTypePickerDialogView);
+        notificationTypePickerDialog.show();
+    }
+
+    private void openNotificationTimePickerDialog() {
+        notificationTimePickerDialog = new BottomSheetDialog(AddItemActivity.this);
+        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
+        Button timeSettingCustom = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_9);
+        timeSettingCustom.setOnClickListener(this);
+        notificationTimePickerDialog.setContentView(notificationTimePickerDialogView);
+        notificationTimePickerDialog.show();
+    }
+
 
     private void initAnniversaryTypeData() {
         modelAnniversaryTypes = new ArrayList<>();
@@ -218,37 +243,71 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.notification_type_picker_ll1:
                 Utils.showToast(AddItemActivity.this, "Notification type", 1);
+                anniversaryNotificationTypeTextView.setText(R.string.notification_notification);
                 break;
             case R.id.notification_type_picker_ll2:
                 Utils.showToast(AddItemActivity.this, "Email type", 1);
+                anniversaryNotificationTypeTextView.setText(R.string.notification_email);
 
                 break;
             case R.id.notification_type_picker_ll3:
                 Utils.showToast(AddItemActivity.this, "All type", 1);
+                anniversaryNotificationTypeTextView.setText(R.string.notification_all);
+                notificationTypePickerDialog.dismiss();
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_9:
+                openCustomTimeSettingDialog();
+                notificationTimePickerDialog.dismiss();
                 break;
 
         }
     }
 
-    private void openNotificationTypePickerDialog() {
-        BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
-        View notificationTypePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_type_picker, null);
-        LinearLayout ll1 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll1);
-        ll1.setOnClickListener(this);
-        LinearLayout ll2 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll2);
-        ll2.setOnClickListener(this);
-        LinearLayout ll3 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll3);
-        ll3.setOnClickListener(this);
-        dialog.setContentView(notificationTypePickerDialogView);
-        dialog.show();
+    private void openCustomTimeSettingDialog() {
+//        new MaterialDialog.Builder(this)
+//                .title("通知时间设定")
+//                .content("请设置您希望的通知时间")
+//                .inputType(InputType.TYPE_CLASS_NUMBER)
+//                .inputRange(Integer.valueOf(1), Integer.valueOf(50))
+//                .positiveText("SUBMIT")
+//                .input(
+//                        null,
+//                        null,
+//                        false,
+//                        new MaterialDialog.InputCallback() {
+//                            @Override
+//                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
+//                                Utils.showToast(AddItemActivity.this, input.toString(), 1);
+//                            }
+//                        })
+//                .items(R.array.notificationTimeInterval)
+//                .itemsDisabledIndices(1, 7)
+//                .itemsCallbackSingleChoice(0,
+//                        new MaterialDialog.ListCallbackSingleChoice() {
+//                            @Override
+//                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
+//                                Utils.showToast(AddItemActivity.this, text.toString(), 1);
+//
+//                                return false;
+//                            }
+//                        })
+//                .show();
+
+        new MaterialDialog.Builder(this)
+                .title("通知时间设定")
+                .customView(R.layout.notification_custom_time_picker, true)
+                .positiveText("SUBMIT")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+                    }
+                })
+                .build()
+                .show();
     }
 
-    private void openNotificationTimePickerDialog() {
-        BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
-        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
-        dialog.setContentView(notificationTimePickerDialogView);
-        dialog.show();
-    }
 
     private void openTimePickerDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
