@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.NestedScrollView;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,10 +14,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -205,21 +208,57 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 openNotificationTypePickerDialog();
                 break;
 
+            case R.id.notification_type_picker_ll1:
+                Utils.showToast(AddItemActivity.this, "Notification type", 1);
+                break;
+            case R.id.notification_type_picker_ll2:
+                Utils.showToast(AddItemActivity.this, "Email type", 1);
+
+                break;
+            case R.id.notification_type_picker_ll3:
+                Utils.showToast(AddItemActivity.this, "All type", 1);
+                break;
+
+            case R.id.bottom_sheet_enable_btn:
+                break;
+
 
         }
     }
 
     private void openNotificationTypePickerDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
-        View dialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_picker, null);
-        dialog.setContentView(dialogView);
+        View notificationTypePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_type_picker, null);
+        LinearLayout ll1 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll1);
+        ll1.setOnClickListener(this);
+        LinearLayout ll2 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll2);
+        ll2.setOnClickListener(this);
+        LinearLayout ll3 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll3);
+        ll3.setOnClickListener(this);
+        dialog.setContentView(notificationTypePickerDialogView);
         dialog.show();
     }
 
     private void openNotificationTimePickerDialog() {
         BottomSheetDialog dialog = new BottomSheetDialog(AddItemActivity.this);
-        View dialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
-        dialog.setContentView(dialogView);
+        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
+        final Switch enableNotificationButton = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_enable_btn);
+        final NestedScrollView bottomSheetNotificationScrollView = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_scroll_view);
+        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    bottomSheetNotificationScrollView.setVisibility(View.VISIBLE);
+                    anniversaryNotificationTypeTextView.setClickable(true);
+                    System.out.println(true);
+                } else {
+                    bottomSheetNotificationScrollView.setVisibility(View.GONE);
+                    anniversaryNotificationTypeTextView.setClickable(false);
+                    System.out.println(false);
+                }
+            }
+        });
+        dialog.setContentView(notificationTimePickerDialogView);
         dialog.show();
     }
 
@@ -288,5 +327,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             e.printStackTrace();
         }
         return currentDate;
+    }
+
+    private Date calculateAnniversaryNotificationDate(Date currentDate, int hourIndex) {
+        long timeInMillis = currentDate.getTime() - (long) (hourIndex * 3600 * 1000);
+        return new Date(timeInMillis);
     }
 }

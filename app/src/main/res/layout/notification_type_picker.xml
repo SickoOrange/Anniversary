@@ -14,11 +14,12 @@
         android:text="请设置通知类型" />
 
     <LinearLayout
-        android:id="@+id/ll1"
+        android:id="@+id/notification_type_picker_ll1"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/bottom_sheet_notification_title"
         android:layout_margin="5dp"
+        android:background="@drawable/item_ripple"
         android:orientation="horizontal">
 
         <ImageView
@@ -41,11 +42,13 @@
 
 
     <LinearLayout
-        android:id="@+id/ll2"
+        android:id="@+id/notification_type_picker_ll2"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/ll1"
+        android:layout_below="@+id/notification_type_picker_ll1"
         android:layout_margin="5dp"
+        android:background="@drawable/item_ripple"
+
         android:orientation="horizontal">
 
         <ImageView
@@ -67,11 +70,12 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/ll3"
+        android:id="@+id/notification_type_picker_ll3"
         android:layout_width="match_parent"
         android:layout_height="40dp"
-        android:layout_below="@+id/ll2"
+        android:layout_below="@+id/notification_type_picker_ll2"
         android:layout_margin="5dp"
+        android:background="@drawable/item_ripple"
         android:orientation="horizontal">
 
         <ImageView

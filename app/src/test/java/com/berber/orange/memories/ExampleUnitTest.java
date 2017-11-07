@@ -72,4 +72,11 @@ public class ExampleUnitTest {
         System.out.println(currentDate.toString());
     }
 
+    @Test
+    public void calculateAnniversaryNotificationDate() {
+        Date currentDate = new Date();
+        long timeInMillis = currentDate.getTime() - (long) (24 * 3600 * 1000);
+        System.out.println(new Date(timeInMillis));
+    }
+
 }
