@@ -309,6 +309,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 notificationTimePickerDialog.dismiss();
                 break;
 
+            case R.id.anniversary_add_btn_save:
+                //save all information into entity
+                AnniversaryDTO dto = new AnniversaryDTO();
+                break;
+
         }
     }
 
