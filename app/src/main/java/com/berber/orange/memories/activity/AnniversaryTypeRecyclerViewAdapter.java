@@ -17,6 +17,8 @@ import com.berber.orange.memories.utils.ScreenUtil;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 
 class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<AnniversaryTypeRecyclerViewAdapter.ItemsViewHolder> {
     private int mPageSize;
@@ -24,9 +26,9 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
     private Context mContext;
     private List<ModelAnniversaryType> mDatas;
     private final LayoutInflater inflater;
+    private ModelAnniversaryType currentSelectedAnniversaryType;
 
     AnniversaryTypeRecyclerViewAdapter(Context context, ArrayList<ModelAnniversaryType> modelAnniversaryTypes, int i, int homeItemSize) {
-        Log.e("TAG", "AnniversaryTypeRecyclerViewAdapter");
 
         this.mContext = context;
         this.mDatas = modelAnniversaryTypes;
@@ -37,13 +39,11 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
 
     @Override
     public ItemsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Log.e("TAG", "onCreateViewHolder");
         return new ItemsViewHolder(inflater.inflate(R.layout.item_anniversary_type, null));
     }
 
     @Override
     public void onBindViewHolder(ItemsViewHolder holder, int position) {
-        Log.e("TAG", "onBindViewHolder: " + position);
         final int pos = position + mIndex * mPageSize;
         System.out.println(mDatas.get(pos).toString());
         holder.anniversaryTypesImageResource.setImageResource(mDatas.get(pos).getImageResource());
@@ -51,8 +51,11 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // TODO: 2017/11/05  item click event
-                Toast.makeText(mContext, "click item:" + mDatas.get(pos).getName(), Toast.LENGTH_LONG).show();
+                currentSelectedAnniversaryType = mDatas.get(pos);
+                CircleImageView anniversaryTypeImageView = ((AddItemActivity) mContext).getAnniversaryTypeImageView();
+                anniversaryTypeImageView.setImageResource(currentSelectedAnniversaryType.getImageResource());
+                TextView anniversaryTypeTextView = ((AddItemActivity) mContext).getAnniversaryTypeTextView();
+                anniversaryTypeTextView.setText(currentSelectedAnniversaryType.getName());
             }
         });
 
@@ -61,15 +64,16 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
 
     @Override
     public int getItemCount() {
-        int i = mDatas.size() > (mIndex + 1) * mPageSize ? mPageSize : (mDatas.size() - mIndex * mPageSize);
-        Log.e("TAG", "getItemCount: " + i);
-
         return mDatas.size() > (mIndex + 1) * mPageSize ? mPageSize : (mDatas.size() - mIndex * mPageSize);
     }
 
     @Override
     public long getItemId(int position) {
         return position + mIndex * mPageSize;
+    }
+
+    public ModelAnniversaryType getCurrentSelectedAnniversaryType() {
+        return currentSelectedAnniversaryType;
     }
 
     class ItemsViewHolder extends RecyclerView.ViewHolder {

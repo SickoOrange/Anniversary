@@ -61,6 +61,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private BottomSheetDialog notificationTypePickerDialog;
     private BottomSheetDialog notificationTimePickerDialog;
     private RadioButton selectedButton;
+    private CircleImageView anniversaryTypeImage;
+    private TextView anniversaryTypeName;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -133,8 +135,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //indicatorView = findViewById(R.id.indicator);
         indicatorContainer = findViewById(R.id.my_indicator_container);
 
-        CircleImageView anniversaryTypeImage = findViewById(R.id.anniversary_add_type_image);
-        TextView anniversaryTypeName = findViewById(R.id.anniversary_add_type_name);
+        anniversaryTypeImage = findViewById(R.id.anniversary_add_type_image);
+        anniversaryTypeName = findViewById(R.id.anniversary_add_type_name);
 
         //anniversary tile edit text
         anniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
@@ -413,5 +415,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Date calculateAnniversaryNotificationDate(Date currentDate, int hourIndex) {
         long timeInMillis = currentDate.getTime() - (long) (hourIndex * 3600 * 1000);
         return new Date(timeInMillis);
+    }
+
+    public CircleImageView getAnniversaryTypeImageView() {
+        return anniversaryTypeImage;
+    }
+
+    public TextView getAnniversaryTypeTextView() {
+        return anniversaryTypeName;
     }
 }
