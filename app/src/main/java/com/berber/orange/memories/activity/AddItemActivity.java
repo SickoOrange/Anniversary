@@ -334,6 +334,9 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 Date currentAnniversaryDate = getCurrentAnniversaryDate();
                 if (currentAnniversaryDate != null) {
                     dto.setDate(currentAnniversaryDate);
+                } else {
+                    alertWarningDialog("you must pick a certain date and time");
+                    return;
                 }
 
                 //handle create Date
@@ -344,13 +347,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 dto.setDescription(anniversaryDescription);
 
                 //handle remind date
-                Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
-                NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
-                notificationSendingDTO.setSendingDate(notificationDate);
-                notificationSendingDTO.setRecipient(" ");
-                String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
-                notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
-                dto.setNotificationSendingDTO(notificationSendingDTO);
+                if (enableNotificationButton.isChecked()) {
+                    Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
+                    NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
+                    notificationSendingDTO.setSendingDate(notificationDate);
+                    notificationSendingDTO.setRecipient(" ");
+                    String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
+                    notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
+                    dto.setNotificationSendingDTO(notificationSendingDTO);
+                }
 
                 Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
                 intent.putExtra("object", dto);
@@ -499,7 +504,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Date getCurrentAnniversaryDate() {
 
         if (TextUtils.isEmpty(currentPickDateString) || TextUtils.isEmpty(currentPickTimeString)) {
-            alertWarningDialog("you must pick a certain date and time");
             return null;
         }
 
