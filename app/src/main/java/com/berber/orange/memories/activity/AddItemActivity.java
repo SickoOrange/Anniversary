@@ -17,6 +17,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -58,6 +60,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Switch enableNotificationButton;
     private BottomSheetDialog notificationTypePickerDialog;
     private BottomSheetDialog notificationTimePickerDialog;
+    private RadioButton selectedButton;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
@@ -182,8 +185,18 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private void openNotificationTimePickerDialog() {
         notificationTimePickerDialog = new BottomSheetDialog(AddItemActivity.this);
         View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_time_picker, null);
-        Button timeSettingCustom = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_9);
-        timeSettingCustom.setOnClickListener(this);
+        Button timeSettingCustom1 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_1);
+        timeSettingCustom1.setOnClickListener(this);
+        Button timeSettingCustom2 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_2);
+        timeSettingCustom2.setOnClickListener(this);
+        Button timeSettingCustom3 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_3);
+        timeSettingCustom3.setOnClickListener(this);
+        Button timeSettingCustom4 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_4);
+        timeSettingCustom4.setOnClickListener(this);
+        Button timeSettingCustom5 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_5);
+        timeSettingCustom5.setOnClickListener(this);
+        Button timeSettingCustom6 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_6);
+        timeSettingCustom6.setOnClickListener(this);
         notificationTimePickerDialog.setContentView(notificationTimePickerDialogView);
         notificationTimePickerDialog.show();
     }
@@ -244,10 +257,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.notification_type_picker_ll1:
                 Utils.showToast(AddItemActivity.this, "Notification type", 1);
                 anniversaryNotificationTypeTextView.setText(R.string.notification_notification);
+                notificationTypePickerDialog.dismiss();
                 break;
             case R.id.notification_type_picker_ll2:
                 Utils.showToast(AddItemActivity.this, "Email type", 1);
                 anniversaryNotificationTypeTextView.setText(R.string.notification_email);
+                notificationTypePickerDialog.dismiss();
 
                 break;
             case R.id.notification_type_picker_ll3:
@@ -256,56 +271,75 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 notificationTypePickerDialog.dismiss();
                 break;
 
-            case R.id.bottom_sheet_notification_time_label_9:
-                openCustomTimeSettingDialog();
+            case R.id.bottom_sheet_notification_time_label_6:
+                openNotificationCustomTimeSettingDialog();
+                notificationTimePickerDialog.dismiss();
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_5:
+                Button button5 = (Button) view;
+                anniversaryNotificationTimeTextView.setText(button5.getText().toString().toLowerCase());
+                notificationTimePickerDialog.dismiss();
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_4:
+                Button button4 = (Button) view;
+                anniversaryNotificationTimeTextView.setText(button4.getText().toString().toLowerCase());
+                notificationTimePickerDialog.dismiss();
+
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_3:
+                Button button3 = (Button) view;
+                anniversaryNotificationTimeTextView.setText(button3.getText().toString().toLowerCase());
+                notificationTimePickerDialog.dismiss();
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_2:
+                Button button2 = (Button) view;
+                anniversaryNotificationTimeTextView.setText(button2.getText().toString().toLowerCase());
+                notificationTimePickerDialog.dismiss();
+                break;
+
+            case R.id.bottom_sheet_notification_time_label_1:
+                Button button1 = (Button) view;
+                anniversaryNotificationTimeTextView.setText(button1.getText().toString().toLowerCase());
                 notificationTimePickerDialog.dismiss();
                 break;
 
         }
     }
 
-    private void openCustomTimeSettingDialog() {
-//        new MaterialDialog.Builder(this)
-//                .title("通知时间设定")
-//                .content("请设置您希望的通知时间")
-//                .inputType(InputType.TYPE_CLASS_NUMBER)
-//                .inputRange(Integer.valueOf(1), Integer.valueOf(50))
-//                .positiveText("SUBMIT")
-//                .input(
-//                        null,
-//                        null,
-//                        false,
-//                        new MaterialDialog.InputCallback() {
-//                            @Override
-//                            public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
-//                                Utils.showToast(AddItemActivity.this, input.toString(), 1);
-//                            }
-//                        })
-//                .items(R.array.notificationTimeInterval)
-//                .itemsDisabledIndices(1, 7)
-//                .itemsCallbackSingleChoice(0,
-//                        new MaterialDialog.ListCallbackSingleChoice() {
-//                            @Override
-//                            public boolean onSelection(MaterialDialog dialog, View itemView, int which, CharSequence text) {
-//                                Utils.showToast(AddItemActivity.this, text.toString(), 1);
-//
-//                                return false;
-//                            }
-//                        })
-//                .show();
+    private void openNotificationCustomTimeSettingDialog() {
 
-        new MaterialDialog.Builder(this)
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title("通知时间设定")
                 .customView(R.layout.notification_custom_time_picker, true)
                 .positiveText("SUBMIT")
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                .build();
+        View customView = dialog.getCustomView();
+        if (customView == null) {
+            throw new NullPointerException("custom view can't be null");
+        }
+        final EditText customTimeEditView = customView.findViewById(R.id.custom_time_value);
+        RadioGroup radioGroup = customView.findViewById(R.id.custom_time_radio_group);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                RadioButton radioButton = radioGroup.findViewById(i);
+                selectedButton = radioButton;
+                Utils.showToast(AddItemActivity.this, "" + radioButton.getText().toString(), 1);
+            }
+        });
+        dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                String msg = customTimeEditView.getText().toString() + " " + selectedButton.getText().toString() + " before";
+                anniversaryNotificationTimeTextView.setText(msg);
+            }
+        });
+        dialog.show();
 
-                    }
-                })
-                .build()
-                .show();
     }
 
 
