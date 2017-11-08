@@ -30,7 +30,9 @@ public class NotificationSending {
 
     private String recipient;
 
-    @ToOne
+    private Long anniversaryId;
+
+    @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
 
     /** Used to resolve relations */
@@ -41,13 +43,15 @@ public class NotificationSending {
     @Generated(hash = 1437953480)
     private transient NotificationSendingDao myDao;
 
-    @Generated(hash = 799519026)
+    @Generated(hash = 1879510796)
     public NotificationSending(Long id, Date sendingDate,
-            NotificationType notificationType, String recipient) {
+            NotificationType notificationType, String recipient,
+            Long anniversaryId) {
         this.id = id;
         this.sendingDate = sendingDate;
         this.notificationType = notificationType;
         this.recipient = recipient;
+        this.anniversaryId = anniversaryId;
     }
 
     @Generated(hash = 634010185)
@@ -86,35 +90,44 @@ public class NotificationSending {
         this.recipient = recipient;
     }
 
-    @Generated(hash = 1146833423)
-    private transient boolean anniversary__refreshed;
+    public Long getAnniversaryId() {
+        return this.anniversaryId;
+    }
+
+    public void setAnniversaryId(Long anniversaryId) {
+        this.anniversaryId = anniversaryId;
+    }
+
+    @Generated(hash = 1258510271)
+    private transient Long anniversary__resolvedKey;
 
     /** To-one relationship, resolved on first access. */
-    @Generated(hash = 551425946)
+    @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
-        if (anniversary != null || !anniversary__refreshed) {
+        Long __key = this.anniversaryId;
+        if (anniversary__resolvedKey == null
+                || !anniversary__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             AnniversaryDao targetDao = daoSession.getAnniversaryDao();
-            targetDao.refresh(anniversary);
-            anniversary__refreshed = true;
+            Anniversary anniversaryNew = targetDao.load(__key);
+            synchronized (this) {
+                anniversary = anniversaryNew;
+                anniversary__resolvedKey = __key;
+            }
         }
         return anniversary;
     }
 
-    /** To-one relationship, returned entity is not refreshed and may carry only the PK property. */
-    @Generated(hash = 583497642)
-    public Anniversary peakAnniversary() {
-        return anniversary;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
-    @Generated(hash = 2020844778)
+    @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
             this.anniversary = anniversary;
-            anniversary__refreshed = true;
+            anniversaryId = anniversary == null ? null : anniversary.getId();
+            anniversary__resolvedKey = anniversaryId;
         }
     }
 
@@ -161,6 +174,5 @@ public class NotificationSending {
         myDao = daoSession != null ? daoSession.getNotificationSendingDao() : null;
     }
 
- 
-    
+
 }

@@ -32,6 +32,8 @@ import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.dbservice.DaoSession;
+import com.berber.orange.memories.dbservice.NotificationSending;
+import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.vega.VegaLayoutManager;
@@ -53,6 +55,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private TimeLineAdapter adapter;
     private final int REQUEST_NEW_ITEM = 9001;
     private LinearLayoutManager linearLayoutManager;
+    private NotificationSendingDao notificationSendingDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +64,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
         daoSession = ((APP) getApplication()).getDaoSession();
         anniversaryDao = daoSession.getAnniversaryDao();
+        notificationSendingDao = daoSession.getNotificationSendingDao();
 
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -134,6 +138,11 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     }
 
     private List<Anniversary> getData() {
+
+        List<NotificationSending> list = notificationSendingDao.queryBuilder().list();
+        NotificationSending notificationSending = list.get(0);
+        Anniversary anniversary = notificationSending.getAnniversary();
+        System.out.println(anniversary);
         return anniversaryDao.queryBuilder().list();
     }
 

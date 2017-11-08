@@ -376,6 +376,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
         anniversary.setDescription(anniversaryDescription);
 
+        long anniversaryId = anniversaryDao.insert(anniversary);
+
         //handle remind date
         if (enableNotificationButton.isChecked()) {
             Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
@@ -384,12 +386,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             notificationSending.setRecipient("heylbly@gmail.com");
             String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
             notificationSending.setNotificationType(getNotificationType(notificationTypeString));
+
+            notificationSending.setAnniversaryId(anniversaryId);
             notificationSending.setAnniversary(anniversary);
-            anniversary.setNotificationSending(notificationSending);
+            //anniversary.setNotificationSending(notificationSending);
             notificationSendingDao.insert(notificationSending);
         }
 
-        anniversaryDao.insert(anniversary);
+        //
 
 
 //        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
