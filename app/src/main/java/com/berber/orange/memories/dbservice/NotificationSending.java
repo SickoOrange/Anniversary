@@ -18,7 +18,7 @@ import org.greenrobot.greendao.DaoException;
  */
 
 @Entity
-class NotificationSending {
+public class NotificationSending {
 
     @Id(autoincrement = true)
     private Long id;

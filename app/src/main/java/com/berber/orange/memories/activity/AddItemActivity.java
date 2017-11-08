@@ -28,8 +28,13 @@ import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.dbservice.NotificationSending;
+import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.IndicatorView;
@@ -70,6 +75,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private TextView anniversaryTypeName;
     private long notificationTimeBeforeInMillis;
     private final int REQUEST_NEW_ITEM = 9001;
+    private AnniversaryDao anniversaryDao;
+    private NotificationSendingDao notificationSendingDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +92,9 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         initAnniversaryTypeData();
         initView();
         init();
+
+        anniversaryDao = ((APP) getApplication()).getDaoSession().getAnniversaryDao();
+        notificationSendingDao = ((APP) getApplication()).getDaoSession().getNotificationSendingDao();
 
     }
 
@@ -151,7 +161,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH  );
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
         String dateString = sdf.format(date);
         String[] splits = dateString.split(" ");
 
@@ -328,54 +338,113 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.anniversary_add_btn_save:
-                //save all information into entity
-                AnniversaryDTO dto = new AnniversaryDTO();
-
-                // handle anniversary title
-                String anniversaryTitle = anniversaryTitleEditText.getText().toString();
-                if (TextUtils.isEmpty(anniversaryTitle)) {
-                    alertWarningDialog("Anniversary  title can't be empty");
-                    return;
-                }
-                dto.setTitle(anniversaryTitle);
-
-                //handle location
-                dto.setLocation("London");
-
-                //handle date
-                Date currentAnniversaryDate = getCurrentAnniversaryDate();
-                if (currentAnniversaryDate != null) {
-                    dto.setDate(currentAnniversaryDate);
-                } else {
-                    alertWarningDialog("you must pick a certain date and time");
-                    return;
-                }
-
-                //handle create Date
-                dto.setCreateDate(new Date());
-
-                //handle description
-                String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
-                dto.setDescription(anniversaryDescription);
-
-                //handle remind date
-                if (enableNotificationButton.isChecked()) {
-                    Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
-                    NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
-                    notificationSendingDTO.setSendingDate(notificationDate);
-                    notificationSendingDTO.setRecipient(" ");
-                    String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
-                    notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
-                    dto.setNotificationSendingDTO(notificationSendingDTO);
-                }
-
-                Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
-                intent.putExtra("object", dto);
-                setResult(REQUEST_NEW_ITEM, intent);
-                finish();
+                //collectInfo();
+                writeInfo();
                 break;
 
         }
+    }
+
+    private void writeInfo() {
+        //save all information into entity
+        Anniversary anniversary = new Anniversary();
+
+        // handle anniversary title
+        String anniversaryTitle = anniversaryTitleEditText.getText().toString();
+        if (TextUtils.isEmpty(anniversaryTitle)) {
+            alertWarningDialog("Anniversary  title can't be empty");
+            return;
+        }
+        anniversary.setTitle(anniversaryTitle);
+
+        //handle location
+        anniversary.setLocation("London");
+
+        //handle date
+        Date currentAnniversaryDate = getCurrentAnniversaryDate();
+        if (currentAnniversaryDate != null) {
+            anniversary.setDate(currentAnniversaryDate);
+        } else {
+            alertWarningDialog("you must pick a certain date and time");
+            return;
+        }
+
+        //handle create Date
+        anniversary.setCreateDate(new Date());
+
+        //handle description
+        String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+        anniversary.setDescription(anniversaryDescription);
+
+        //handle remind date
+        if (enableNotificationButton.isChecked()) {
+            Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
+            NotificationSending notificationSending = new NotificationSending();
+            notificationSending.setSendingDate(notificationDate);
+            notificationSending.setRecipient("heylbly@gmail.com");
+            String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
+            notificationSending.setNotificationType(getNotificationType(notificationTypeString));
+            notificationSending.setAnniversary(anniversary);
+            anniversary.setNotificationSending(notificationSending);
+            notificationSendingDao.insert(notificationSending);
+        }
+
+        anniversaryDao.insert(anniversary);
+
+
+//        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
+//        intent.putExtra("object", dto);
+//        setResult(REQUEST_NEW_ITEM, intent);
+//        finish();
+    }
+
+    private void collectInfo() {
+        //save all information into entity
+        AnniversaryDTO dto = new AnniversaryDTO();
+
+        // handle anniversary title
+        String anniversaryTitle = anniversaryTitleEditText.getText().toString();
+        if (TextUtils.isEmpty(anniversaryTitle)) {
+            alertWarningDialog("Anniversary  title can't be empty");
+            return;
+        }
+        dto.setTitle(anniversaryTitle);
+
+        //handle location
+        dto.setLocation("London");
+
+        //handle date
+        Date currentAnniversaryDate = getCurrentAnniversaryDate();
+        if (currentAnniversaryDate != null) {
+            dto.setDate(currentAnniversaryDate);
+        } else {
+            alertWarningDialog("you must pick a certain date and time");
+            return;
+        }
+
+        //handle create Date
+        dto.setCreateDate(new Date());
+
+        //handle description
+        String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+        dto.setDescription(anniversaryDescription);
+
+        //handle remind date
+        if (enableNotificationButton.isChecked()) {
+            Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
+            NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
+            notificationSendingDTO.setSendingDate(notificationDate);
+            notificationSendingDTO.setRecipient(" ");
+            String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
+            notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
+            dto.setNotificationSendingDTO(notificationSendingDTO);
+        }
+
+
+        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
+        intent.putExtra("object", dto);
+        setResult(REQUEST_NEW_ITEM, intent);
+        finish();
     }
 
     private NotificationType getNotificationType(String notificationTypeString) {
