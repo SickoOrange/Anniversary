@@ -27,12 +27,14 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.AddItemActivity;
 import com.berber.orange.memories.activity.AnniversaryDTO;
+import com.berber.orange.memories.activity.ItemEditActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
+import com.berber.orange.memories.vega.VegaLayoutManager;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.AdditionalUserInfo;
 import com.google.firebase.auth.FirebaseAuth;
@@ -127,7 +129,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
         adapter = new TimeLineAdapter(getData(), this.getApplicationContext());
 
-        recycler.setLayoutManager(linearLayoutManager);
+        recycler.setLayoutManager(new VegaLayoutManager());
         recycler.setAdapter(adapter);
     }
 
@@ -190,7 +192,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
                     return;
                 }
                 AnniversaryDTO dto = data.getParcelableExtra("object");
-                // adapter.addNewItem(dto, adapter);
+               // adapter.addNewItem(dto, adapter);
                 Utils.showToast(ScrollingActivity.this, "add new item", Toast.LENGTH_LONG);
                 Log.e("TAG", dto.toString());
                 break;

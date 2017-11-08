@@ -100,6 +100,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         newItem.setRemindDate(dto.getRemindDate());
         mDateSets.add(newItem);
         adapter.notifyDataSetChanged();
+        //adapter.notifyItemChanged(mDateSets.size()-1);
     }
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
