@@ -8,4 +8,6 @@
     <color name="transparent_background">#50ffffff</color>
 
     <color name="colorGray">#757575</color>
+
+    <color name="mystatusbar">#E0E0E0</color>
 </resources>

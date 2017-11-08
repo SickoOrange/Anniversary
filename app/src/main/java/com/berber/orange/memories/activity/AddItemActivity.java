@@ -30,6 +30,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.widget.IndicatorView;
 
@@ -70,11 +71,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private long notificationTimeBeforeInMillis;
     private final int REQUEST_NEW_ITEM = 9001;
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
+        boolean immerse = ScreenUtil.immerseStatusBar(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -149,7 +151,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         Date date = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH  );
         String dateString = sdf.format(date);
         String[] splits = dateString.split(" ");
 
