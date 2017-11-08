@@ -178,7 +178,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
@@ -192,7 +192,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
                     return;
                 }
                 AnniversaryDTO dto = data.getParcelableExtra("object");
-               // adapter.addNewItem(dto, adapter);
+                adapter.addNewItem(dto, adapter);
                 Utils.showToast(ScrollingActivity.this, "add new item", Toast.LENGTH_LONG);
                 Log.e("TAG", dto.toString());
                 break;

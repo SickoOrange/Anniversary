@@ -16,7 +16,7 @@ public class AnniversaryDTO implements Parcelable {
 
     private Date date;
 
-    private Date remindDate;
+    //private Date remindDate;
 
     private Date createDate;
 
@@ -24,6 +24,7 @@ public class AnniversaryDTO implements Parcelable {
 
     public AnniversaryDTO() {
     }
+
 
     @Override
     public int describeContents() {
@@ -36,7 +37,6 @@ public class AnniversaryDTO implements Parcelable {
         dest.writeString(this.Description);
         dest.writeString(this.Location);
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
-        dest.writeLong(this.remindDate != null ? this.remindDate.getTime() : -1);
         dest.writeLong(this.createDate != null ? this.createDate.getTime() : -1);
         dest.writeParcelable(this.notificationSendingDTO, flags);
     }
@@ -47,8 +47,6 @@ public class AnniversaryDTO implements Parcelable {
         this.Location = in.readString();
         long tmpDate = in.readLong();
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
-        long tmpRemindDate = in.readLong();
-        this.remindDate = tmpRemindDate == -1 ? null : new Date(tmpRemindDate);
         long tmpCreateDate = in.readLong();
         this.createDate = tmpCreateDate == -1 ? null : new Date(tmpCreateDate);
         this.notificationSendingDTO = in.readParcelable(NotificationSendingDTO.class.getClassLoader());
@@ -98,14 +96,6 @@ public class AnniversaryDTO implements Parcelable {
         this.date = date;
     }
 
-    public Date getRemindDate() {
-        return remindDate;
-    }
-
-    public void setRemindDate(Date remindDate) {
-        this.remindDate = remindDate;
-    }
-
     public Date getCreateDate() {
         return createDate;
     }
@@ -129,7 +119,6 @@ public class AnniversaryDTO implements Parcelable {
                 ", Description='" + Description + '\'' +
                 ", Location='" + Location + '\'' +
                 ", date=" + date +
-                ", remindDate=" + remindDate +
                 ", createDate=" + createDate +
                 ", notificationSendingDTO=" + notificationSendingDTO +
                 '}';

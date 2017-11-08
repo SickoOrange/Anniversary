@@ -97,7 +97,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         newItem.setDescription(dto.getDescription());
         newItem.setDate(dto.getDate());
         newItem.setCreateDate(dto.getCreateDate());
-        newItem.setRemindDate(dto.getRemindDate());
+       // newItem.setRemindDate(dto.getRemindDate());
         mDateSets.add(newItem);
         adapter.notifyDataSetChanged();
         //adapter.notifyItemChanged(mDateSets.size()-1);

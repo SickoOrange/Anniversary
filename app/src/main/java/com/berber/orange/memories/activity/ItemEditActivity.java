@@ -200,7 +200,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
         dto.setLocation(anniversary.getLocation());
         dto.setDescription(anniversary.getDescription());
         dto.setDate(anniversary.getDate());
-        dto.setRemindDate(anniversary.getRemindDate());
+       // dto.setRemindDate(anniversary.getRemindDate());
         dto.setCreateDate(anniversary.getCreateDate());
         return dto;
     }
