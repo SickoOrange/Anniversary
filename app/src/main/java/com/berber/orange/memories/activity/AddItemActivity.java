@@ -147,12 +147,22 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //anniversary tile edit text
         anniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
 
+
+        Date date = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH);
+        String dateString = sdf.format(date);
+        String[] splits = dateString.split(" ");
+
+
         //anniversary date
         anniversaryDateTextView = findViewById(R.id.anniversary_add_anni_date);
         anniversaryDateTextView.setOnClickListener(this);
+        //set default currently date
+        anniversaryDateTextView.setText(splits[0]);
         //anniversary time
         anniversaryTimeTextView = findViewById(R.id.anniversary_add_anni_time);
         anniversaryTimeTextView.setOnClickListener(this);
+        anniversaryTimeTextView.setText(splits[1]);
 
         //anniversary location
         TextView anniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
