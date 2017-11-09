@@ -25,9 +25,8 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.AddItemActivity;
-import com.berber.orange.memories.activity.AnniversaryDTO;
-import com.berber.orange.memories.activity.ItemEditActivity;
+import com.berber.orange.memories.activity.additem.AddItemActivity;
+import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -39,7 +38,6 @@ import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.vega.VegaLayoutManager;
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.AdditionalUserInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 

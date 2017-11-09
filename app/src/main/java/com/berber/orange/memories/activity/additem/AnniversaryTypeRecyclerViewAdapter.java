@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.additem;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +17,7 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 
-class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<AnniversaryTypeRecyclerViewAdapter.ItemsViewHolder> {
+public class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<AnniversaryTypeRecyclerViewAdapter.ItemsViewHolder> {
     private int mPageSize;
     private int mIndex;
     private Context mContext;

@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.additem;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -27,6 +27,10 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.model.AnniversaryDTO;
+import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
+import com.berber.orange.memories.activity.model.NotificationSendingDTO;
+import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -400,8 +404,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         }
 
 
-        RecyclerView cureentChild = (RecyclerView) viewPager.getChildAt(viewPager.getCurrentItem());
-        AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) cureentChild.getAdapter();
+        RecyclerView currentChild = (RecyclerView) viewPager.getChildAt(viewPager.getCurrentItem());
+        AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) currentChild.getAdapter();
         ModelAnniversaryTypeDTO currentImageResource = adapter.getCurrentImageResource();
 
         //handle anniversaryType
@@ -414,10 +418,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
         anniversaryDao.update(anniversary);
 
-
-//        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
-//        intent.putExtra("object", dto);
-//        setResult(REQUEST_NEW_ITEM, intent);
         setResult(REQUEST_NEW_ITEM);
         finish();
     }

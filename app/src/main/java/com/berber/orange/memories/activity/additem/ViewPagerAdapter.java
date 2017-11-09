@@ -1,15 +1,14 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.additem;
 
 import android.support.annotation.NonNull;
 import android.support.v4.view.PagerAdapter;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.List;
 
 
-class ViewPagerAdapter extends PagerAdapter {
+public class ViewPagerAdapter extends PagerAdapter {
     private List<View> mViewList;
 
     ViewPagerAdapter(List<View> viewList) {

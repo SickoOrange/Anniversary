@@ -1,9 +1,7 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.berber.orange.memories.dbservice.Anniversary;
 
 import java.util.Date;
 

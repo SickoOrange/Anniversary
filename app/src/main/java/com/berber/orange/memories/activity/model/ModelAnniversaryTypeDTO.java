@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.model;
 
 /**
  * Created by User on 2017/11/05.

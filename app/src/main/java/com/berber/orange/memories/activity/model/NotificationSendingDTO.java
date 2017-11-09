@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;

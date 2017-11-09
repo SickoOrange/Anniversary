@@ -1,11 +1,10 @@
 package com.berber.orange.memories.dbservice;
 
-import com.berber.orange.memories.activity.NotificationType;
+import com.berber.orange.memories.activity.model.NotificationType;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.JoinProperty;
 import org.greenrobot.greendao.annotation.ToOne;
 
 import java.util.Date;

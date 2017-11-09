@@ -1,7 +1,5 @@
 package com.berber.orange.memories.dbservice;
 
-import com.berber.orange.memories.activity.ModelAnniversaryTypeDTO;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
