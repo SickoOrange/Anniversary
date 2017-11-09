@@ -24,6 +24,10 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
     private final LayoutInflater inflater;
     private ModelAnniversaryTypeDTO currentSelectedAnniversaryType;
 
+
+
+    private ModelAnniversaryTypeDTO currentImageResource;
+
     AnniversaryTypeRecyclerViewAdapter(Context context, ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes, int i, int homeItemSize) {
 
         this.mContext = context;
@@ -50,12 +54,19 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
                 currentSelectedAnniversaryType = mDatas.get(pos);
                 CircleImageView anniversaryTypeImageView = ((AddItemActivity) mContext).getAnniversaryTypeImageView();
                 anniversaryTypeImageView.setImageResource(currentSelectedAnniversaryType.getImageResource());
+
                 TextView anniversaryTypeTextView = ((AddItemActivity) mContext).getAnniversaryTypeTextView();
                 anniversaryTypeTextView.setText(currentSelectedAnniversaryType.getName());
+
+                currentImageResource = currentSelectedAnniversaryType;
             }
         });
 
 
+    }
+
+    public ModelAnniversaryTypeDTO getCurrentImageResource() {
+        return currentImageResource;
     }
 
     @Override

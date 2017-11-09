@@ -30,6 +30,8 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.dbservice.ModelAnniversaryType;
+import com.berber.orange.memories.dbservice.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.dbservice.NotificationSending;
 import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.utils.ScreenUtil;
@@ -74,6 +76,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private final int REQUEST_NEW_ITEM = 9001;
     private AnniversaryDao anniversaryDao;
     private NotificationSendingDao notificationSendingDao;
+    private AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter;
+    private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +96,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         anniversaryDao = ((APP) getApplication()).getDaoSession().getAnniversaryDao();
         notificationSendingDao = ((APP) getApplication()).getDaoSession().getNotificationSendingDao();
+        modelAnniversaryTypeDao = ((APP) getApplication()).getDaoSession().getModelAnniversaryTypeDao();
+
 
     }
 
@@ -104,7 +110,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, null, false);
             recyclerView.setLayoutManager(new GridLayoutManager(AddItemActivity.this, 5));
             //add adapter to every recycler view
-            AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
+            anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
             recyclerView.setAdapter(anniversaryTypeRecyclerViewAdapter);
 
             viewList.add(recyclerView);
@@ -387,10 +393,22 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             notificationSending.setAnniversaryId(anniversaryId);
             notificationSending.setAnniversary(anniversary);
             //anniversary.setNotificationSending(notificationSending);
-            notificationSendingDao.insert(notificationSending);
+            long notificationSendingId = notificationSendingDao.insert(notificationSending);
+            anniversary.setNotificationSending(notificationSending);
+            anniversary.setNotificationSendingId(notificationSendingId);
+            anniversaryDao.update(anniversary);
         }
 
-        //
+        //handle anniversaryType
+        ModelAnniversaryTypeDTO currentImageResourceDTO = anniversaryTypeRecyclerViewAdapter.getCurrentImageResource();
+        ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
+        modelAnniversaryType.setName(currentImageResourceDTO.getName());
+        modelAnniversaryType.setImageResource(currentImageResourceDTO.getImageResource());
+        long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
+
+        anniversary.setModelAnniversaryType(modelAnniversaryType);
+        anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
+        anniversaryDao.update(anniversary);
 
 
 //        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);

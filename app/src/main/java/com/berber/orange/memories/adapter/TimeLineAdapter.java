@@ -18,6 +18,7 @@ import com.berber.orange.memories.widget.TimeLineMarker;
 
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +31,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     private Context mContext;
 
     public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {
+        if (mDateSets == null) {
+            this.mDateSets = new ArrayList<>();
+        }
         this.mDateSets = mDateSets;
         mContext = context;
     }
@@ -86,6 +90,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public int getItemCount() {
+        if (mDateSets==null) {
+            return 0;
+        }
         return mDateSets.size();
     }
 
@@ -97,7 +104,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         newItem.setDescription(dto.getDescription());
         newItem.setDate(dto.getDate());
         newItem.setCreateDate(dto.getCreateDate());
-       // newItem.setRemindDate(dto.getRemindDate());
+        // newItem.setRemindDate(dto.getRemindDate());
         mDateSets.add(newItem);
         adapter.notifyDataSetChanged();
         //adapter.notifyItemChanged(mDateSets.size()-1);

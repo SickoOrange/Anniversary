@@ -142,6 +142,9 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private List<Anniversary> getData() {
 
         List<NotificationSending> list = notificationSendingDao.queryBuilder().list();
+        if (list.isEmpty()) {
+            return null;
+        }
         NotificationSending notificationSending = list.get(0);
         Anniversary anniversary = notificationSending.getAnniversary();
         System.out.println(anniversary);
