@@ -1,11 +1,8 @@
 package com.berber.orange.memories.activity;
 
-import android.app.Notification;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -53,7 +50,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private static final int HOME_ITEM_SIZE = 10;
 
     private ViewPager viewPager;
-    private ArrayList<ModelAnniversaryType> modelAnniversaryTypes;
+    private ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes;
     private IndicatorView indicatorView;
     private LinearLayout indicatorContainer;
     private int prePosition;
@@ -234,22 +231,22 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private void initAnniversaryTypeData() {
         modelAnniversaryTypes = new ArrayList<>();
-        modelAnniversaryTypes.add(new ModelAnniversaryType("美食", R.mipmap.ic_category_0));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("电影", R.mipmap.ic_category_1));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("酒店住宿", R.mipmap.ic_category_2));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("生活服务", R.mipmap.ic_category_3));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("KTV", R.mipmap.ic_category_4));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("旅游", R.mipmap.ic_category_5));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("学习培训", R.mipmap.ic_category_6));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("汽车服务", R.mipmap.ic_category_7));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("摄影写真", R.mipmap.ic_category_8));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("休闲娱乐", R.mipmap.ic_category_10));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("丽人", R.mipmap.ic_category_11));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("运动健身", R.mipmap.ic_category_12));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("大保健", R.mipmap.ic_category_13));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("团购", R.mipmap.ic_category_14));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("景点", R.mipmap.ic_category_16));
-        modelAnniversaryTypes.add(new ModelAnniversaryType("全部分类", R.mipmap.ic_category_15));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("美食", R.mipmap.ic_category_0));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("电影", R.mipmap.ic_category_1));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("酒店住宿", R.mipmap.ic_category_2));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("生活服务", R.mipmap.ic_category_3));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("KTV", R.mipmap.ic_category_4));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("旅游", R.mipmap.ic_category_5));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("学习培训", R.mipmap.ic_category_6));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("汽车服务", R.mipmap.ic_category_7));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("摄影写真", R.mipmap.ic_category_8));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("休闲娱乐", R.mipmap.ic_category_10));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("丽人", R.mipmap.ic_category_11));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("运动健身", R.mipmap.ic_category_12));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("大保健", R.mipmap.ic_category_13));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("团购", R.mipmap.ic_category_14));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("景点", R.mipmap.ic_category_16));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("全部分类", R.mipmap.ic_category_15));
     }
 
     @Override
@@ -399,7 +396,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 //        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
 //        intent.putExtra("object", dto);
 //        setResult(REQUEST_NEW_ITEM, intent);
-//        finish();
+        setResult(REQUEST_NEW_ITEM);
+        finish();
     }
 
     private void collectInfo() {

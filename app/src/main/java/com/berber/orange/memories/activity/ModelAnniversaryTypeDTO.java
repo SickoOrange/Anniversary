@@ -4,19 +4,19 @@ package com.berber.orange.memories.activity;
  * Created by User on 2017/11/05.
  */
 
-class ModelAnniversaryType {
+public class ModelAnniversaryTypeDTO {
     private String name = "";
     private int imageResource;
 
     @Override
     public String toString() {
-        return "ModelAnniversaryType{" +
+        return "ModelAnniversaryTypeDTO{" +
                 "name='" + name + '\'' +
                 ", imageResource=" + imageResource +
                 '}';
     }
 
-    public ModelAnniversaryType(String name, int imageResource) {
+    public ModelAnniversaryTypeDTO(String name, int imageResource) {
         this.name = name;
         this.imageResource = imageResource;
     }

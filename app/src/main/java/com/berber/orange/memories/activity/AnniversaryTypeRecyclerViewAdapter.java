@@ -2,17 +2,13 @@ package com.berber.orange.memories.activity;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.utils.ScreenUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +20,11 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
     private int mPageSize;
     private int mIndex;
     private Context mContext;
-    private List<ModelAnniversaryType> mDatas;
+    private List<ModelAnniversaryTypeDTO> mDatas;
     private final LayoutInflater inflater;
-    private ModelAnniversaryType currentSelectedAnniversaryType;
+    private ModelAnniversaryTypeDTO currentSelectedAnniversaryType;
 
-    AnniversaryTypeRecyclerViewAdapter(Context context, ArrayList<ModelAnniversaryType> modelAnniversaryTypes, int i, int homeItemSize) {
+    AnniversaryTypeRecyclerViewAdapter(Context context, ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes, int i, int homeItemSize) {
 
         this.mContext = context;
         this.mDatas = modelAnniversaryTypes;
@@ -72,7 +68,7 @@ class AnniversaryTypeRecyclerViewAdapter extends RecyclerView.Adapter<Anniversar
         return position + mIndex * mPageSize;
     }
 
-    public ModelAnniversaryType getCurrentSelectedAnniversaryType() {
+    public ModelAnniversaryTypeDTO getCurrentSelectedAnniversaryType() {
         return currentSelectedAnniversaryType;
     }
 

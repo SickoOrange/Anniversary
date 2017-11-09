@@ -1,12 +1,14 @@
 package com.berber.orange.memories.dbservice;
 
+import com.berber.orange.memories.activity.ModelAnniversaryTypeDTO;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
 import java.util.Date;
 
-import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.ToOne;
+import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
 
@@ -26,15 +28,36 @@ public class Anniversary {
 
     private Date createDate;
 
-    @Generated(hash = 1013947693)
+    private Long modelAnniversaryTypeId;
+
+    @ToOne(joinProperty = "modelAnniversaryTypeId")
+    private ModelAnniversaryType modelAnniversaryType;
+
+    private Long notificationSendingId;
+
+    @ToOne(joinProperty = "notificationSendingId")
+    private NotificationSending notificationSending;
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1172854706)
+    private transient AnniversaryDao myDao;
+
+    @Generated(hash = 1092846448)
     public Anniversary(Long id, String Title, String Description, String Location,
-            Date date, Date createDate) {
+            Date date, Date createDate, Long modelAnniversaryTypeId,
+            Long notificationSendingId) {
         this.id = id;
         this.Title = Title;
         this.Description = Description;
         this.Location = Location;
         this.date = date;
         this.createDate = createDate;
+        this.modelAnniversaryTypeId = modelAnniversaryTypeId;
+        this.notificationSendingId = notificationSendingId;
     }
 
     @Generated(hash = 302179509)
@@ -89,10 +112,134 @@ public class Anniversary {
         this.createDate = createDate;
     }
 
-//    @ToOne
-//    private NotificationSending notificationSending;
+    public Long getModelAnniversaryTypeId() {
+        return this.modelAnniversaryTypeId;
+    }
 
+    public void setModelAnniversaryTypeId(Long modelAnniversaryTypeId) {
+        this.modelAnniversaryTypeId = modelAnniversaryTypeId;
+    }
 
+    public Long getNotificationSendingId() {
+        return this.notificationSendingId;
+    }
+
+    public void setNotificationSendingId(Long notificationSendingId) {
+        this.notificationSendingId = notificationSendingId;
+    }
+
+    @Generated(hash = 684027712)
+    private transient Long modelAnniversaryType__resolvedKey;
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 1637771025)
+    public ModelAnniversaryType getModelAnniversaryType() {
+        Long __key = this.modelAnniversaryTypeId;
+        if (modelAnniversaryType__resolvedKey == null
+                || !modelAnniversaryType__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            ModelAnniversaryTypeDao targetDao = daoSession
+                    .getModelAnniversaryTypeDao();
+            ModelAnniversaryType modelAnniversaryTypeNew = targetDao.load(__key);
+            synchronized (this) {
+                modelAnniversaryType = modelAnniversaryTypeNew;
+                modelAnniversaryType__resolvedKey = __key;
+            }
+        }
+        return modelAnniversaryType;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1722141903)
+    public void setModelAnniversaryType(ModelAnniversaryType modelAnniversaryType) {
+        synchronized (this) {
+            this.modelAnniversaryType = modelAnniversaryType;
+            modelAnniversaryTypeId = modelAnniversaryType == null ? null
+                    : modelAnniversaryType.getId();
+            modelAnniversaryType__resolvedKey = modelAnniversaryTypeId;
+        }
+    }
+
+    @Generated(hash = 1392270529)
+    private transient Long notificationSending__resolvedKey;
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 829092209)
+    public NotificationSending getNotificationSending() {
+        Long __key = this.notificationSendingId;
+        if (notificationSending__resolvedKey == null
+                || !notificationSending__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            NotificationSendingDao targetDao = daoSession
+                    .getNotificationSendingDao();
+            NotificationSending notificationSendingNew = targetDao.load(__key);
+            synchronized (this) {
+                notificationSending = notificationSendingNew;
+                notificationSending__resolvedKey = __key;
+            }
+        }
+        return notificationSending;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1016003634)
+    public void setNotificationSending(NotificationSending notificationSending) {
+        synchronized (this) {
+            this.notificationSending = notificationSending;
+            notificationSendingId = notificationSending == null ? null
+                    : notificationSending.getId();
+            notificationSending__resolvedKey = notificationSendingId;
+        }
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1868176712)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getAnniversaryDao() : null;
+    }
 
 
 }

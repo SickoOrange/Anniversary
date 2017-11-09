@@ -35,6 +35,7 @@ import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.dbservice.NotificationSending;
 import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
+import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 import com.berber.orange.memories.vega.VegaLayoutManager;
 import com.bumptech.glide.Glide;
@@ -61,6 +62,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test);
+        ScreenUtil.immerseStatusBar(this);
 
         daoSession = ((APP) getApplication()).getDaoSession();
         anniversaryDao = daoSession.getAnniversaryDao();
