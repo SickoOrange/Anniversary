@@ -399,11 +399,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversaryDao.update(anniversary);
         }
 
+
+        RecyclerView cureentChild = (RecyclerView) viewPager.getChildAt(viewPager.getCurrentItem());
+        AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) cureentChild.getAdapter();
+        ModelAnniversaryTypeDTO currentImageResource = adapter.getCurrentImageResource();
+
         //handle anniversaryType
-        ModelAnniversaryTypeDTO currentImageResourceDTO = anniversaryTypeRecyclerViewAdapter.getCurrentImageResource();
         ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
-        modelAnniversaryType.setName(currentImageResourceDTO.getName());
-        modelAnniversaryType.setImageResource(currentImageResourceDTO.getImageResource());
+        modelAnniversaryType.setName(currentImageResource.getName());
+        modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
         long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
 
         anniversary.setModelAnniversaryType(modelAnniversaryType);
