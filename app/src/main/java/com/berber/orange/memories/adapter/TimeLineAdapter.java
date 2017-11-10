@@ -1,8 +1,11 @@
 package com.berber.orange.memories.adapter;
 
+import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +18,7 @@ import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
 import com.berber.orange.memories.widget.TimeLineMarker;
+import com.dinuscxj.progressbar.CircleProgressBar;
 
 
 import java.text.SimpleDateFormat;
@@ -57,10 +61,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return new TimeLineViewHolder(inflate, viewType);
     }
 
+    @SuppressLint("WrongConstant")
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
         //get target object
-        Anniversary anniversary = mDateSets.get(position);
+        final Anniversary anniversary = mDateSets.get(position);
         holder.mTitle.setText(anniversary.getTitle());
 
         //set object date
@@ -79,6 +84,19 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         }
 
+        ValueAnimator animator = ValueAnimator.ofInt(0, 70);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                Log.e("TAG", "value animator " + valueAnimator.getAnimatedValue());
+                int progress = (int) valueAnimator.getAnimatedValue();
+                holder.currentAnniversaryProgress.setProgress(progress);
+            }
+        });
+        animator.setRepeatMode(ValueAnimator.INFINITE);
+        animator.setDuration(2000);
+        animator.start();
+
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +108,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public int getItemCount() {
-        if (mDateSets==null) {
+        if (mDateSets == null) {
             return 0;
         }
         return mDateSets.size();
@@ -117,6 +135,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
         TextView mDate;
+        CircleProgressBar currentAnniversaryProgress;
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
@@ -127,6 +146,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
             mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
             mLeftDay = itemView.findViewById(R.id.left_day_label);
+            currentAnniversaryProgress = itemView.findViewById(R.id.custom_progress1);
 
             if (type == ItemType.ATOM) {
                 mTimeLine.setBeginLine(null);

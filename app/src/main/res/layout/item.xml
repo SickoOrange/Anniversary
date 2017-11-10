@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="80dp"
+    android:layout_height="130dp"
     android:background="@drawable/item_ripple"
     tools:ignore="MissingPrefix">
 
@@ -33,12 +33,12 @@
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:paddingTop="35dp"
+        android:paddingTop="32dp"
         app:beginLine="#E0E0E0"
         app:endLine="#E0E0E0"
         app:lineSize="2dp"
         app:marker="@drawable/ic_timeline_marker"
-        app:markerSize="12dp" />
+        app:markerSize="15dp" />
 
 
     <RelativeLayout
@@ -49,7 +49,7 @@
         android:layout_toEndOf="@+id/item_time_line_view"
         android:layout_toRightOf="@+id/item_time_line_view"
         android:background="@drawable/item_bg_view"
-        android:padding="10dp">
+        android:padding="5dp">
 
         <!--<de.hdodenhof.circleimageview.CircleImageView-->
             <!--android:id="@+id/circleImageView"-->
@@ -125,6 +125,18 @@
             android:text="+ 365"
             android:textColor="@android:color/white"
             android:textSize="10sp" />
+        <com.dinuscxj.progressbar.CircleProgressBar
+            android:id="@+id/custom_progress1"
+            android:layout_below="@+id/left_day_label"
+            android:layout_marginTop="16dp"
+            app:style="line"
+            app:progress_stroke_width="1dp"
+            app:progress_background_color="@color/holo_darker_gray"
+            app:progress_start_color="@color/holo_green_light"
+            app:progress_end_color="@color/holo_red_light"
+            app:progress_text_color="@color/holo_blue_light"
+            android:layout_width="50dp"
+            android:layout_height="50dp" />
 
 
     </RelativeLayout>
