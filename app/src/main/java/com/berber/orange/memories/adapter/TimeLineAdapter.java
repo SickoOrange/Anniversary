@@ -18,7 +18,7 @@ import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
 import com.berber.orange.memories.widget.TimeLineMarker;
-import com.dinuscxj.progressbar.CircleProgressBar;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 
 
 import java.text.SimpleDateFormat;
@@ -78,9 +78,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         long restMillis = anniversary.getDate().getTime() - System.currentTimeMillis();
         long restDays = restMillis / (24 * 60 * 60 * 1000);
         if (restDays >= 0) {
-          //  holder.mLeftDay.setText("+ " + restDays);
+            //  holder.mLeftDay.setText("+ " + restDays);
         } else {
-         //   holder.mLeftDay.setText("- " + restDays);
+            //   holder.mLeftDay.setText("- " + restDays);
 
         }
 
@@ -96,6 +96,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 //        animator.setRepeatMode(ValueAnimator.INFINITE);
 //        animator.setDuration(2000);
 //        animator.start();
+        holder.currentAnniversaryProgress.setProgress(50);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +136,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
         TextView mDate;
-     //   CircleProgressBar currentAnniversaryProgress;
+        NumberProgressBar currentAnniversaryProgress;
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
@@ -145,8 +146,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
             mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
-          //  mLeftDay = itemView.findViewById(R.id.left_day_label);
-          //  currentAnniversaryProgress = itemView.findViewById(R.id.custom_progress1);
+            //  mLeftDay = itemView.findViewById(R.id.left_day_label);
+            currentAnniversaryProgress = itemView.findViewById(R.id.number_progress_bar);
 
             if (type == ItemType.ATOM) {
                 mTimeLine.setBeginLine(null);
