@@ -15,8 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="2dp"
-        android:layout_marginStart="2dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:background="@drawable/dot_text_view"
         android:padding="9dp"
         android:text="Apr 23"
@@ -29,9 +29,7 @@
         android:id="@+id/item_time_line_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/anniversary_add_anni_date"
-        android:layout_toRightOf="@+id/anniversary_add_anni_date"
+        android:layout_marginLeft="60dp"
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
@@ -47,6 +45,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
+        android:layout_marginRight="10dp"
         android:layout_toEndOf="@+id/item_time_line_view"
         android:layout_toRightOf="@+id/item_time_line_view"
         android:background="@drawable/item_bg_view"
@@ -113,28 +112,24 @@
         <!--android:text="+ 365"-->
         <!--android:textColor="@android:color/white"-->
         <!--android:textSize="10sp" />-->
-        <com.dinuscxj.progressbar.CircleProgressBar
-            android:id="@+id/custom_progress1"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
-            android:layout_alignParentTop="true"
-            app:progress_background_color="@color/holo_darker_gray"
-            app:progress_end_color="@color/holo_red_light"
-            app:progress_start_color="@color/holo_green_light"
-            app:progress_stroke_width="1dp"
-            app:progress_text_color="@color/holo_blue_light"
-            app:style="line" />
+        <!--<com.dinuscxj.progressbar.CircleProgressBar-->
+            <!--android:id="@+id/custom_progress1"-->
+            <!--android:layout_width="50dp"-->
+            <!--android:layout_height="50dp"-->
+            <!--android:layout_alignParentTop="true"-->
+            <!--app:progress_background_color="@color/holo_darker_gray"-->
+            <!--app:progress_end_color="@color/holo_red_light"-->
+            <!--app:progress_start_color="@color/holo_green_light"-->
+            <!--app:progress_stroke_width="1dp"-->
+            <!--app:progress_text_color="@color/holo_blue_light"-->
+            <!--app:style="line" />-->
 
         <TextView
             android:id="@+id/item_time_line_txt"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/custom_progress1"
-            android:layout_marginBottom="2dp"
-            android:layout_marginLeft="5dp"
             android:layout_marginTop="2dp"
-            android:layout_toEndOf="@+id/custom_progress1"
-            android:layout_toRightOf="@+id/custom_progress1"
+
             android:padding="3dp"
             android:text="今天是老婆的生日"
             android:textColor="@color/black"
@@ -144,41 +139,22 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_time_line_txt"
-
-            android:layout_marginLeft="5dp"
-            android:layout_toEndOf="@+id/custom_progress1"
-            android:layout_toRightOf="@+id/custom_progress1"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
-                android:padding="3dp"
-                android:text="大保健" />
+                android:text="11.11.2017"
+                android:padding="3dp"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_notifications_black_18px"
-                android:padding="3dp"
-                android:text="3 day before" />
+                android:text="3 day before"
+                android:padding="3dp"/>
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_marginTop="2dp"
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_below="@+id/custom_progress1"
-            android:background="#f7f7f7"
-            android:gravity="center">
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="还剩下4天"
-                android:layout_gravity="center"
-                android:gravity="center"/>
         </LinearLayout>
 
 
