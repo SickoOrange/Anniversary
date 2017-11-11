@@ -80,7 +80,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         if (restDays >= 0) {
           //  holder.mLeftDay.setText("+ " + restDays);
         } else {
-          //  holder.mLeftDay.setText("- " + restDays);
+         //   holder.mLeftDay.setText("- " + restDays);
 
         }
 
@@ -130,7 +130,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
-       // TextView mLeftDay;
+        TextView mLeftDay;
         TextView mTitle;
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
@@ -145,7 +145,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
             mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
-           // mLeftDay = itemView.findViewById(R.id.left_day_label);
+          //  mLeftDay = itemView.findViewById(R.id.left_day_label);
             currentAnniversaryProgress = itemView.findViewById(R.id.custom_progress1);
 
             if (type == ItemType.ATOM) {
