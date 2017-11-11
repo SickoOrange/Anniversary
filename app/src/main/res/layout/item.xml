@@ -15,8 +15,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp"
+        android:layout_marginLeft="2dp"
+        android:layout_marginStart="2dp"
         android:background="@drawable/dot_text_view"
         android:padding="9dp"
         android:text="Apr 23"
@@ -29,7 +29,9 @@
         android:id="@+id/item_time_line_view"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginLeft="60dp"
+        android:layout_alignParentTop="true"
+        android:layout_toEndOf="@+id/anniversary_add_anni_date"
+        android:layout_toRightOf="@+id/anniversary_add_anni_date"
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
@@ -45,7 +47,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
         android:layout_toEndOf="@+id/item_time_line_view"
         android:layout_toRightOf="@+id/item_time_line_view"
         android:background="@drawable/item_bg_view"
@@ -154,7 +155,7 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
                 android:padding="3dp"
-                android:text="11.11.2017" />
+                android:text="大保健" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -163,6 +164,21 @@
                 android:padding="3dp"
                 android:text="3 day before" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_marginTop="2dp"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_below="@+id/custom_progress1"
+            android:background="#f7f7f7"
+            android:gravity="center">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="还剩下4天"
+                android:layout_gravity="center"
+                android:gravity="center"/>
         </LinearLayout>
 
 
