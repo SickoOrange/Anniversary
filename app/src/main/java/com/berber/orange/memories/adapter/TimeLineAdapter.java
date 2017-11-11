@@ -71,7 +71,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //set object date
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
-            holder.mDate.setText(date.split(",")[0]);
+            //holder.mDate.setText(date.split(",")[0]);
         }
 
         //calculate left date
@@ -131,11 +131,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
-        TextView mLeftDay;
+      //  TextView mLeftDay;
         TextView mTitle;
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
-        TextView mDate;
+       // TextView mDate;
         NumberProgressBar currentAnniversaryProgress;
 
         TimeLineViewHolder(View itemView, final int type) {
@@ -145,7 +145,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             itemRoot = itemView.findViewById(R.id.item_layout);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
-            mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
+         //   mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
             //  mLeftDay = itemView.findViewById(R.id.left_day_label);
             currentAnniversaryProgress = itemView.findViewById(R.id.number_progress_bar);
 
