@@ -156,7 +156,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             } else if (type == ItemType.START) {
                 mTimeLine.setBeginLine(null);
                 Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_timeline_marker_now);
-                mTimeLine.setMarkerDrawable(drawable);
+                mTimeLine.setMarkerDrawable(mContext.getResources().getDrawable(R.mipmap.ic_category_3));
             } else if (type == ItemType.END) {
                 mTimeLine.setEndLine(null);
             }
