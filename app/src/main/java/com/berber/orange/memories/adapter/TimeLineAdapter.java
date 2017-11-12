@@ -126,16 +126,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         // newItem.setRemindDate(dto.getRemindDate());
         mDateSets.add(newItem);
         adapter.notifyDataSetChanged();
-        //adapter.notifyItemChanged(mDateSets.size()-1);
     }
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
-      //  TextView mLeftDay;
         TextView mTitle;
         TimeLineMarker mTimeLine;
         RelativeLayout itemRoot;
-       // TextView mDate;
         NumberProgressBar currentAnniversaryProgress;
 
         TimeLineViewHolder(View itemView, final int type) {
@@ -145,8 +142,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             itemRoot = itemView.findViewById(R.id.item_layout);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mTitle = itemView.findViewById(R.id.item_time_line_txt);
-         //   mDate = itemView.findViewById(R.id.anniversary_add_anni_date);
-            //  mLeftDay = itemView.findViewById(R.id.left_day_label);
             currentAnniversaryProgress = itemView.findViewById(R.id.number_progress_bar);
 
             if (type == ItemType.ATOM) {
@@ -157,7 +152,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             } else if (type == ItemType.START) {
                 mTimeLine.setBeginLine(null);
                 Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_timeline_marker_now);
-                mTimeLine.setMarkerDrawable(mContext.getResources().getDrawable(R.mipmap.ic_category_3));
+                mTimeLine.setMarkerDrawable(drawable);
             } else if (type == ItemType.END) {
                 mTimeLine.setEndLine(null);
             }

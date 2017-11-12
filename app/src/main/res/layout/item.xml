@@ -8,23 +8,6 @@
     android:background="@drawable/item_ripple"
     tools:ignore="MissingPrefix">
 
-    <!--<TextView-->
-    <!--android:id="@+id/anniversary_add_anni_date"-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:layout_alignParentLeft="true"-->
-    <!--android:layout_alignParentStart="true"-->
-    <!--android:layout_centerVertical="true"-->
-    <!--android:layout_marginLeft="8dp"-->
-    <!--android:layout_marginStart="8dp"-->
-    <!--android:background="@drawable/dot_text_view"-->
-    <!--android:padding="9dp"-->
-    <!--android:text="Apr 23"-->
-    <!--android:textColor="@android:color/black"-->
-    <!--android:textSize="12sp"-->
-    <!--android:textStyle="bold" />-->
-
-
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/anniversary_add_anni_date"
         android:layout_width="40dp"
@@ -34,8 +17,8 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="8dp"
         android:layout_marginStart="8dp"
-        android:src="@mipmap/ic_category_4"
-        android:scaleType="centerCrop"/>
+        android:scaleType="centerCrop"
+        android:src="@mipmap/ic_category_4" />
 
 
     <com.berber.orange.memories.widget.TimeLineMarker
@@ -64,78 +47,6 @@
         android:background="@null"
         android:padding="5dp">
 
-        <!--<de.hdodenhof.circleimageview.CircleImageView-->
-        <!--android:id="@+id/circleImageView"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentLeft="true"-->
-        <!--android:layout_alignParentStart="true"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:layout_marginStart="5dp"-->
-        <!--android:src="@drawable/icon" />-->
-
-
-        <!--<ImageView-->
-        <!--android:id="@+id/favorite"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@id/item_time_line_txt"-->
-        <!--android:layout_marginLeft="3dp"-->
-        <!--android:src="@drawable/ic_favorite_white_18dp"-->
-        <!--android:tint="@color/colorGray" />-->
-
-        <!--<ImageView-->
-        <!--android:id="@+id/clock"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignTop="@+id/favorite"-->
-        <!--android:layout_toEndOf="@+id/favorite"-->
-        <!--android:layout_toRightOf="@+id/favorite"-->
-        <!--android:src="@drawable/ic_access_alarm_white_18dp"-->
-        <!--android:tint="@color/colorGray" />-->
-
-
-        <!--<TextView-->
-        <!--android:id="@+id/place_label"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_below="@+id/item_time_line_txt"-->
-        <!--android:layout_marginLeft="5dp"-->
-        <!--android:layout_toRightOf="@id/clock"-->
-        <!--android:drawableLeft="@drawable/ic_place_black_18dp"-->
-        <!--android:drawableTint="#616161"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="1dp"-->
-        <!--android:text="伦敦"-->
-        <!--android:textColor="#757575"-->
-        <!--android:textSize="14sp" />-->
-
-        <!--<TextView-->
-        <!--android:id="@+id/left_day_label"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignBottom="@+id/clock"-->
-        <!--android:layout_alignParentEnd="true"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_marginEnd="12dp"-->
-        <!--android:layout_marginRight="12dp"-->
-        <!--android:background="@drawable/dot_text_view_left_day"-->
-        <!--android:gravity="center"-->
-        <!--android:padding="2dp"-->
-        <!--android:text="+ 365"-->
-        <!--android:textColor="@android:color/white"-->
-        <!--android:textSize="10sp" />-->
-        <!--<com.dinuscxj.progressbar.CircleProgressBar-->
-        <!--android:id="@+id/custom_progress1"-->
-        <!--android:layout_width="50dp"-->
-        <!--android:layout_height="50dp"-->
-        <!--android:layout_alignParentTop="true"-->
-        <!--app:progress_background_color="@color/holo_darker_gray"-->
-        <!--app:progress_end_color="@color/holo_red_light"-->
-        <!--app:progress_start_color="@color/holo_green_light"-->
-        <!--app:progress_stroke_width="1dp"-->
-        <!--app:progress_text_color="@color/holo_blue_light"-->
-        <!--app:style="line" />-->
 
         <TextView
             android:id="@+id/item_time_line_txt"
@@ -150,7 +61,8 @@
 
         <LinearLayout
             android:id="@+id/item_ll"
-            android:layout_width="match_parent"
+            android:padding="1dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/item_time_line_txt"
             android:layout_marginTop="3dp"
@@ -160,7 +72,9 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
+                android:drawablePadding="5dp"
                 android:padding="3dp"
+
                 android:text="11.11.2017" />
 
             <TextView
@@ -168,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:drawableLeft="@drawable/ic_notifications_black_18px"
+                android:drawablePadding="5dp"
                 android:padding="3dp"
                 android:text="3 day before" />
 
