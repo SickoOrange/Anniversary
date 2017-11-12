@@ -174,7 +174,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         //anniversary date
-        anniversaryDateTextView = findViewById(R.id.anniversary_add_anni_date);
+        anniversaryDateTextView = findViewById(R.id.anniversary_type_image);
         anniversaryDateTextView.setOnClickListener(this);
         //set default currently date
         anniversaryDateTextView.setText(splits[0]);
@@ -262,7 +262,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.anniversary_add_anni_date:
+            case R.id.anniversary_type_image:
                 //get current anniversary date
                 openDatePickerDialog();
                 break;

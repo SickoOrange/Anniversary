@@ -126,7 +126,7 @@
                 android:layout_marginTop="5dp">
 
                 <TextView
-                    android:id="@+id/anniversary_add_anni_date"
+                    android:id="@+id/anniversary_type_image"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
