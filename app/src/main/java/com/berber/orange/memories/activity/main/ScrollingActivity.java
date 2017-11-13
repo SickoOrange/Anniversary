@@ -201,11 +201,12 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         switch (requestCode) {
             case REQUEST_NEW_ITEM:
                 if (data == null) {
+                    Utils.showToast(ScrollingActivity.this, "然而你并没有添加任何新的内容", Toast.LENGTH_LONG);
                     return;
                 }
                 AnniversaryDTO dto = data.getParcelableExtra("object");
                 adapter.addNewItem(dto, adapter);
-                Utils.showToast(ScrollingActivity.this, "add new item", Toast.LENGTH_LONG);
+                Utils.showToast(ScrollingActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 Log.e("TAG", dto.toString());
                 break;
         }
