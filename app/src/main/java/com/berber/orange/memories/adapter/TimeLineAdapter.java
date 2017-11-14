@@ -43,17 +43,26 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         mContext = context;
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        int size = mDateSets.size() - 1;
-        if (size == 0)
-            return ItemType.ATOM;
-        else if (position == 0)
-            return ItemType.START;
-        else if (position == size)
-            return ItemType.END;
-        else return ItemType.NORMAL;
+//    @Override
+//    public int getItemViewType(int position) {
+//        Log.e("TAG", "getItemViewType" + position + "  " + mDateSets.size());
+//
+////        int size = mDateSets.size() - 1;
+////        if (size == 0)
+////            return ItemType.ATOM;
+////        else if (position == 0)
+////            return ItemType.START;
+////        else if (position == size)
+////            return ItemType.END;
+//        return ItemType.NORMAL;
+//       // return 0;
+//    }
 
+
+    @Override
+    public long getItemId(int position) {
+        Log.e("TAG", "get item id: " + position);
+        return super.getItemId(position);
     }
 
     @Override
@@ -68,7 +77,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         Log.e("TAG", "notify data change in onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
-        holder.mAnniversaryTitle.setText(anniversary.getTitle());
+        holder.mAnniversaryTitle.setText(anniversary.getTitle() + " " + position);
 
         //set object date
         if (anniversary.getDate() != null) {
@@ -103,9 +112,32 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 //        animator.start();
 
 
+//        if (position == 0) {
+//            // holder.mTimeLine.setBeginLine(null);
+//            holder.mTimeLine.setBeginLine(null);
+//        } else if (getItemViewType(position) == ItemType.START) {
+//            //holder.mTimeLine.setBeginLine(null);
+//            //Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_timeline_marker_now);
+//            // holder.mTimeLine.setMarkerDrawable(drawable);
+//        } else if (position == mDateSets.size() - 1) {
+//            //holder.mTimeLine.setEndLine(null);
+//        } else {
+//        }
+
+        if (position == 0) {
+            holder.mTimeLine.setBeginLineView(false);
+        } else if (position == mDateSets.size() - 1) {
+            holder.mTimeLine.setEndLineView(false);
+        } else {
+            holder.mTimeLine.setBeginLineView(true);
+            holder.mTimeLine.setEndLineView(true);
+        }
+
+
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // TODO: 2017/11/14 open details page
             }
         });
     }
@@ -162,19 +194,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
 
-
-            if (type == ItemType.ATOM) {
-                mTimeLine.setBeginLine(null);
-                mTimeLine.setEndLine(null);
-                mTimeLine.setMarkerDrawable(null);
-
-            } else if (type == ItemType.START) {
-                mTimeLine.setBeginLine(null);
-                Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_timeline_marker_now);
-                mTimeLine.setMarkerDrawable(drawable);
-            } else if (type == ItemType.END) {
-                mTimeLine.setEndLine(null);
-            }
 
         }
     }

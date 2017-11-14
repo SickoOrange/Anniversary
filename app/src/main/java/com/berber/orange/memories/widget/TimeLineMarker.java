@@ -21,23 +21,9 @@ public class TimeLineMarker extends View {
     private Drawable mBeginLine;
     private Drawable mEndLine;
     private Drawable mMarkerDrawable;
+    private Drawable beginLineCopy;
+    private Drawable endLineCopy;
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        if (mBeginLine != null) {
-            mBeginLine.draw(canvas);
-        }
-
-        if (mEndLine != null) {
-            mEndLine.draw(canvas);
-        }
-
-        if (mMarkerDrawable != null) {
-            mMarkerDrawable.draw(canvas);
-        }
-
-        super.onDraw(canvas);
-    }
 
     public TimeLineMarker(Context context) {
         this(context, null);
@@ -68,14 +54,19 @@ public class TimeLineMarker extends View {
         mBeginLine = a.getDrawable(
                 R.styleable.TimeLineMarker_beginLine);
 
+        beginLineCopy = a.getDrawable(
+                R.styleable.TimeLineMarker_beginLine);
+
         mEndLine = a.getDrawable(
+                R.styleable.TimeLineMarker_endLine);
+
+        endLineCopy = a.getDrawable(
                 R.styleable.TimeLineMarker_endLine);
 
         mMarkerDrawable = a.getDrawable(
                 R.styleable.TimeLineMarker_marker);
 
         a.recycle();
-
 
 
         if (mBeginLine != null)
@@ -87,6 +78,7 @@ public class TimeLineMarker extends View {
         if (mMarkerDrawable != null)
             mMarkerDrawable.setCallback(this);
     }
+
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -108,6 +100,24 @@ public class TimeLineMarker extends View {
 
 
         setMeasuredDimension(widthSize, heightSize);
+    }
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        if (mBeginLine != null) {
+            mBeginLine.draw(canvas);
+        }
+
+        if (mEndLine != null) {
+            mEndLine.draw(canvas);
+        }
+
+        if (mMarkerDrawable != null) {
+            mMarkerDrawable.draw(canvas);
+        }
+
+        super.onDraw(canvas);
     }
 
     @Override
@@ -171,26 +181,47 @@ public class TimeLineMarker extends View {
         }
     }
 
-    public void setBeginLine(Drawable beginLine) {
-        if (this.mBeginLine != beginLine) {
-            this.mBeginLine = beginLine;
-            if (mBeginLine != null) {
-                mBeginLine.setCallback(this);
-            }
-            initDrawableSize();
-            invalidate();
+//    public void setBeginLine(Drawable beginLine) {
+//        if (this.mBeginLine != beginLine) {
+//            this.mBeginLine = beginLine;
+//            if (mBeginLine != null) {
+//                mBeginLine.setCallback(this);
+//            }
+//            initDrawableSize();
+//            invalidate();
+//        }
+//    }
+
+    public void setBeginLineView(boolean flag) {
+        if (!flag) {
+            this.mBeginLine = null;
+        } else {
+            this.mBeginLine = beginLineCopy;
         }
+        initDrawableSize();
+        invalidate();
+
     }
 
-    public void setEndLine(Drawable endLine) {
-        if (this.mEndLine != endLine) {
-            this.mEndLine = endLine;
-            if (mEndLine != null) {
-                mEndLine.setCallback(this);
-            }
-            initDrawableSize();
-            invalidate();
+    //
+//    public void setEndLine(Drawable endLine) {
+//        if (this.mEndLine != endLine) {
+//            this.mEndLine = endLine;
+//            if (mEndLine != null) {
+//                mEndLine.setCallback(this);
+//            }
+//            initDrawableSize();
+//            invalidate();
+//        }
+//    }
+    public void setEndLineView(boolean flag) {
+        if (!flag) {
+            this.mEndLine = null;
+        } else {
+            this.mEndLine = endLineCopy;
         }
+        initDrawableSize();
+        invalidate();
     }
 
     public void setMarkerDrawable(Drawable markerDrawable) {

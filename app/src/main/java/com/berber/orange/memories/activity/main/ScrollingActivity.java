@@ -133,18 +133,20 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     }
 
     private void refreshItem() {
-        TimeLineAdapter adapter = (TimeLineAdapter) recycler.getAdapter();
-        List<Anniversary> datas = adapter.getDatas();
-        if (datas == null) {
-            return;
-        }
-        if (datas.size() != 0) {
-            //clear all data set
-            datas.clear();
-        }
-        List<Anniversary> list = anniversaryDao.queryBuilder().list();
-        datas.addAll(list);
-        adapter.notifyDataSetChanged();
+//        TimeLineAdapter adapter = (TimeLineAdapter) recycler.getAdapter();
+//        List<Anniversary> datas = adapter.getDatas();
+//        if (datas == null) {
+//            return;
+//        }
+//        if (datas.size() != 0) {
+//            //clear all data set
+//            datas.clear();
+//            recycler.removeAllViews();
+//            adapter.notifyDataSetChanged();
+//        }
+//        List<Anniversary> list = anniversaryDao.queryBuilder().list();
+//        datas.addAll(list);
+//        adapter.notifyDataSetChanged();
     }
 
     private void initRecycler() {
@@ -231,6 +233,6 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 //                Utils.showToast(ScrollingActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
 //                Log.e("TAG", dto.toString());
 //                break;
- //       }
+        //       }
     }
 }
