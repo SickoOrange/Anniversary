@@ -128,7 +128,7 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
                     android:text="2017年10月15日"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"/>
 
             </LinearLayout>
 
@@ -160,7 +160,7 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
                     android:hint="请选择地点"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"/>
 
                 <!--<Switch-->
                     <!--android:id="@+id/location_enable_btn"-->
@@ -203,7 +203,7 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
                     android:hint="请设定通知频率以及通知类型"
-                    android:textSize="14sp"/>
+                    android:textSize="16sp"/>
 
                 <!--<TextView-->
                     <!--android:id="@+id/anniversary_add_anni_notification_type"-->

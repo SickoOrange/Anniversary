@@ -13,7 +13,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -66,7 +65,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private String currentAnniversaryDescription;
     private String currentPickDateString;
     private String currentPickTimeString;
-    private TextView anniversaryNotificationTimeTextView;
+    private TextView anniversaryNotificationTextView;
     private TextView anniversaryNotificationTypeTextView;
     private Switch enableNotificationButton;
     private BottomSheetDialog notificationTypePickerDialog;
@@ -187,8 +186,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryLocation.setOnClickListener(this);
 
         //anniversary notification
-        anniversaryNotificationTimeTextView = findViewById(R.id.anniversary_add_anni_notification);
-        anniversaryNotificationTimeTextView.setOnClickListener(this);
+        anniversaryNotificationTextView = findViewById(R.id.anniversary_add_anni_notification);
+        anniversaryNotificationTextView.setOnClickListener(this);
 //        anniversaryNotificationTypeTextView = findViewById(R.id.anniversary_add_anni_notification_type);
 //        anniversaryNotificationTypeTextView.setOnClickListener(this);
 
@@ -200,7 +199,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         btnSave.setOnClickListener(this);
 
         //enable notification button
-  //      enableNotificationButton = findViewById(R.id.notification_enable_btn);
+        //      enableNotificationButton = findViewById(R.id.notification_enable_btn);
 //        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //            @Override
 //            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
@@ -250,7 +249,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title("通知设定")
                 .customView(R.layout.notification_setting_picker, true)
-                .positiveText("SUBMIT")
+                .positiveText("Submit")
+                .negativeText("Cancel")
                 .build();
         View customView = dialog.getCustomView();
         if (customView == null) {
@@ -278,9 +278,18 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before";
-                anniversaryNotificationTimeTextView.setText(msg);
+//                String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before";
+//                anniversaryNotificationTextView.setText(msg);
+                String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before" + "   " + selectedRadioTypeButton.getText().toString();
+                anniversaryNotificationTextView.setText(msg);
                 notificationTimeBeforeInMillis = calculateNotificationIndex(msg);
+            }
+        });
+
+        dialog.getBuilder().onNegative(new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
             }
         });
         dialog.show();
@@ -330,7 +339,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 break;
 
             case R.id.anniversary_add_anni_notification:
-                    openNotificationSettingDialog();
+                openNotificationSettingDialog();
                 break;
 //            case R.id.anniversary_add_anni_notification_type:
 //                if (enableNotificationButton.isChecked()) {
@@ -362,32 +371,32 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 //
 //            case R.id.bottom_sheet_notification_time_label_5:
 //                Button button5 = (Button) view;
-//                anniversaryNotificationTimeTextView.setText(button5.getText().toString().toLowerCase());
+//                anniversaryNotificationTextView.setText(button5.getText().toString().toLowerCase());
 //                notificationTimePickerDialog.dismiss();
 //                break;
 //
 //            case R.id.bottom_sheet_notification_time_label_4:
 //                Button button4 = (Button) view;
-//                anniversaryNotificationTimeTextView.setText(button4.getText().toString().toLowerCase());
+//                anniversaryNotificationTextView.setText(button4.getText().toString().toLowerCase());
 //                notificationTimePickerDialog.dismiss();
 //
 //                break;
 //
 //            case R.id.bottom_sheet_notification_time_label_3:
 //                Button button3 = (Button) view;
-//                anniversaryNotificationTimeTextView.setText(button3.getText().toString().toLowerCase());
+//                anniversaryNotificationTextView.setText(button3.getText().toString().toLowerCase());
 //                notificationTimePickerDialog.dismiss();
 //                break;
 //
 //            case R.id.bottom_sheet_notification_time_label_2:
 //                Button button2 = (Button) view;
-//                anniversaryNotificationTimeTextView.setText(button2.getText().toString().toLowerCase());
+//                anniversaryNotificationTextView.setText(button2.getText().toString().toLowerCase());
 //                notificationTimePickerDialog.dismiss();
 //                break;
 //
 //            case R.id.bottom_sheet_notification_time_label_1:
 //                Button button1 = (Button) view;
-//                anniversaryNotificationTimeTextView.setText(button1.getText().toString().toLowerCase());
+//                anniversaryNotificationTextView.setText(button1.getText().toString().toLowerCase());
 //                notificationTimePickerDialog.dismiss();
 //                break;
 
