@@ -105,7 +105,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/anni_title_layout"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:padding="5dp">
 
                 <ImageView
                     android:layout_width="0dp"
@@ -126,7 +127,8 @@
                     android:paddingBottom="5dp"
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
-                    android:text="2017年10月15日" />
+                    android:text="2017年10月15日"
+                    android:textSize="14sp"/>
 
             </LinearLayout>
 
@@ -135,7 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@id/data_layout"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:padding="5dp">
 
                 <ImageView
                     android:layout_width="0dp"
@@ -156,7 +159,8 @@
                     android:paddingBottom="5dp"
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
-                    android:text="请选择地点" />
+                    android:hint="请选择地点"
+                    android:textSize="14sp"/>
 
                 <!--<Switch-->
                     <!--android:id="@+id/location_enable_btn"-->
@@ -174,43 +178,53 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/location_layout"
-                android:layout_marginTop="5dp">
+                android:layout_marginTop="5dp"
+                android:padding="5dp">
 
-                <TextView
-                    android:id="@+id/anniversary_add_anni_notification_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="4"
-                    android:background="@drawable/item_ripple"
-                    android:clickable="true"
-                    android:drawableLeft="@drawable/ic_access_alarms_black_18dp"
-                    android:drawableStart="@drawable/ic_access_alarms_black_18dp"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:text="15 minute before" />
-
-                <TextView
-                    android:id="@+id/anniversary_add_anni_notification_type"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="3"
-                    android:background="@drawable/item_ripple"
-                    android:clickable="true"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:text="Notification Type" />
-
-                <Switch
-                    android:id="@+id/notification_enable_btn"
+                <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:background="@color/white"
-                    android:checked="false" />
+                    android:scaleType="center"
+                    android:src="@drawable/ic_access_alarms_black_18dp" />
+
+
+
+                <TextView
+                    android:id="@+id/anniversary_add_anni_notification"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="6"
+                    android:background="@drawable/item_ripple"
+                    android:clickable="true"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
+                    android:hint="请设定通知频率以及通知类型"
+                    android:textSize="14sp"/>
+
+                <!--<TextView-->
+                    <!--android:id="@+id/anniversary_add_anni_notification_type"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="3"-->
+                    <!--android:background="@drawable/item_ripple"-->
+                    <!--android:clickable="true"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:text="Notification Type" />-->
+
+                <!--<Switch-->
+                    <!--android:id="@+id/notification_enable_btn"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginRight="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@color/white"-->
+                    <!--android:checked="false" />-->
 
             </LinearLayout>
 

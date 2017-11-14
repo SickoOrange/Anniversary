@@ -187,10 +187,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryLocation.setOnClickListener(this);
 
         //anniversary notification
-        anniversaryNotificationTimeTextView = findViewById(R.id.anniversary_add_anni_notification_time);
+        anniversaryNotificationTimeTextView = findViewById(R.id.anniversary_add_anni_notification);
         anniversaryNotificationTimeTextView.setOnClickListener(this);
-        anniversaryNotificationTypeTextView = findViewById(R.id.anniversary_add_anni_notification_type);
-        anniversaryNotificationTypeTextView.setOnClickListener(this);
+//        anniversaryNotificationTypeTextView = findViewById(R.id.anniversary_add_anni_notification_type);
+//        anniversaryNotificationTypeTextView.setOnClickListener(this);
 
         //anniversary description
         anniversaryDescriptionEditText = findViewById(R.id.anniversary_add_anni_description);
@@ -200,15 +200,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         btnSave.setOnClickListener(this);
 
         //enable notification button
-        enableNotificationButton = findViewById(R.id.notification_enable_btn);
-        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                if (b) {
-                    openNotificationSettingDialog();
-                }
-            }
-        });
+  //      enableNotificationButton = findViewById(R.id.notification_enable_btn);
+//        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//            @Override
+//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+//                if (b) {
+//                    openNotificationSettingDialog();
+//                }
+//            }
+//        });
 
     }
 
@@ -226,24 +226,24 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 //        notificationTypePickerDialog.show();
 //    }
 
-    private void openNotificationPickerDialog() {
-        notificationTimePickerDialog = new BottomSheetDialog(AddItemActivity.this);
-        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_setting_picker, null);
-//        Button timeSettingCustom1 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_1);
-//        timeSettingCustom1.setOnClickListener(this);
-//        Button timeSettingCustom2 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_2);
-//        timeSettingCustom2.setOnClickListener(this);
-//        Button timeSettingCustom3 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_3);
-//        timeSettingCustom3.setOnClickListener(this);
-//        Button timeSettingCustom4 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_4);
-//        timeSettingCustom4.setOnClickListener(this);
-//        Button timeSettingCustom5 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_5);
-//        timeSettingCustom5.setOnClickListener(this);
-//        Button timeSettingCustom6 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_6);
-//       timeSettingCustom6.setOnClickListener(this);
-        notificationTimePickerDialog.setContentView(notificationTimePickerDialogView);
-        notificationTimePickerDialog.show();
-    }
+//    private void openNotificationPickerDialog() {
+//        notificationTimePickerDialog = new BottomSheetDialog(AddItemActivity.this);
+//        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_setting_picker, null);
+////        Button timeSettingCustom1 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_1);
+////        timeSettingCustom1.setOnClickListener(this);
+////        Button timeSettingCustom2 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_2);
+////        timeSettingCustom2.setOnClickListener(this);
+////        Button timeSettingCustom3 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_3);
+////        timeSettingCustom3.setOnClickListener(this);
+////        Button timeSettingCustom4 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_4);
+////        timeSettingCustom4.setOnClickListener(this);
+////        Button timeSettingCustom5 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_5);
+////        timeSettingCustom5.setOnClickListener(this);
+////        Button timeSettingCustom6 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_6);
+////       timeSettingCustom6.setOnClickListener(this);
+//        notificationTimePickerDialog.setContentView(notificationTimePickerDialogView);
+//        notificationTimePickerDialog.show();
+//    }
 
     private void openNotificationSettingDialog() {
 
@@ -329,10 +329,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
                 break;
 
-            case R.id.anniversary_add_anni_notification_time:
-                if (enableNotificationButton.isChecked()) {
-                    openNotificationPickerDialog();
-                }
+            case R.id.anniversary_add_anni_notification:
+                    openNotificationSettingDialog();
                 break;
 //            case R.id.anniversary_add_anni_notification_type:
 //                if (enableNotificationButton.isChecked()) {
