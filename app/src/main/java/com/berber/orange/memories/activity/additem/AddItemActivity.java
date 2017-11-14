@@ -447,10 +447,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         //String year = String.valueOf(datePicker.getYear());
                         //String currentMonth = String.valueOf(datePicker.getMonth() + 1);
                         //String day = String.valueOf(datePicker.getDayOfMonth());
-                       // currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
-                        Date currentDate=new Date()
-                        anniversaryDateTextView.setText(currentPickDateString);
-
+                        // currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
+                        int currentYear = datePicker.getYear();
+                        int currentMonth = datePicker.getMonth();
+                        int currentDay = datePicker.getDayOfMonth();
+                        Date currentDate = new Date(currentYear - 1900, currentMonth, currentDay);
+                        anniversaryDateTextView.setText(currentDate.toString());
                         Utils.showToast(AddItemActivity.this, currentPickDateString, 1);
                     }
                 })
