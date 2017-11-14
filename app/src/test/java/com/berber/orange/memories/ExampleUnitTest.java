@@ -40,23 +40,9 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void calculateLeftDays() throws ParseException {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2017, 11, 5, 0, 0, 0);
-
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date d2 = sdf.parse("2017-11-10 00:00:00");
-        long time = calendar.getTime().getTime();
-        System.out.println((time - System.currentTimeMillis()) / (1000 * 3600 * 24));
-
-        //long destination = calendar.getTime().getTime();
-        //long current = System.currentTimeMillis();
-
-//        if (current < destination) {
-//            long timeStamp = destination - current;
-//            long l1 = timeStamp / (1000 * 3600 * 24);
-//            System.out.println(l1);
-//        }
+    public void getNewDate() throws ParseException {
+        Date date = new Date(2017 - 1900, 12, 5);
+        System.out.println(date.toString());
     }
 
     @Test
@@ -106,7 +92,7 @@ public class ExampleUnitTest {
     }
 
     @Test
-    public void test(){
+    public void test() {
         double l = calculateHourIndex("20 minute before");
         System.out.println(l);
     }

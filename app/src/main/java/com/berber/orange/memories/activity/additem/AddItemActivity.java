@@ -3,7 +3,6 @@ package com.berber.orange.memories.activity.additem;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
@@ -19,7 +18,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -37,7 +35,6 @@ import com.berber.orange.memories.dbservice.NotificationSending;
 import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
-import com.berber.orange.memories.widget.IndicatorView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -54,22 +51,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes;
-    private IndicatorView indicatorView;
     private LinearLayout indicatorContainer;
     private int prePosition;
-    private TextView anniversaryTimeTextView;
     private TextView anniversaryDateTextView;
     private EditText anniversaryTitleEditText;
-    private String currentAnniversaryTitle;
     private EditText anniversaryDescriptionEditText;
-    private String currentAnniversaryDescription;
     private String currentPickDateString;
     private String currentPickTimeString;
     private TextView anniversaryNotificationTextView;
-    private TextView anniversaryNotificationTypeTextView;
-    private Switch enableNotificationButton;
-    private BottomSheetDialog notificationTypePickerDialog;
-    private BottomSheetDialog notificationTimePickerDialog;
     private RadioButton selectedRadioFrequencyButton;
     private CircleImageView anniversaryTypeImage;
     private TextView anniversaryTypeName;
@@ -80,13 +69,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter;
     private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
     private RadioButton selectedRadioTypeButton;
+    private boolean isNotificationEnable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        boolean immerse = ScreenUtil.immerseStatusBar(this);
+        ScreenUtil.immerseStatusBar(this);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -172,14 +162,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         //anniversary date
-        anniversaryDateTextView = findViewById(R.id.anniversary_type_image);
+        anniversaryDateTextView = findViewById(R.id.anniversary_date);
         anniversaryDateTextView.setOnClickListener(this);
         //set default currently date
         anniversaryDateTextView.setText(splits[0]);
-        //anniversary time
-        //anniversaryTimeTextView = findViewById(R.id.anniversary_add_anni_time);
-        // anniversaryTimeTextView.setOnClickListener(this);
-        // anniversaryTimeTextView.setText(splits[1]);
 
         //anniversary location
         TextView anniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
@@ -188,8 +174,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //anniversary notification
         anniversaryNotificationTextView = findViewById(R.id.anniversary_add_anni_notification);
         anniversaryNotificationTextView.setOnClickListener(this);
-//        anniversaryNotificationTypeTextView = findViewById(R.id.anniversary_add_anni_notification_type);
-//        anniversaryNotificationTypeTextView.setOnClickListener(this);
 
         //anniversary description
         anniversaryDescriptionEditText = findViewById(R.id.anniversary_add_anni_description);
@@ -198,51 +182,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         Button btnSave = findViewById(R.id.anniversary_add_btn_save);
         btnSave.setOnClickListener(this);
 
-        //enable notification button
-        //      enableNotificationButton = findViewById(R.id.notification_enable_btn);
-//        enableNotificationButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//            @Override
-//            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-//                if (b) {
-//                    openNotificationSettingDialog();
-//                }
-//            }
-//        });
-
     }
-
-
-//    private void openNotificationTypePickerDialog() {
-//        notificationTypePickerDialog = new BottomSheetDialog(AddItemActivity.this);
-//        View notificationTypePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_type_picker, null);
-//        LinearLayout ll1 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll1);
-//        ll1.setOnClickListener(this);
-//        LinearLayout ll2 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll2);
-//        ll2.setOnClickListener(this);
-//        LinearLayout ll3 = notificationTypePickerDialogView.findViewById(R.id.notification_type_picker_ll3);
-//        ll3.setOnClickListener(this);
-//        notificationTypePickerDialog.setContentView(notificationTypePickerDialogView);
-//        notificationTypePickerDialog.show();
-//    }
-
-//    private void openNotificationPickerDialog() {
-//        notificationTimePickerDialog = new BottomSheetDialog(AddItemActivity.this);
-//        View notificationTimePickerDialogView = LayoutInflater.from(AddItemActivity.this).inflate(R.layout.notification_setting_picker, null);
-////        Button timeSettingCustom1 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_1);
-////        timeSettingCustom1.setOnClickListener(this);
-////        Button timeSettingCustom2 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_2);
-////        timeSettingCustom2.setOnClickListener(this);
-////        Button timeSettingCustom3 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_3);
-////        timeSettingCustom3.setOnClickListener(this);
-////        Button timeSettingCustom4 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_4);
-////        timeSettingCustom4.setOnClickListener(this);
-////        Button timeSettingCustom5 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_5);
-////        timeSettingCustom5.setOnClickListener(this);
-////        Button timeSettingCustom6 = notificationTimePickerDialogView.findViewById(R.id.bottom_sheet_notification_time_label_6);
-////       timeSettingCustom6.setOnClickListener(this);
-//        notificationTimePickerDialog.setContentView(notificationTimePickerDialogView);
-//        notificationTimePickerDialog.show();
-//    }
 
     private void openNotificationSettingDialog() {
 
@@ -278,11 +218,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before";
-//                anniversaryNotificationTextView.setText(msg);
                 String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before" + "   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
                 notificationTimeBeforeInMillis = calculateNotificationIndex(customTimeEditView.getText().toString(), selectedRadioFrequencyButton.getText().toString());
+                isNotificationEnable = true;
             }
         });
 
@@ -320,86 +259,22 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.anniversary_type_image:
+            case R.id.anniversary_date:
                 //get current anniversary date
                 openDatePickerDialog();
                 break;
-//            case R.id.anniversary_add_anni_time:
-//                //get current anniversary time
-//                openTimePickerDialog();
-//                break;
-
             case R.id.anniversary_add_anni_title:
                 //get current title
-                currentAnniversaryTitle = anniversaryTitleEditText.getText().toString();
+                //currentAnniversaryTitle = anniversaryTitleEditText.getText().toString();
                 break;
             case R.id.anniversary_add_anni_description:
                 //get current description
-                currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+                //currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
                 break;
 
             case R.id.anniversary_add_anni_notification:
                 openNotificationSettingDialog();
                 break;
-//            case R.id.anniversary_add_anni_notification_type:
-//                if (enableNotificationButton.isChecked()) {
-//                    openNotificationTypePickerDialog();
-//                }
-//                break;
-//
-//            case R.id.notification_type_picker_ll1:
-//                Utils.showToast(AddItemActivity.this, "Notification type", 1);
-//                anniversaryNotificationTypeTextView.setText(R.string.notification_notification);
-//                notificationTypePickerDialog.dismiss();
-//                break;
-//            case R.id.notification_type_picker_ll2:
-//                Utils.showToast(AddItemActivity.this, "Email type", 1);
-//                anniversaryNotificationTypeTextView.setText(R.string.notification_email);
-//                notificationTypePickerDialog.dismiss();
-//
-//                break;
-//            case R.id.notification_type_picker_ll3:
-//                Utils.showToast(AddItemActivity.this, "All type", 1);
-//                anniversaryNotificationTypeTextView.setText(R.string.notification_all);
-//                notificationTypePickerDialog.dismiss();
-//                break;
-
-//            case R.id.bottom_sheet_notification_time_label_6:
-//                openNotificationSettingDialog();
-//                notificationTimePickerDialog.dismiss();
-//                break;
-//
-//            case R.id.bottom_sheet_notification_time_label_5:
-//                Button button5 = (Button) view;
-//                anniversaryNotificationTextView.setText(button5.getText().toString().toLowerCase());
-//                notificationTimePickerDialog.dismiss();
-//                break;
-//
-//            case R.id.bottom_sheet_notification_time_label_4:
-//                Button button4 = (Button) view;
-//                anniversaryNotificationTextView.setText(button4.getText().toString().toLowerCase());
-//                notificationTimePickerDialog.dismiss();
-//
-//                break;
-//
-//            case R.id.bottom_sheet_notification_time_label_3:
-//                Button button3 = (Button) view;
-//                anniversaryNotificationTextView.setText(button3.getText().toString().toLowerCase());
-//                notificationTimePickerDialog.dismiss();
-//                break;
-//
-//            case R.id.bottom_sheet_notification_time_label_2:
-//                Button button2 = (Button) view;
-//                anniversaryNotificationTextView.setText(button2.getText().toString().toLowerCase());
-//                notificationTimePickerDialog.dismiss();
-//                break;
-//
-//            case R.id.bottom_sheet_notification_time_label_1:
-//                Button button1 = (Button) view;
-//                anniversaryNotificationTextView.setText(button1.getText().toString().toLowerCase());
-//                notificationTimePickerDialog.dismiss();
-//                break;
-
             case R.id.anniversary_add_btn_save:
                 //collectInfo();
                 writeInfo();
@@ -442,13 +317,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         long anniversaryId = anniversaryDao.insert(anniversary);
 
         //handle remind date
-        if (enableNotificationButton.isChecked()) {
+        if (isNotificationEnable) {
             Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
             NotificationSending notificationSending = new NotificationSending();
             notificationSending.setSendingDate(notificationDate);
             notificationSending.setRecipient("heylbly@gmail.com");
-            String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
-            notificationSending.setNotificationType(getNotificationType(notificationTypeString));
+            notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
 
             notificationSending.setAnniversaryId(anniversaryId);
             notificationSending.setAnniversary(anniversary);
@@ -551,7 +425,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                             minute = "0" + minute;
                         }
                         currentPickTimeString = String.format("%s:%s", hour, minute);
-                        anniversaryTimeTextView.setText(currentPickTimeString);
+                        // anniversaryTimeTextView.setText(currentPickTimeString);
                         Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
                     }
                 })
@@ -570,13 +444,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         View customView = dialog.getCustomView();
                         DatePicker datePicker = customView.findViewById(R.id.datePicker);
-                        String year = String.valueOf(datePicker.getYear());
-                        String currentMonth = String.valueOf(datePicker.getMonth() + 1);
-                        String day = String.valueOf(datePicker.getDayOfMonth());
-                        currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
+                        //String year = String.valueOf(datePicker.getYear());
+                        //String currentMonth = String.valueOf(datePicker.getMonth() + 1);
+                        //String day = String.valueOf(datePicker.getDayOfMonth());
+                       // currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
+                        Date currentDate=new Date()
                         anniversaryDateTextView.setText(currentPickDateString);
 
-                        Utils.showToast(AddItemActivity.this, year + " " + currentMonth + " " + day, 1);
+                        Utils.showToast(AddItemActivity.this, currentPickDateString, 1);
                     }
                 })
                 .negativeText(android.R.string.cancel);
@@ -584,20 +459,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private Date getCurrentAnniversaryDate() {
-
-//        if (TextUtils.isEmpty(currentPickDateString) || TextUtils.isEmpty(currentPickTimeString)) {
-//            return null;
-//        }
         if (TextUtils.isEmpty(currentPickDateString)) {
             return null;
         }
-
-
-        String dateString = currentPickDateString + " " + currentPickTimeString;
+        String dateString = currentPickDateString;
         Date currentDate = null;
         try {
-            currentDate = new SimpleDateFormat("yyyy-MM-dd hh:mm", Locale.ENGLISH).parse(dateString);
-            currentPickTimeString = "";
+            currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dateString);
             currentPickTimeString = "";
         } catch (ParseException e) {
             e.printStackTrace();

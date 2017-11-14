@@ -9,7 +9,7 @@
     tools:ignore="MissingPrefix">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/anniversary_type_image"
+        android:id="@+id/anniversary_date"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
