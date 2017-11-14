@@ -54,7 +54,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private LinearLayout indicatorContainer;
     private int prePosition;
     private TextView anniversaryDateTextView;
-    private EditText anniversaryTitleEditText;
+    private EditText mAnniversaryTitleEditText;
     private EditText anniversaryDescriptionEditText;
     private String currentPickDateString;
     private String currentPickTimeString;
@@ -153,7 +153,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryTypeName = findViewById(R.id.anniversary_add_type_name);
 
         //anniversary tile edit text
-        anniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
+        mAnniversaryTitleEditText = findViewById(R.id.anniversary_add_anni_title);
 
 
         Date date = new Date();
@@ -202,8 +202,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         notificationFrequencyGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton radioButton = radioGroup.findViewById(i);
-                selectedRadioFrequencyButton = radioButton;
+                RadioButton selectedValue = radioGroup.findViewById(i);
+                selectedRadioFrequencyButton = selectedValue;
             }
         });
 
@@ -211,9 +211,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         notificationTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton radioButton = radioGroup.findViewById(i);
-                selectedRadioTypeButton = radioButton;
-
+                RadioButton selectedType = radioGroup.findViewById(i);
+                selectedRadioTypeButton = selectedType;
             }
         });
         dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -230,11 +229,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 String msg = frequencyString + " " + selectedRadioFrequencyButton.getText().toString() + " before" + ",   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
-                notificationTimeBeforeInMillis = calculateNotificationIndex(frequencyString, selectedRadioFrequencyButton.getText().toString());
+                notificationTimeBeforeInMillis = calculateNotificationTimeInMillis(frequencyString, selectedRadioFrequencyButton.getText().toString());
                 isNotificationEnable = true;
             }
         });
-
         dialog.getBuilder().onNegative(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
@@ -242,7 +240,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
         dialog.show();
-
     }
 
 
@@ -275,7 +272,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 break;
             case R.id.anniversary_add_anni_title:
                 //get current title
-                //currentAnniversaryTitle = anniversaryTitleEditText.getText().toString();
+                //currentAnniversaryTitle = mAnniversaryTitleEditText.getText().toString();
                 break;
             case R.id.anniversary_add_anni_description:
                 //get current description
@@ -298,7 +295,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         Anniversary anniversary = new Anniversary();
 
         // handle anniversary title
-        String anniversaryTitle = anniversaryTitleEditText.getText().toString();
+        String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
         if (TextUtils.isEmpty(anniversaryTitle)) {
             alertWarningDialog("Anniversary  title can't be empty");
             return;
@@ -306,13 +303,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversary.setTitle(anniversaryTitle);
 
         //handle location
-        anniversary.setLocation("London");
+        anniversary.setLocation("China");
 
         //handle date
         if (currentPickDate != null) {
             anniversary.setDate(currentPickDate);
         } else {
-            alertWarningDialog("you must pick a certain date and time");
+            alertWarningDialog("you must pick a certain date");
             return;
         }
 
@@ -367,7 +364,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private NotificationType getNotificationType(String notificationTypeString) {
         NotificationType notificationType = null;
         switch (notificationTypeString) {
-            case "Notification":
+            case "System Notification":
                 notificationType = NotificationType.NOTIFICATION;
                 break;
             case "Email":
@@ -390,7 +387,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private long calculateNotificationIndex(String value, String frequency) {
+    private long calculateNotificationTimeInMillis(String value, String frequency) {
         long hourIndex = 0;
         int prefixIndex = Integer.valueOf(value);
         switch (frequency) {
