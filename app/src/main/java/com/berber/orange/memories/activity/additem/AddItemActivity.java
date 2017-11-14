@@ -422,54 +422,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
-    private void collectInfo() {
-        //save all information into entity
-        AnniversaryDTO dto = new AnniversaryDTO();
-
-        // handle anniversary title
-        String anniversaryTitle = anniversaryTitleEditText.getText().toString();
-        if (TextUtils.isEmpty(anniversaryTitle)) {
-            alertWarningDialog("Anniversary  title can't be empty");
-            return;
-        }
-        dto.setTitle(anniversaryTitle);
-
-        //handle location
-        dto.setLocation("London");
-
-        //handle date
-        Date currentAnniversaryDate = getCurrentAnniversaryDate();
-        if (currentAnniversaryDate != null) {
-            dto.setDate(currentAnniversaryDate);
-        } else {
-            alertWarningDialog("you must pick a certain date and time");
-            return;
-        }
-
-        //handle create Date
-        dto.setCreateDate(new Date());
-
-        //handle description
-        String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
-        dto.setDescription(anniversaryDescription);
-
-        //handle remind date
-        if (enableNotificationButton.isChecked()) {
-            Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
-            NotificationSendingDTO notificationSendingDTO = new NotificationSendingDTO();
-            notificationSendingDTO.setSendingDate(notificationDate);
-            notificationSendingDTO.setRecipient(" ");
-            String notificationTypeString = anniversaryNotificationTypeTextView.getText().toString();
-            notificationSendingDTO.setNotificationType(getNotificationType(notificationTypeString));
-            dto.setNotificationSendingDTO(notificationSendingDTO);
-        }
-
-
-        Intent intent = new Intent(AddItemActivity.this, ScrollingActivity.class);
-        intent.putExtra("object", dto);
-        setResult(REQUEST_NEW_ITEM, intent);
-        finish();
-    }
 
     private NotificationType getNotificationType(String notificationTypeString) {
         NotificationType notificationType = null;

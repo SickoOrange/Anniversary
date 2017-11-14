@@ -14,7 +14,6 @@ import android.widget.TextView;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
-import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -22,6 +21,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -62,11 +62,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return new TimeLineViewHolder(inflate, viewType);
     }
 
-    @SuppressLint("WrongConstant")
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
 
-        Log.e("TAG","notify data change in onBindViewHolder");
+        Log.e("TAG", "notify data change in onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle());
@@ -75,17 +74,20 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
             //holder.mDate.setText(date.split(",")[0]);
+            holder.mAnniversaryDate.setText(date);
         }
 
-        //calculate left date
+        //calculate left date progress
+        Date createDate = anniversary.getCreateDate();
         long restMillis = anniversary.getDate().getTime() - System.currentTimeMillis();
-        long restDays = restMillis / (24 * 60 * 60 * 1000);
-        if (restDays >= 0) {
-            //  holder.mLeftDay.setText("+ " + restDays);
-        } else {
-            //   holder.mLeftDay.setText("- " + restDays);
+        long totalMillis = anniversary.getDate().getTime() - createDate.getTime();
 
-        }
+        long totalDay = totalMillis / (24 * 60 * 60 * 1000);
+        long restDays = restMillis / (24 * 60 * 60 * 1000);
+//        if (restDays >= 0) {
+//            holder.mCurrentAnniversaryProgress.setProgress((int) (restDays * 100 / totalDay));
+//            //  holder.mLeftDay.setText("+ " + restDays);
+//        }
 
 //        ValueAnimator animator = ValueAnimator.ofInt(0, 70);
 //        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
@@ -99,7 +101,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 //        animator.setRepeatMode(ValueAnimator.INFINITE);
 //        animator.setDuration(2000);
 //        animator.start();
-        holder.mCurrentAnniversaryProgress.setProgress(50);
 
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -130,6 +131,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         mDateSets.add(newItem);
         adapter.notifyDataSetChanged();
     }
+
+    public List<Anniversary> getDatas() {
+        return mDateSets;
+    }
+
 
     class TimeLineViewHolder extends RecyclerView.ViewHolder {
 
