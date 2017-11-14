@@ -64,7 +64,7 @@
         <activity
             android:name=".activity.additem.AddItemActivity"
             android:label="@string/title_activity_add"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
     </application>
 
 </manifest>
