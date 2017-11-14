@@ -219,6 +219,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                String frequencyString = customTimeEditView.getText().toString();
+                if (TextUtils.isEmpty(frequencyString)) {
+                    Utils.showToast(AddItemActivity.this, "请填写通知的频率", 1);
+                    return;
+                }
                 String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before" + "   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
                 notificationTimeBeforeInMillis = calculateNotificationIndex(customTimeEditView.getText().toString(), selectedRadioFrequencyButton.getText().toString());
@@ -229,7 +234,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         dialog.getBuilder().onNegative(new MaterialDialog.SingleButtonCallback() {
             @Override
             public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-
+                dialog.dismiss();
             }
         });
         dialog.show();
