@@ -282,7 +282,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 //                anniversaryNotificationTextView.setText(msg);
                 String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before" + "   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
-                notificationTimeBeforeInMillis = calculateNotificationIndex(msg);
+                notificationTimeBeforeInMillis = calculateNotificationIndex(customTimeEditView.getText().toString(), selectedRadioFrequencyButton.getText().toString());
             }
         });
 
@@ -507,11 +507,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private long calculateNotificationIndex(String msg) {
-        String[] strings = msg.split(" ");
-        int prefixIndex = Integer.valueOf(strings[0]);
+    private long calculateNotificationIndex(String value, String frequency) {
         long hourIndex = 0;
-        switch (strings[1]) {
+        int prefixIndex = Integer.valueOf(value);
+        switch (frequency) {
             case "minute":
                 hourIndex = prefixIndex * 60 * 1000;
                 break;
