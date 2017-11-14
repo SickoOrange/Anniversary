@@ -224,9 +224,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                     Utils.showToast(AddItemActivity.this, "请填写通知的频率", 1);
                     return;
                 }
-                String msg = customTimeEditView.getText().toString() + " " + selectedRadioFrequencyButton.getText().toString() + " before" + "   " + selectedRadioTypeButton.getText().toString();
+                if (selectedRadioTypeButton == null || selectedRadioFrequencyButton == null) {
+                    Utils.showToast(AddItemActivity.this, "请选择一个合适的选项", 1);
+                    return;
+                }
+                String msg = frequencyString + " " + selectedRadioFrequencyButton.getText().toString() + " before" + ",   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
-                notificationTimeBeforeInMillis = calculateNotificationIndex(customTimeEditView.getText().toString(), selectedRadioFrequencyButton.getText().toString());
+                notificationTimeBeforeInMillis = calculateNotificationIndex(frequencyString, selectedRadioFrequencyButton.getText().toString());
                 isNotificationEnable = true;
             }
         });
