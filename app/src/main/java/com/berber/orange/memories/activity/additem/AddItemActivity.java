@@ -70,6 +70,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
     private RadioButton selectedRadioTypeButton;
     private boolean isNotificationEnable;
+    private Date currentPickDate = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -299,9 +300,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversary.setLocation("London");
 
         //handle date
-        Date currentAnniversaryDate = getCurrentAnniversaryDate();
-        if (currentAnniversaryDate != null) {
-            anniversary.setDate(currentAnniversaryDate);
+        if (currentPickDate != null) {
+            anniversary.setDate(currentPickDate);
         } else {
             alertWarningDialog("you must pick a certain date and time");
             return;
@@ -318,7 +318,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         //handle remind date
         if (isNotificationEnable) {
-            Date notificationDate = calculateAnniversaryNotificationDate(currentAnniversaryDate, notificationTimeBeforeInMillis);
+            Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeBeforeInMillis);
             NotificationSending notificationSending = new NotificationSending();
             notificationSending.setSendingDate(notificationDate);
             notificationSending.setRecipient("heylbly@gmail.com");
@@ -444,16 +444,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
                         View customView = dialog.getCustomView();
                         DatePicker datePicker = customView.findViewById(R.id.datePicker);
-                        //String year = String.valueOf(datePicker.getYear());
-                        //String currentMonth = String.valueOf(datePicker.getMonth() + 1);
-                        //String day = String.valueOf(datePicker.getDayOfMonth());
-                        // currentPickDateString = String.format("%s-%s-%s", year, currentMonth, day);
                         int currentYear = datePicker.getYear();
                         int currentMonth = datePicker.getMonth();
                         int currentDay = datePicker.getDayOfMonth();
-                        Date currentDate = new Date(currentYear - 1900, currentMonth, currentDay);
-                        anniversaryDateTextView.setText(currentDate.toString());
-                        Utils.showToast(AddItemActivity.this, currentPickDateString, 1);
+                        currentPickDate = new Date(currentYear - 1900, currentMonth, currentDay);
+
+                        if (currentPickDate.getTime() < System.currentTimeMillis()) {
+                            Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
+                            return;
+                        }
+                        anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                     }
                 })
                 .negativeText(android.R.string.cancel);
