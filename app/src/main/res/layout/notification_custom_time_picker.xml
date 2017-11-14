@@ -6,74 +6,74 @@
     android:orientation="vertical">
 
 
-    <TextView
-        android:id="@+id/bottom_sheet_notification_time_title"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="5dp"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="请设置通知时间" />
+    <!--<TextView-->
+        <!--android:id="@+id/bottom_sheet_notification_time_title"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:gravity="center"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="请设置通知时间" />-->
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="5dp"
-        android:orientation="vertical">
+    <!--<LinearLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:orientation="vertical">-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="请输入你希望的通知时间" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="请输入你希望的通知时间" />-->
 
-        <EditText
-            android:id="@+id/custom_time_value"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:digits="0123456789"/>
+        <!--<EditText-->
+            <!--android:id="@+id/custom_time_value"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:inputType="number"-->
+            <!--android:digits="0123456789"/>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
-    <RadioGroup
-        android:id="@+id/custom_time_radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="5dp">
+    <!--<RadioGroup-->
+        <!--android:id="@+id/custom_time_radio_group"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:orientation="vertical"-->
+        <!--android:padding="5dp">-->
 
 
-        <RadioButton
-            android:id="@+id/radio_minute"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="minute" />
+        <!--<RadioButton-->
+            <!--android:id="@+id/radio_minute"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="minute" />-->
 
-        <RadioButton
-            android:id="@+id/radio_hour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="hour" />
+        <!--<RadioButton-->
+            <!--android:id="@+id/radio_hour"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="hour" />-->
 
-        <RadioButton
-            android:id="@+id/radio_week"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="week" />
+        <!--<RadioButton-->
+            <!--android:id="@+id/radio_week"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="week" />-->
 
-        <RadioButton
-            android:id="@+id/radio_Day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="day" />
+        <!--<RadioButton-->
+            <!--android:id="@+id/radio_Day"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="day" />-->
 
-        <RadioButton
-            android:id="@+id/radio_month"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="month" />
-    </RadioGroup>
+        <!--<RadioButton-->
+            <!--android:id="@+id/radio_month"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="month" />-->
+    <!--</RadioGroup>-->
 
 
 </LinearLayout>

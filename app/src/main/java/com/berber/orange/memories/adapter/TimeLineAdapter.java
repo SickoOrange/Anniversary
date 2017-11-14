@@ -14,6 +14,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.model.ItemType;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -61,7 +62,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public long getItemId(int position) {
-        Log.e("TAG", "get item id: " + position);
         return super.getItemId(position);
     }
 
@@ -73,8 +73,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
+        Log.e("TAG", "onBindViewHolder" + position);
 
-        Log.e("TAG", "notify data change in onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle() + " " + position);
@@ -88,11 +88,21 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
-        long restMillis = anniversary.getDate().getTime() - System.currentTimeMillis();
-        long totalMillis = anniversary.getDate().getTime() - createDate.getTime();
+        Date anniversaryShowDate = anniversary.getDate();
+        long currentTimeMillis = System.currentTimeMillis();
 
-        long totalDay = totalMillis / (24 * 60 * 60 * 1000);
-        long restDays = restMillis / (24 * 60 * 60 * 1000);
+
+        long currentRestMillis = anniversaryShowDate.getTime() - currentTimeMillis;
+        long totalRestMillis = anniversaryShowDate.getTime() - createDate.getTime();
+//
+        long restDays = currentRestMillis / (24 * 60 * 60 * 1000);
+        long totalDay = totalRestMillis / (24 * 60 * 60 * 1000);
+
+        System.out.println(totalDay + " " + restDays);
+        int progress = (int) (restDays * 100.0 / totalDay);
+        holder.mCurrentAnniversaryProgress.setProgress(progress);
+
+
 //        if (restDays >= 0) {
 //            holder.mCurrentAnniversaryProgress.setProgress((int) (restDays * 100 / totalDay));
 //            //  holder.mLeftDay.setText("+ " + restDays);
@@ -126,7 +136,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         if (position == 0) {
             holder.mTimeLine.setBeginLineView(false);
+            holder.mTimeLine.setEndLineView(true);
         } else if (position == mDateSets.size() - 1) {
+            holder.mTimeLine.setBeginLineView(true);
             holder.mTimeLine.setEndLineView(false);
         } else {
             holder.mTimeLine.setBeginLineView(true);
@@ -151,17 +163,16 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return mDateSets.size();
     }
 
-    public void addNewItem(AnniversaryDTO dto, TimeLineAdapter adapter) {
+    public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
+        //mDateSets.clear();
+        //mDateSets.addAll(anniversaryDao.queryBuilder().list());
+        //notifyDataSetChanged();
 
-        Anniversary newItem = new Anniversary();
-        newItem.setTitle(dto.getTitle());
-        newItem.setLocation(dto.getLocation());
-        newItem.setDescription(dto.getDescription());
-        newItem.setDate(dto.getDate());
-        newItem.setCreateDate(dto.getCreateDate());
-        // newItem.setRemindDate(dto.getRemindDate());
-        mDateSets.add(newItem);
-        adapter.notifyDataSetChanged();
+        // mDateSets.add(5,anniversary);
+        // notifyItemInserted(5);
+        //notifyItemRangeChanged(5,mDateSets.size()-5);
+        mDateSets.add(anniversary);
+        notifyDataSetChanged();
     }
 
     public List<Anniversary> getDatas() {
@@ -183,8 +194,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
-
-
             itemRoot = itemView.findViewById(R.id.item_layout);
             mAnniversaryTypeImage = itemView.findViewById(R.id.anniversary_type_image);
             mAnniversaryTitle = itemView.findViewById(R.id.anniversary_title_label);

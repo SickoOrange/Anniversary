@@ -1,5 +1,8 @@
 package com.berber.orange.memories.dbservice;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Generated;
@@ -9,7 +12,7 @@ import org.greenrobot.greendao.annotation.Generated;
  */
 
 @Entity
-public class ModelAnniversaryType {
+public class ModelAnniversaryType implements Parcelable {
     @Id(autoincrement = true)
     private Long id;
     private String name = "";
@@ -42,4 +45,33 @@ public class ModelAnniversaryType {
         this.imageResource = imageResource;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.name);
+        dest.writeInt(this.imageResource);
+    }
+
+    protected ModelAnniversaryType(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.name = in.readString();
+        this.imageResource = in.readInt();
+    }
+
+    public static final Creator<ModelAnniversaryType> CREATOR = new Creator<ModelAnniversaryType>() {
+        @Override
+        public ModelAnniversaryType createFromParcel(Parcel source) {
+            return new ModelAnniversaryType(source);
+        }
+
+        @Override
+        public ModelAnniversaryType[] newArray(int size) {
+            return new ModelAnniversaryType[size];
+        }
+    };
 }

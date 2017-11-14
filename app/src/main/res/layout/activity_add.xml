@@ -125,32 +125,39 @@
                 android:layout_below="@id/anni_title_layout"
                 android:layout_marginTop="5dp">
 
+                <ImageView
+                    android:layout_gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_date_range_black_18dp"
+                    android:scaleType="center"
+                    android:background="@color/white"/>
+
                 <TextView
                     android:id="@+id/anniversary_type_image"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="6"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
-                    android:drawableLeft="@drawable/ic_date_range_black_18dp"
-                    android:drawableStart="@drawable/ic_date_range_black_18dp"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
+                    android:paddingLeft="20dp"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
                     android:text="2017年10月15日" />
 
-                <TextView
-                    android:id="@+id/anniversary_add_anni_time"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:background="@drawable/item_ripple"
-                    android:clickable="true"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
-                    android:text="23:00" />
+
+                <!--<TextView-->
+                    <!--android:id="@+id/anniversary_add_anni_time"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@drawable/item_ripple"-->
+                    <!--android:clickable="true"-->
+                    <!--android:paddingBottom="10dp"-->
+                    <!--android:paddingLeft="15dp"-->
+                    <!--android:paddingTop="10dp"-->
+                    <!--android:text="23:00" />-->
 
             </LinearLayout>
 

@@ -4,97 +4,97 @@
     android:layout_height="match_parent"
     android:layout_margin="5dp">
 
-    <TextView
-        android:id="@+id/bottom_sheet_notification_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_margin="5dp"
-        android:padding="5dp"
-        android:text="请设置通知类型" />
+    <!--<TextView-->
+        <!--android:id="@+id/bottom_sheet_notification_title"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_centerHorizontal="true"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:padding="5dp"-->
+        <!--android:text="请设置通知类型" />-->
 
-    <LinearLayout
-        android:id="@+id/notification_type_picker_ll1"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/bottom_sheet_notification_title"
-        android:layout_margin="5dp"
-        android:background="@drawable/item_ripple"
-        android:orientation="horizontal">
+    <!--<LinearLayout-->
+        <!--android:id="@+id/notification_type_picker_ll1"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_below="@+id/bottom_sheet_notification_title"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:background="@drawable/item_ripple"-->
+        <!--android:orientation="horizontal">-->
 
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:src="@mipmap/ic_category_4" />
+        <!--<ImageView-->
+            <!--android:layout_width="36dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:src="@mipmap/ic_category_4" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:text="Notification"
-            android:textSize="16sp" />
-
-
-    </LinearLayout>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:text="Notification"-->
+            <!--android:textSize="16sp" />-->
 
 
-    <LinearLayout
-        android:id="@+id/notification_type_picker_ll2"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/notification_type_picker_ll1"
-        android:layout_margin="5dp"
-        android:background="@drawable/item_ripple"
-
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:src="@mipmap/ic_category_4" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:text="Email"
-            android:textSize="16sp" />
+    <!--</LinearLayout>-->
 
 
-    </LinearLayout>
+    <!--<LinearLayout-->
+        <!--android:id="@+id/notification_type_picker_ll2"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_below="@+id/notification_type_picker_ll1"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:background="@drawable/item_ripple"-->
 
-    <LinearLayout
-        android:id="@+id/notification_type_picker_ll3"
-        android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_below="@+id/notification_type_picker_ll2"
-        android:layout_margin="5dp"
-        android:background="@drawable/item_ripple"
-        android:orientation="horizontal">
+        <!--android:orientation="horizontal">-->
 
-        <ImageView
-            android:layout_width="36dp"
-            android:layout_height="40dp"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:src="@mipmap/ic_category_8" />
+        <!--<ImageView-->
+            <!--android:layout_width="36dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:src="@mipmap/ic_category_4" />-->
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginLeft="16dp"
-            android:text="All"
-            android:textSize="16sp" />
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:text="Email"-->
+            <!--android:textSize="16sp" />-->
 
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
+
+    <!--<LinearLayout-->
+        <!--android:id="@+id/notification_type_picker_ll3"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="40dp"-->
+        <!--android:layout_below="@+id/notification_type_picker_ll2"-->
+        <!--android:layout_margin="5dp"-->
+        <!--android:background="@drawable/item_ripple"-->
+        <!--android:orientation="horizontal">-->
+
+        <!--<ImageView-->
+            <!--android:layout_width="36dp"-->
+            <!--android:layout_height="40dp"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:src="@mipmap/ic_category_8" />-->
+
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:text="All"-->
+            <!--android:textSize="16sp" />-->
+
+
+    <!--</LinearLayout>-->
 
 
 </RelativeLayout>

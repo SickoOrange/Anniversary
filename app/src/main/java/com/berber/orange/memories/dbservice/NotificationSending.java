@@ -1,5 +1,8 @@
 package com.berber.orange.memories.dbservice;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.berber.orange.memories.activity.model.NotificationType;
 
 import org.greenrobot.greendao.annotation.Convert;
@@ -17,7 +20,7 @@ import org.greenrobot.greendao.DaoException;
  */
 
 @Entity
-public class NotificationSending {
+public class NotificationSending implements Parcelable {
 
     @Id(autoincrement = true)
     private Long id;
@@ -166,6 +169,21 @@ public class NotificationSending {
         myDao.update(this);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeLong(this.sendingDate != null ? this.sendingDate.getTime() : -1);
+        dest.writeInt(this.notificationType == null ? -1 : this.notificationType.ordinal());
+        dest.writeString(this.recipient);
+        dest.writeValue(this.anniversaryId);
+        dest.writeParcelable(this.anniversary, flags);
+    }
+
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1984972466)
     public void __setDaoSession(DaoSession daoSession) {
@@ -173,5 +191,26 @@ public class NotificationSending {
         myDao = daoSession != null ? daoSession.getNotificationSendingDao() : null;
     }
 
+    protected NotificationSending(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        long tmpSendingDate = in.readLong();
+        this.sendingDate = tmpSendingDate == -1 ? null : new Date(tmpSendingDate);
+        int tmpNotificationType = in.readInt();
+        this.notificationType = tmpNotificationType == -1 ? null : NotificationType.values()[tmpNotificationType];
+        this.recipient = in.readString();
+        this.anniversaryId = (Long) in.readValue(Long.class.getClassLoader());
+        this.anniversary = in.readParcelable(Anniversary.class.getClassLoader());
+    }
 
+    public static final Creator<NotificationSending> CREATOR = new Creator<NotificationSending>() {
+        @Override
+        public NotificationSending createFromParcel(Parcel source) {
+            return new NotificationSending(source);
+        }
+
+        @Override
+        public NotificationSending[] newArray(int size) {
+            return new NotificationSending[size];
+        }
+    };
 }

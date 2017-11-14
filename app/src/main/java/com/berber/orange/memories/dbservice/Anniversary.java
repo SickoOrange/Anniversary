@@ -1,5 +1,8 @@
 package com.berber.orange.memories.dbservice;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
@@ -11,7 +14,7 @@ import org.greenrobot.greendao.DaoException;
 
 
 @Entity
-public class Anniversary {
+public class Anniversary implements Parcelable {
 
     @Id(autoincrement = true)
     private Long id;
@@ -232,12 +235,68 @@ public class Anniversary {
         myDao.update(this);
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(this.id);
+        dest.writeString(this.Title);
+        dest.writeString(this.Description);
+        dest.writeString(this.Location);
+        dest.writeLong(this.date != null ? this.date.getTime() : -1);
+        dest.writeLong(this.createDate != null ? this.createDate.getTime() : -1);
+        dest.writeValue(this.modelAnniversaryTypeId);
+        dest.writeParcelable(this.modelAnniversaryType, flags);
+        dest.writeValue(this.notificationSendingId);
+        dest.writeParcelable(this.notificationSending, flags);
+    }
+
+    protected Anniversary(Parcel in) {
+        this.id = (Long) in.readValue(Long.class.getClassLoader());
+        this.Title = in.readString();
+        this.Description = in.readString();
+        this.Location = in.readString();
+        long tmpDate = in.readLong();
+        this.date = tmpDate == -1 ? null : new Date(tmpDate);
+        long tmpCreateDate = in.readLong();
+        this.createDate = tmpCreateDate == -1 ? null : new Date(tmpCreateDate);
+        this.modelAnniversaryTypeId = (Long) in.readValue(Long.class.getClassLoader());
+        this.modelAnniversaryType = in.readParcelable(ModelAnniversaryType.class.getClassLoader());
+        this.notificationSendingId = (Long) in.readValue(Long.class.getClassLoader());
+        this.notificationSending = in.readParcelable(NotificationSending.class.getClassLoader());
+    }
+
+    public static final Creator<Anniversary> CREATOR = new Creator<Anniversary>() {
+        @Override
+        public Anniversary createFromParcel(Parcel source) {
+            return new Anniversary(source);
+        }
+
+        @Override
+        public Anniversary[] newArray(int size) {
+            return new Anniversary[size];
+        }
+    };
+
+    @Override
+    public String toString() {
+        return "Anniversary{" +
+                "id=" + id +
+                ", Title='" + Title + '\'' +
+                ", Description='" + Description + '\'' +
+                ", Location='" + Location + '\'' +
+                ", date=" + date +
+                ", createDate=" + createDate +
+                '}';
+    }
+
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1868176712)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getAnniversaryDao() : null;
     }
-
-
 }
