@@ -6,12 +6,6 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
     tools:context="com.berber.orange.memories.activity.additem.AddItemActivity">
-
-    <!--<android.support.design.widget.AppBarLayout-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:theme="@style/AppTheme.AppBarOverlay">-->
-
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -19,9 +13,6 @@
         android:background="@android:color/white"
         app:popupTheme="@style/AppTheme.PopupOverlay" />
 
-    <!--</android.support.design.widget.AppBarLayout>-->
-
-    <!--<include layout="@layout/content_add" />-->
 
     <LinearLayout
         android:id="@+id/top_bar"
@@ -93,15 +84,6 @@
                     android:padding="5dp"
                     android:text="Title" />
 
-                <!--<TextView-->
-                <!--android:id="@+id/title_value_label"-->
-                <!--android:layout_width="0dp"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_weight="6"-->
-                <!--android:paddingBottom="10dp"-->
-                <!--android:paddingLeft="15dp"-->
-                <!--android:paddingTop="10dp"-->
-                <!--android:text="I LOVE YOU FOREVER BABY" />-->
                 <EditText
                     android:id="@+id/anniversary_add_anni_title"
                     android:layout_width="0dp"
@@ -126,13 +108,13 @@
                 android:layout_marginTop="5dp">
 
                 <ImageView
-                    android:layout_gravity="center"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:src="@drawable/ic_date_range_black_18dp"
+                    android:background="@color/white"
                     android:scaleType="center"
-                    android:background="@color/white"/>
+                    android:src="@drawable/ic_date_range_black_18dp" />
 
                 <TextView
                     android:id="@+id/anniversary_type_image"
@@ -141,56 +123,49 @@
                     android:layout_weight="6"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
-                    android:paddingLeft="20dp"
                     android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
                     android:paddingTop="5dp"
                     android:text="2017年10月15日" />
-
-
-                <!--<TextView-->
-                    <!--android:id="@+id/anniversary_add_anni_time"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="@drawable/item_ripple"-->
-                    <!--android:clickable="true"-->
-                    <!--android:paddingBottom="10dp"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="10dp"-->
-                    <!--android:text="23:00" />-->
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/location_layout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_below="@id/data_layout"
                 android:layout_marginTop="5dp">
+
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:background="@color/white"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_place_black_18dp" />
 
                 <TextView
                     android:id="@+id/anniversary_add_anni_location"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="7"
+                    android:layout_weight="6"
                     android:background="@drawable/item_ripple"
                     android:clickable="true"
-                    android:drawableLeft="@drawable/ic_place_black_18dp"
-                    android:drawableStart="@drawable/ic_place_black_18dp"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingLeft="15dp"
-                    android:paddingTop="10dp"
+                    android:paddingBottom="5dp"
+                    android:paddingLeft="20dp"
+                    android:paddingTop="5dp"
                     android:text="请选择地点" />
 
-                <Switch
-                    android:id="@+id/location_enable_btn"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginRight="10dp"
-                    android:layout_weight="1"
-                    android:checked="false"
-                    android:background="@color/white"/>
+                <!--<Switch-->
+                    <!--android:id="@+id/location_enable_btn"-->
+                    <!--android:layout_width="0dp"-->
+                    <!--android:layout_height="match_parent"-->
+                    <!--android:layout_marginRight="10dp"-->
+                    <!--android:layout_weight="1"-->
+                    <!--android:background="@color/white"-->
+                    <!--android:checked="false" />-->
 
             </LinearLayout>
 
@@ -234,8 +209,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginRight="10dp"
                     android:layout_weight="1"
-                    android:checked="false"
-                    android:background="@color/white"/>
+                    android:background="@color/white"
+                    android:checked="false" />
 
             </LinearLayout>
 
