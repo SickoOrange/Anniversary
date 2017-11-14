@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,6 +65,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @SuppressLint("WrongConstant")
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
+
+        Log.e("TAG","notify data change in onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle());

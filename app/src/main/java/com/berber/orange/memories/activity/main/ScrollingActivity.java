@@ -124,6 +124,17 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // refresh the recycler view item, they are dynamically
+        Log.e("TAG","onResume");
+        //refreshItem();
+    }
+
+    private void refreshItem() {
+        recycler.getAdapter().notifyDataSetChanged();
+    }
 
     private void initRecycler() {
 

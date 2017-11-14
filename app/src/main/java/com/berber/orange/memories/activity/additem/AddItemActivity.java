@@ -571,7 +571,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         }
 
                         if (minute.length() == 1) {
-                            minute = minute + "0";
+                            minute = "0" + minute;
                         }
                         currentPickTimeString = String.format("%s:%s", hour, minute);
                         anniversaryTimeTextView.setText(currentPickTimeString);
