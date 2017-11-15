@@ -9,7 +9,7 @@
     tools:ignore="MissingPrefix">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/anniversary_date"
+        android:id="@+id/anniversary_type_image_view"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_alignParentLeft="true"
@@ -19,6 +19,24 @@
         android:layout_marginStart="8dp"
         android:scaleType="centerCrop"
         android:src="@mipmap/ic_category_4" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/anniversary_type_image_view"
+        android:layout_marginLeft="5dp"
+        android:background="@drawable/dot_text_view"
+        android:padding="2dp"
+        android:text="upcoming"
+        android:textSize="10sp" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+    </LinearLayout>
 
 
     <com.berber.orange.memories.widget.TimeLineMarker
@@ -40,8 +58,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginRight="5dp"
+        android:layout_alignParentTop="true"
         android:layout_toEndOf="@+id/item_time_line_view"
         android:layout_toRightOf="@+id/item_time_line_view"
         android:background="@null"
@@ -53,14 +70,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
+            android:ellipsize="end"
             android:padding="3dp"
             android:text="今天是老婆的生日"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/item_ll"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/anniversary_title_label"
             android:layout_marginTop="3dp"
@@ -73,35 +92,34 @@
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
                 android:drawablePadding="5dp"
-                android:padding="3dp"
-                android:text="11.11.2017" />
+                android:ellipsize="end"
+                android:gravity="center"
+                android:padding="2dp"
+                android:maxLines="1"
+                android:text="11.11.2017, Germany Nurnberg"
+                android:textColor="#A1A1A1"
+                android:textSize="10dp" />
 
-            <!--<TextView-->
+            <!--<ImageView-->
             <!--android:id="@+id/anniversary_notification_date_label"-->
             <!--android:layout_width="wrap_content"-->
             <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:drawableLeft="@drawable/ic_notifications_black_18px"-->
+            <!--android:layout_toLeftOf="@+id/anniversary_notification_type_email"-->
             <!--android:drawablePadding="5dp"-->
             <!--android:padding="3dp"-->
-            <!--android:text="3 day before" />-->
-            <ImageView
-                android:id="@+id/anniversary_notification_date_label"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:drawablePadding="5dp"
-                android:padding="3dp"
-                android:src="@drawable/ic_notifications_black_18px" />
+            <!--android:src="@drawable/ic_notifications_black_18px" />-->
 
             <ImageView
-                android:id="@+id/anniversary_notification_date_label1"
+                android:id="@+id/anniversary_notification_type_email"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
                 android:drawablePadding="5dp"
                 android:padding="3dp"
+
                 android:src="@drawable/ic_notifications_black_18px" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
         <TextView
@@ -112,7 +130,7 @@
             android:layout_alignParentRight="true"
             android:layout_below="@id/item_ll"
             android:layout_marginTop="5dp"
-            android:text="11/15"
+            android:text="1100/8501"
             android:textColor="@color/greenlight"
             android:textSize="10sp" />
 

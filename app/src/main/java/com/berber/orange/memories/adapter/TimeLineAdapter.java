@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.widget.TimeLineMarker;
@@ -185,7 +184,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
             itemRoot = itemView.findViewById(R.id.item_layout);
-            mAnniversaryTypeImage = itemView.findViewById(R.id.anniversary_date);
+            mAnniversaryTypeImage = itemView.findViewById(R.id.anniversary_type_image_view);
             mAnniversaryTitle = itemView.findViewById(R.id.anniversary_title_label);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
 

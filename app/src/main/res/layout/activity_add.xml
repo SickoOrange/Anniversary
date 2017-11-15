@@ -118,7 +118,7 @@
                     android:src="@drawable/ic_date_range_black_18dp" />
 
                 <TextView
-                    android:id="@+id/anniversary_date"
+                    android:id="@+id/anniversary_type_image_view"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="6"

@@ -19,7 +19,6 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
-import android.widget.TimePicker;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -36,7 +35,6 @@ import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -160,7 +158,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         //anniversary date
-        anniversaryDateTextView = findViewById(R.id.anniversary_date);
+        anniversaryDateTextView = findViewById(R.id.anniversary_type_image_view);
         anniversaryDateTextView.setOnClickListener(this);
         //set default currently date
         anniversaryDateTextView.setText(splits[0]);
@@ -261,7 +259,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.anniversary_date:
+            case R.id.anniversary_type_image_view:
                 //get current anniversary date
                 openDatePickerDialog();
                 break;
