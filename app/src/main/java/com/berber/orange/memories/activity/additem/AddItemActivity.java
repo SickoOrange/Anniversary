@@ -48,6 +48,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final int HOME_ITEM_SIZE = 10;
 
+    private static final int REQUEST_PLACE_CODE = 9002;
+
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes;
     private LinearLayout indicatorContainer;
@@ -282,6 +284,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.anniversary_add_btn_save:
                 //collectInfo();
                 writeInfo();
+                break;
+
+            case R.id.anniversary_add_anni_location:
+                //open new activity for pick a place
+                Intent intent = new Intent(AddItemActivity.this, PickPlaceActivity.class);
+                startActivityForResult(intent, REQUEST_PLACE_CODE);
                 break;
 
         }

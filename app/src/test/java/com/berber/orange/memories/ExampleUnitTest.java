@@ -1,5 +1,7 @@
 package com.berber.orange.memories;
 
+import android.support.annotation.RestrictTo;
+
 import org.junit.Test;
 
 import java.text.DateFormat;
@@ -95,6 +97,46 @@ public class ExampleUnitTest {
     public void test() {
         double l = calculateHourIndex("20 minute before");
         System.out.println(l);
+    }
+
+    @Test
+    public void calculateProzent() throws ParseException {
+        // String showDateString = "Fri Dec 01 00:00:00 GMT + 01:00 2017";
+        //String createdDateString = "Wed Nov 15 16:21:54 GMT + 01:00 2017";
+        //String currentDateString = "Wed Nov 15 21:31:42 GMT + 01:00 2017";
+        //String notificationDateString = "Thu Nov 30 00:00:00 GMT + 01:00 2017";
+
+        // 11-15 21:41:52.732 4751-4751/com.berber.orange.memories E/TAG: onBindViewHolder0
+        //11-15 21:41:52.736 4751-4751/com.berber.orange.memories E/TAG: Anniversary show date 2017-12-01 12:00:00
+        //11-15 21:41:52.737 4751-4751/com.berber.orange.memories E/TAG: Anniversary created date 2017-11-15 04:21:54
+        //11-15 21:41:52.737 4751-4751/com.berber.orange.memories E/TAG: Anniversary current date 2017-11-15 09:41:52
+        //11-15 21:41:52.737 4751-4751/com.berber.orange.memories E/TAG: Anniversary notification date 2017-11-30 12:00:00
+
+        String showDateString = "2017-11-15 12:00:00";
+        String createdDateString = "2017-11-15 04:21:54";
+        String currentDateString = "2017-11-15 09:41:52";
+        String notificationDateString = "2017-11-30 12:00:00";
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        Date showDate = sdf.parse(showDateString);
+        Date createdDate = sdf.parse(createdDateString);
+
+        Date currentDate = sdf.parse(currentDateString);
+        Date notificationDate = sdf.parse(notificationDateString);
+
+        System.out.println(showDate);
+        System.out.println(createdDate);
+        System.out.println(currentDate);
+        System.out.println(notificationDate);
+
+        long restInMillis = showDate.getTime() - currentDate.getTime();
+        // long totalInMillis = showDate.getTime() - createdDate.getTime();
+        System.out.println(restInMillis);
+
+        long rest = restInMillis / (1000*60*60);
+        System.out.println(100-(8588000*100.0/8900987));
+        System.out.println(rest);
     }
 
 }

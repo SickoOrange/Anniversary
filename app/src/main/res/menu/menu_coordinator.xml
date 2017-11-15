@@ -10,9 +10,9 @@
 
     <item
         android:id="@+id/action_add"
-        android:icon="@android:drawable/ic_menu_add"
-        android:iconTint="#474747"
+        android:icon="@drawable/ic_create_black_18px"
+        android:iconTint="#757575"
         android:orderInCategory="100"
-        android:title="Add"
+        android:title="Add "
         app:showAsAction="ifRoom" />
 </menu>

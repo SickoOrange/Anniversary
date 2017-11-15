@@ -87,11 +87,16 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //set image type
         holder.mAnniversaryTypeImage.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
 
+        //notification date
+        Date sendingDate = anniversary.getNotificationSending().getSendingDate();
+
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
-        Log.e("TAG", anniversaryShowDate.toString());
-        Log.e("TAG", createDate.toString());
+        Log.e("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(anniversaryShowDate));
+        Log.e("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(createDate));
+        Log.e("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(System.currentTimeMillis())));
+        Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
 
         long currentTimeMillis = System.currentTimeMillis();
 
@@ -118,11 +123,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         } else if (totalDay == restDays) {
             String label = restDays + "/" + totalDay;
             holder.mLeftDayLabel.setText(label);
-            holder.mCurrentAnniversaryProgress.setProgress(0);
+            int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
+            holder.mCurrentAnniversaryProgress.setProgress(100-progress);
         } else {
             String label = restDays + "/" + totalDay;
             holder.mLeftDayLabel.setText(label);
-            int progress = (int) (restDays * 100.0 / totalDay);
+            int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
             holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
         }
 

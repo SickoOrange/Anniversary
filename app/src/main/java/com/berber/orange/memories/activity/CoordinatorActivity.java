@@ -24,6 +24,7 @@ import android.widget.Toast;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
+import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -200,7 +201,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             case R.id.action_settings:
                 return true;
             case R.id.action_add:
-                Utils.showToast(CoordinatorActivity.this, "add new item", 0);
+                // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
+                startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
                 return true;
         }
 
