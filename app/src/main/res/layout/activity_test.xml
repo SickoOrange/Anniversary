@@ -5,11 +5,10 @@
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
     tools:openDrawer="start">
 
     <include
-        layout="@layout/activity_scrolling"
+        layout="@layout/activity_coordinator"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
@@ -18,7 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_test"
         app:menu="@menu/activity_test_drawer" />
 

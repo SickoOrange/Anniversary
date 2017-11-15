@@ -54,7 +54,7 @@ public class ItemEditActivity extends AppCompatActivity implements View.OnClickL
         setSupportActionBar(toolbar);
         initView();
 
-        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.toolbar_layout);
+        CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.collapsing_toolbar_layout);
         collapsingToolbarLayout.setTitle(" ");
 
         calendarView = findViewById(R.id.calendarView);
