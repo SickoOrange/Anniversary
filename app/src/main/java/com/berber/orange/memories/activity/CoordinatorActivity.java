@@ -2,22 +2,18 @@ package com.berber.orange.memories.activity;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -28,7 +24,6 @@ import android.widget.Toast;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
-import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -56,7 +51,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     private NotificationSendingDao notificationSendingDao;
     private Toolbar toolbar;
     //因为setExpanded会调用事件监听，所以通过标志过滤掉
-    public static int expendedtag=2;
+    public static int expendedtag = 2;
 
     @Override
     protected void initView() {
@@ -83,16 +78,18 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                     //折叠监听
                     Toast.makeText(CoordinatorActivity.this, "折叠了", Toast.LENGTH_SHORT).show();
                     mImmersionBar.statusBarDarkFont(true, 0.2f);
+                    toolbar.setTitle("Anniversary");
                     mImmersionBar.init();
                 }
-                if(expendedtag==2&&verticalOffset==0){
+                if (expendedtag == 2 && verticalOffset == 0) {
                     //展开监听
-                    Toast.makeText(CoordinatorActivity.this,"展开了",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CoordinatorActivity.this, "展开了", Toast.LENGTH_SHORT).show();
                     mImmersionBar.statusBarDarkFont(false, 0.2f);
                     mImmersionBar.init();
+                    toolbar.setTitle("");
 
                 }
-                if(expendedtag!=2&&verticalOffset==0){
+                if (expendedtag != 2 && verticalOffset == 0) {
                     expendedtag++;
                 }
             }
@@ -160,7 +157,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_test;
+        return R.layout.activity_main;
     }
 
     private void initRecycler() {

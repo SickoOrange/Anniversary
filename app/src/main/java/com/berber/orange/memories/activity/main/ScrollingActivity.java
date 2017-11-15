@@ -26,7 +26,6 @@ import android.widget.Toast;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
-import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
@@ -34,9 +33,7 @@ import com.berber.orange.memories.dbservice.DaoSession;
 import com.berber.orange.memories.dbservice.NotificationSending;
 import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
-import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
-import com.berber.orange.memories.vega.VegaLayoutManager;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -62,7 +59,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_test);
+        setContentView(R.layout.activity_main);
         //ScreenUtil.immerseStatusBar(this);
         toolbar = findViewById(R.id.toolbar);
 
