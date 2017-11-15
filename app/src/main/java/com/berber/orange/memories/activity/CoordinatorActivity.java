@@ -76,14 +76,14 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 //通过日志得出活动启动是两次，由于之前有setExpanded所以三次
                 if (getSupportActionBar().getHeight() - appBarLayout.getHeight() == verticalOffset) {
                     //折叠监听
-                    Toast.makeText(CoordinatorActivity.this, "折叠了", Toast.LENGTH_SHORT).show();
+                    // Toast.makeText(CoordinatorActivity.this, "折叠了", Toast.LENGTH_SHORT).show();
                     mImmersionBar.statusBarDarkFont(true, 0.2f);
                     toolbar.setTitle("Anniversary");
                     mImmersionBar.init();
                 }
                 if (expendedtag == 2 && verticalOffset == 0) {
                     //展开监听
-                    Toast.makeText(CoordinatorActivity.this, "展开了", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(CoordinatorActivity.this, "展开了", Toast.LENGTH_SHORT).show();
                     mImmersionBar.statusBarDarkFont(false, 0.2f);
                     mImmersionBar.init();
                     toolbar.setTitle("");
@@ -242,7 +242,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
                 adapter.addNewItem(dto, anniversaryDao);
                 Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
-                System.out.println(dto.toString());
                 break;
         }
     }

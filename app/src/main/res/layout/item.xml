@@ -21,15 +21,18 @@
         android:src="@mipmap/ic_category_4" />
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/anniversary_status_label"
+        android:layout_width="40dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/anniversary_type_image_view"
-        android:layout_marginTop="2dp"
-        android:layout_marginLeft="5dp"
+        android:layout_alignLeft="@+id/anniversary_type_image_view"
+        android:layout_alignStart="@+id/anniversary_type_image_view"
+        android:layout_below="@+id/anniversary_type_image_view"
         android:background="@drawable/dot_text_view"
         android:padding="2dp"
-        android:text="upcoming"
-        android:textSize="10sp" />
+        android:gravity="center"
+        android:text="up coming"
+        android:textColor="@android:color/black"
+        android:textSize="7sp" />
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -72,9 +75,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
+            android:maxLines="1"
             android:padding="3dp"
             android:text="今天是老婆的生日"
-            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="14sp" />
 
@@ -95,8 +98,8 @@
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
                 android:gravity="center"
-                android:padding="2dp"
                 android:maxLines="1"
+                android:padding="2dp"
                 android:text="11.11.2017, Germany Nurnberg"
                 android:textColor="#A1A1A1"
                 android:textSize="10dp" />

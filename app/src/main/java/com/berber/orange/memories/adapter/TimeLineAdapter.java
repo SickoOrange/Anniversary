@@ -16,6 +16,8 @@ import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
 
+import org.greenrobot.greendao.query.QueryBuilder;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -82,6 +84,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
         }
 
+        //set image type
+        holder.mAnniversaryTypeImage.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
+
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
@@ -93,57 +98,34 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         long currentRestMillis = anniversaryShowDate.getTime() - currentTimeMillis;
         long totalRestMillis = anniversaryShowDate.getTime() - createDate.getTime();
-//
         long restDays = currentRestMillis / (24 * 60 * 60 * 1000);
         long totalDay = totalRestMillis / (24 * 60 * 60 * 1000);
+
+        //set anniversary status
+        if (restDays <= (long) 20 && restDays >= 0) {
+            holder.mAnniversaryStatusLabel.setText("Up Coming");
+        } else if (restDays < 0) {
+            holder.mAnniversaryStatusLabel.setText("Finish");
+        } else {
+            holder.mAnniversaryStatusLabel.setText("");
+        }
 
 
         if (totalDay == 0) {
             String label = "0/0";
-            holder.mLeftdayLabel.setText(label);
+            holder.mLeftDayLabel.setText(label);
             holder.mCurrentAnniversaryProgress.setProgress(100);
         } else if (totalDay == restDays) {
             String label = restDays + "/" + totalDay;
-            holder.mLeftdayLabel.setText(label);
+            holder.mLeftDayLabel.setText(label);
             holder.mCurrentAnniversaryProgress.setProgress(0);
         } else {
             String label = restDays + "/" + totalDay;
-            holder.mLeftdayLabel.setText(label);
+            holder.mLeftDayLabel.setText(label);
             int progress = (int) (restDays * 100.0 / totalDay);
             holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
         }
 
-
-//        if (restDays >= 0) {
-//            holder.mCurrentAnniversaryProgress.setProgress((int) (restDays * 100 / totalDay));
-//            //  holder.mLeftDay.setText("+ " + restDays);
-//        }
-
-//        ValueAnimator animator = ValueAnimator.ofInt(0, 70);
-//        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-//            @Override
-//            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-//                Log.e("TAG", "value animator " + valueAnimator.getAnimatedValue());
-//                int progress = (int) valueAnimator.getAnimatedValue();
-//                holder.mCurrentAnniversaryProgress.setProgress(progress);
-//            }
-//        });
-//        animator.setRepeatMode(ValueAnimator.INFINITE);
-//        animator.setDuration(2000);
-//        animator.start();
-
-
-//        if (position == 0) {
-//            // holder.mTimeLine.setBeginLine(null);
-//            holder.mTimeLine.setBeginLine(null);
-//        } else if (getItemViewType(position) == ItemType.START) {
-//            //holder.mTimeLine.setBeginLine(null);
-//            //Drawable drawable = mContext.getResources().getDrawable(R.drawable.ic_timeline_marker_now);
-//            // holder.mTimeLine.setMarkerDrawable(drawable);
-//        } else if (position == mDateSets.size() - 1) {
-//            //holder.mTimeLine.setEndLine(null);
-//        } else {
-//        }
 
         if (position == 0) {
             holder.mTimeLine.setBeginLineView(false);
@@ -175,8 +157,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     }
 
     public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
-        mDateSets.add(anniversary);
-        notifyDataSetChanged();
+        //mDateSets.add(anniversary);
+        List<Anniversary> list = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversary.getId())).list();
+        if (list.size() == 1) {
+            mDateSets.add(list.get(0));
+            notifyDataSetChanged();
+        }
     }
 
     public List<Anniversary> getDatas() {
@@ -190,7 +176,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         CircleImageView mAnniversaryTypeImage;
         TextView mAnniversaryTitle;
         TimeLineMarker mTimeLine;
-        TextView mLeftdayLabel;
+        TextView mLeftDayLabel;
+        TextView mAnniversaryStatusLabel;
 
         TextView mAnniversaryDate;
         //  TextView mAnniversaryNotificationDate;
@@ -203,11 +190,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mAnniversaryTypeImage = itemView.findViewById(R.id.anniversary_type_image_view);
             mAnniversaryTitle = itemView.findViewById(R.id.anniversary_title_label);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
-            mLeftdayLabel = itemView.findViewById(R.id.anniversary_left_day);
+            mLeftDayLabel = itemView.findViewById(R.id.anniversary_left_day);
 
             mAnniversaryDate = itemView.findViewById(R.id.anniversary_date_label);
             //  mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
+            mAnniversaryStatusLabel = itemView.findViewById(R.id.anniversary_status_label);
 
 
         }
