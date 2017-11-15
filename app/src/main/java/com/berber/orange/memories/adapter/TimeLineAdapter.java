@@ -97,7 +97,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         System.out.println(totalDay + " " + restDays);
         int progress = (int) (restDays * 100.0 / totalDay);
-        holder.mCurrentAnniversaryProgress.setProgress(progress);
+        holder.mCurrentAnniversaryProgress.setProgress(50);
 
 
 //        if (restDays >= 0) {
@@ -178,7 +178,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TimeLineMarker mTimeLine;
 
         TextView mAnniversaryDate;
-        TextView mAnniversaryNotificationDate;
+      //  TextView mAnniversaryNotificationDate;
 
         NumberProgressBar mCurrentAnniversaryProgress;
 
@@ -190,7 +190,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
 
             mAnniversaryDate = itemView.findViewById(R.id.anniversary_date_label);
-            mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
+          //  mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
 
 

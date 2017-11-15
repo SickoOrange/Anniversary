@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by User on 2017/11/05.
  */
 
-public class ModelAnniversaryTypeDTO implements Parcelable{
+public class ModelAnniversaryTypeDTO implements Parcelable {
     private String name = "";
     private int imageResource;
 

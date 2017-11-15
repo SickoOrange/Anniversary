@@ -25,7 +25,6 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.dbservice.Anniversary;
@@ -57,8 +56,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private TextView anniversaryDateTextView;
     private EditText mAnniversaryTitleEditText;
     private EditText anniversaryDescriptionEditText;
-    private String currentPickDateString;
-    private String currentPickTimeString;
     private TextView anniversaryNotificationTextView;
     private RadioButton selectedRadioFrequencyButton;
     private CircleImageView anniversaryTypeImage;
@@ -67,7 +64,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private final int REQUEST_NEW_ITEM = 9001;
     private AnniversaryDao anniversaryDao;
     private NotificationSendingDao notificationSendingDao;
-    private AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter;
     private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
     private RadioButton selectedRadioTypeButton;
     private boolean isNotificationEnable = false;
@@ -104,7 +100,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             RecyclerView recyclerView = (RecyclerView) inflater.inflate(R.layout.item_recycler_view, null, false);
             recyclerView.setLayoutManager(new GridLayoutManager(AddItemActivity.this, 5));
             //add adapter to every recycler view
-            anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
+            AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter = new AnniversaryTypeRecyclerViewAdapter(AddItemActivity.this, modelAnniversaryTypes, i, HOME_ITEM_SIZE);
             recyclerView.setAdapter(anniversaryTypeRecyclerViewAdapter);
 
             viewList.add(recyclerView);
@@ -358,17 +354,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
-//    private AnniversaryDTO convertToDTO(Anniversary anniversary) {
-//        AnniversaryDTO anniversaryDTO = new AnniversaryDTO();
-//        anniversaryDTO.setCreateDate(anniversary.getCreateDate());
-//        anniversaryDTO.setDate(anniversary.getDate());
-//        anniversaryDTO.setDescription(anniversary.getDescription());
-//        anniversaryDTO.setLocation(anniversary.getLocation());
-//        anniversaryDTO.setTitle(anniversary.getTitle());;
-//        return null;
-//    }
-
-
     private NotificationType getNotificationType(String notificationTypeString) {
         NotificationType notificationType = null;
         switch (notificationTypeString) {
@@ -418,35 +403,35 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private void openTimePickerDialog() {
-        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
-                .title(R.string.time_picker_title)
-                .customView(R.layout.dialog_timepicker, false)
-                .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        View customView = dialog.getCustomView();
-                        TimePicker timePicker = customView.findViewById(R.id.timePicker);
-                        String hour = String.valueOf(timePicker.getCurrentHour());
-                        String minute = String.valueOf(timePicker.getCurrentMinute());
-
-                        if (hour.length() == 1) {
-                            hour = "0" + hour;
-                        }
-
-                        if (minute.length() == 1) {
-                            minute = "0" + minute;
-                        }
-                        currentPickTimeString = String.format("%s:%s", hour, minute);
-                        // anniversaryTimeTextView.setText(currentPickTimeString);
-                        Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
-                    }
-                })
-                .negativeText(android.R.string.cancel);
-        builder.show();
-
-    }
+//    private void openTimePickerDialog() {
+//        MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
+//                .title(R.string.time_picker_title)
+//                .customView(R.layout.dialog_timepicker, false)
+//                .positiveText(android.R.string.ok)
+//                .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                    @Override
+//                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                        View customView = dialog.getCustomView();
+//                        TimePicker timePicker = customView.findViewById(R.id.timePicker);
+//                        String hour = String.valueOf(timePicker.getCurrentHour());
+//                        String minute = String.valueOf(timePicker.getCurrentMinute());
+//
+//                        if (hour.length() == 1) {
+//                            hour = "0" + hour;
+//                        }
+//
+//                        if (minute.length() == 1) {
+//                            minute = "0" + minute;
+//                        }
+//                        currentPickTimeString = String.format("%s:%s", hour, minute);
+//                        // anniversaryTimeTextView.setText(currentPickTimeString);
+//                        Utils.showToast(AddItemActivity.this, hour + " " + minute, 1);
+//                    }
+//                })
+//                .negativeText(android.R.string.cancel);
+//        builder.show();
+//
+//    }
 
     private void openDatePickerDialog() {
         MaterialDialog.Builder builder = new MaterialDialog.Builder(this)
@@ -474,20 +459,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         builder.show();
     }
 
-    private Date getCurrentAnniversaryDate() {
-        if (TextUtils.isEmpty(currentPickDateString)) {
-            return null;
-        }
-        String dateString = currentPickDateString;
-        Date currentDate = null;
-        try {
-            currentDate = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dateString);
-            currentPickTimeString = "";
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return currentDate;
-    }
 
     private Date calculateAnniversaryNotificationDate(Date currentDate, long hourIndex) {
         long timeInMillis = 0;
