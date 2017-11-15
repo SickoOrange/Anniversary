@@ -148,7 +148,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
 
         ImageView imageView = findViewById(R.id.image_content);
-        Glide.with(this).load("https://cdn.pixabay.com/photo/2016/10/28/11/57/tic-tac-toe-1777859_960_720.jpg").into(imageView);
+        Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(imageView);
         initRecycler();
     }
 
