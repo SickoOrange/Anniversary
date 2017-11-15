@@ -94,6 +94,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         long restDays = currentRestMillis / (24 * 60 * 60 * 1000);
         long totalDay = totalRestMillis / (24 * 60 * 60 * 1000);
 
+        holder.mLeftdayLabel.setText(restDays + "/" + totalDay);
+
         System.out.println(totalDay + " " + restDays);
         int progress = (int) (restDays * 100.0 / totalDay);
         holder.mCurrentAnniversaryProgress.setProgress(50);
@@ -175,9 +177,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         CircleImageView mAnniversaryTypeImage;
         TextView mAnniversaryTitle;
         TimeLineMarker mTimeLine;
+        TextView mLeftdayLabel;
 
         TextView mAnniversaryDate;
-      //  TextView mAnniversaryNotificationDate;
+        //  TextView mAnniversaryNotificationDate;
 
         NumberProgressBar mCurrentAnniversaryProgress;
 
@@ -187,9 +190,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mAnniversaryTypeImage = itemView.findViewById(R.id.anniversary_type_image_view);
             mAnniversaryTitle = itemView.findViewById(R.id.anniversary_title_label);
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
+            mLeftdayLabel = itemView.findViewById(R.id.anniversary_left_day);
 
             mAnniversaryDate = itemView.findViewById(R.id.anniversary_date_label);
-          //  mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
+            //  mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
 
 

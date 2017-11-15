@@ -24,6 +24,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/anniversary_type_image_view"
+        android:layout_marginTop="2dp"
         android:layout_marginLeft="5dp"
         android:background="@drawable/dot_text_view"
         android:padding="2dp"
@@ -123,7 +124,7 @@
 
 
         <TextView
-            android:id="@+id/left_day"
+            android:id="@+id/anniversary_left_day"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -139,7 +140,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/item_ll"
-            android:layout_toLeftOf="@+id/left_day"
+            android:layout_toLeftOf="@+id/anniversary_left_day"
             android:orientation="horizontal">
 
             <com.daimajia.numberprogressbar.NumberProgressBar
