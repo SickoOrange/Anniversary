@@ -6,6 +6,7 @@ import android.os.Parcelable;
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.greenrobot.greendao.annotation.ToOne;
@@ -14,8 +15,10 @@ import org.greenrobot.greendao.DaoException;
 
 
 @Entity
-public class Anniversary implements Parcelable {
+public class Anniversary implements Serializable {
 
+
+    private static final long serialVersionUID = 4820432240728394100L;
     @Id(autoincrement = true)
     private Long id;
 
@@ -39,18 +42,22 @@ public class Anniversary implements Parcelable {
     @ToOne(joinProperty = "notificationSendingId")
     private NotificationSending notificationSending;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1172854706)
     private transient AnniversaryDao myDao;
 
     @Generated(hash = 1092846448)
     public Anniversary(Long id, String Title, String Description, String Location,
-            Date date, Date createDate, Long modelAnniversaryTypeId,
-            Long notificationSendingId) {
+                       Date date, Date createDate, Long modelAnniversaryTypeId,
+                       Long notificationSendingId) {
         this.id = id;
         this.Title = Title;
         this.Description = Description;
@@ -132,7 +139,9 @@ public class Anniversary implements Parcelable {
     @Generated(hash = 684027712)
     private transient Long modelAnniversaryType__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 1637771025)
     public ModelAnniversaryType getModelAnniversaryType() {
         Long __key = this.modelAnniversaryTypeId;
@@ -153,7 +162,9 @@ public class Anniversary implements Parcelable {
         return modelAnniversaryType;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1722141903)
     public void setModelAnniversaryType(ModelAnniversaryType modelAnniversaryType) {
         synchronized (this) {
@@ -167,7 +178,9 @@ public class Anniversary implements Parcelable {
     @Generated(hash = 1392270529)
     private transient Long notificationSending__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 829092209)
     public NotificationSending getNotificationSending() {
         Long __key = this.notificationSendingId;
@@ -188,7 +201,9 @@ public class Anniversary implements Parcelable {
         return notificationSending;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1016003634)
     public void setNotificationSending(NotificationSending notificationSending) {
         synchronized (this) {
@@ -236,52 +251,6 @@ public class Anniversary implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeString(this.Title);
-        dest.writeString(this.Description);
-        dest.writeString(this.Location);
-        dest.writeLong(this.date != null ? this.date.getTime() : -1);
-        dest.writeLong(this.createDate != null ? this.createDate.getTime() : -1);
-        dest.writeValue(this.modelAnniversaryTypeId);
-        dest.writeParcelable(this.modelAnniversaryType, flags);
-        dest.writeValue(this.notificationSendingId);
-        dest.writeParcelable(this.notificationSending, flags);
-    }
-
-    protected Anniversary(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        this.Title = in.readString();
-        this.Description = in.readString();
-        this.Location = in.readString();
-        long tmpDate = in.readLong();
-        this.date = tmpDate == -1 ? null : new Date(tmpDate);
-        long tmpCreateDate = in.readLong();
-        this.createDate = tmpCreateDate == -1 ? null : new Date(tmpCreateDate);
-        this.modelAnniversaryTypeId = (Long) in.readValue(Long.class.getClassLoader());
-        this.modelAnniversaryType = in.readParcelable(ModelAnniversaryType.class.getClassLoader());
-        this.notificationSendingId = (Long) in.readValue(Long.class.getClassLoader());
-        this.notificationSending = in.readParcelable(NotificationSending.class.getClassLoader());
-    }
-
-    public static final Creator<Anniversary> CREATOR = new Creator<Anniversary>() {
-        @Override
-        public Anniversary createFromParcel(Parcel source) {
-            return new Anniversary(source);
-        }
-
-        @Override
-        public Anniversary[] newArray(int size) {
-            return new Anniversary[size];
-        }
-    };
-
-    @Override
     public String toString() {
         return "Anniversary{" +
                 "id=" + id +
@@ -290,6 +259,14 @@ public class Anniversary implements Parcelable {
                 ", Location='" + Location + '\'' +
                 ", date=" + date +
                 ", createDate=" + createDate +
+                ", modelAnniversaryTypeId=" + modelAnniversaryTypeId +
+                ", modelAnniversaryType=" + modelAnniversaryType +
+                ", notificationSendingId=" + notificationSendingId +
+                ", notificationSending=" + notificationSending +
+                ", daoSession=" + daoSession +
+                ", myDao=" + myDao +
+                ", modelAnniversaryType__resolvedKey=" + modelAnniversaryType__resolvedKey +
+                ", notificationSending__resolvedKey=" + notificationSending__resolvedKey +
                 '}';
     }
 

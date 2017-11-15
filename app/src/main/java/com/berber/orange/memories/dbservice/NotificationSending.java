@@ -10,6 +10,7 @@ import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.ToOne;
 
+import java.io.Serializable;
 import java.util.Date;
 
 import org.greenrobot.greendao.annotation.Generated;
@@ -20,8 +21,9 @@ import org.greenrobot.greendao.DaoException;
  */
 
 @Entity
-public class NotificationSending implements Parcelable {
+public class NotificationSending implements Serializable {
 
+    private static final long serialVersionUID = -1411549005283372646L;
     @Id(autoincrement = true)
     private Long id;
 
@@ -37,18 +39,22 @@ public class NotificationSending implements Parcelable {
     @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1437953480)
     private transient NotificationSendingDao myDao;
 
     @Generated(hash = 1879510796)
     public NotificationSending(Long id, Date sendingDate,
-            NotificationType notificationType, String recipient,
-            Long anniversaryId) {
+                               NotificationType notificationType, String recipient,
+                               Long anniversaryId) {
         this.id = id;
         this.sendingDate = sendingDate;
         this.notificationType = notificationType;
@@ -103,7 +109,9 @@ public class NotificationSending implements Parcelable {
     @Generated(hash = 1258510271)
     private transient Long anniversary__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
         Long __key = this.anniversaryId;
@@ -123,7 +131,9 @@ public class NotificationSending implements Parcelable {
         return anniversary;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
@@ -170,18 +180,13 @@ public class NotificationSending implements Parcelable {
     }
 
     @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeValue(this.id);
-        dest.writeLong(this.sendingDate != null ? this.sendingDate.getTime() : -1);
-        dest.writeInt(this.notificationType == null ? -1 : this.notificationType.ordinal());
-        dest.writeString(this.recipient);
-        dest.writeValue(this.anniversaryId);
-        dest.writeParcelable(this.anniversary, flags);
+    public String toString() {
+        return "NotificationSending{" +
+                "id=" + id +
+                ", sendingDate=" + sendingDate +
+                ", notificationType=" + notificationType +
+                ", recipient='" + recipient + '\'' +
+                '}';
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -190,27 +195,4 @@ public class NotificationSending implements Parcelable {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getNotificationSendingDao() : null;
     }
-
-    protected NotificationSending(Parcel in) {
-        this.id = (Long) in.readValue(Long.class.getClassLoader());
-        long tmpSendingDate = in.readLong();
-        this.sendingDate = tmpSendingDate == -1 ? null : new Date(tmpSendingDate);
-        int tmpNotificationType = in.readInt();
-        this.notificationType = tmpNotificationType == -1 ? null : NotificationType.values()[tmpNotificationType];
-        this.recipient = in.readString();
-        this.anniversaryId = (Long) in.readValue(Long.class.getClassLoader());
-        this.anniversary = in.readParcelable(Anniversary.class.getClassLoader());
-    }
-
-    public static final Creator<NotificationSending> CREATOR = new Creator<NotificationSending>() {
-        @Override
-        public NotificationSending createFromParcel(Parcel source) {
-            return new NotificationSending(source);
-        }
-
-        @Override
-        public NotificationSending[] newArray(int size) {
-            return new NotificationSending[size];
-        }
-    };
 }

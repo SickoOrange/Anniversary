@@ -25,6 +25,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.dbservice.Anniversary;
@@ -69,7 +70,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private AnniversaryTypeRecyclerViewAdapter anniversaryTypeRecyclerViewAdapter;
     private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
     private RadioButton selectedRadioTypeButton;
-    private boolean isNotificationEnable;
+    private boolean isNotificationEnable = false;
     private Date currentPickDate = null;
 
     @Override
@@ -202,8 +203,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         notificationFrequencyGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton selectedValue = radioGroup.findViewById(i);
-                selectedRadioFrequencyButton = selectedValue;
+                selectedRadioFrequencyButton = radioGroup.findViewById(i);
             }
         });
 
@@ -211,8 +211,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         notificationTypeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, int i) {
-                RadioButton selectedType = radioGroup.findViewById(i);
-                selectedRadioTypeButton = selectedType;
+                selectedRadioTypeButton = radioGroup.findViewById(i);
             }
         });
         dialog.getBuilder().onPositive(new MaterialDialog.SingleButtonCallback() {
@@ -297,7 +296,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         // handle anniversary title
         String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
         if (TextUtils.isEmpty(anniversaryTitle)) {
-            alertWarningDialog("Anniversary  title can't be empty");
+            alertWarningDialog("标题不能为空");
             return;
         }
         anniversary.setTitle(anniversaryTitle);
@@ -309,7 +308,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         if (currentPickDate != null) {
             anniversary.setDate(currentPickDate);
         } else {
-            alertWarningDialog("you must pick a certain date");
+            alertWarningDialog("你必须选择一个日期");
             return;
         }
 
@@ -332,7 +331,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             notificationSending.setAnniversaryId(anniversaryId);
             notificationSending.setAnniversary(anniversary);
-            //anniversary.setNotificationSending(notificationSending);
             long notificationSendingId = notificationSendingDao.insert(notificationSending);
             anniversary.setNotificationSending(notificationSending);
             anniversary.setNotificationSendingId(notificationSendingId);
@@ -359,6 +357,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         setResult(REQUEST_NEW_ITEM, intent);
         finish();
     }
+
+//    private AnniversaryDTO convertToDTO(Anniversary anniversary) {
+//        AnniversaryDTO anniversaryDTO = new AnniversaryDTO();
+//        anniversaryDTO.setCreateDate(anniversary.getCreateDate());
+//        anniversaryDTO.setDate(anniversary.getDate());
+//        anniversaryDTO.setDescription(anniversary.getDescription());
+//        anniversaryDTO.setLocation(anniversary.getLocation());
+//        anniversaryDTO.setTitle(anniversary.getTitle());;
+//        return null;
+//    }
 
 
     private NotificationType getNotificationType(String notificationTypeString) {

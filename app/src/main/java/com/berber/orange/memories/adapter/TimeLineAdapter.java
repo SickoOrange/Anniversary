@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.model.AnniversaryDTO;
 import com.berber.orange.memories.dbservice.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.widget.TimeLineMarker;
@@ -160,13 +161,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     }
 
     public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
-        //mDateSets.clear();
-        //mDateSets.addAll(anniversaryDao.queryBuilder().list());
-        //notifyDataSetChanged();
-
-        // mDateSets.add(5,anniversary);
-        // notifyItemInserted(5);
-        //notifyItemRangeChanged(5,mDateSets.size()-5);
         mDateSets.add(anniversary);
         notifyDataSetChanged();
     }

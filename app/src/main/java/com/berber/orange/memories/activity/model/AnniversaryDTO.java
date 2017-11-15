@@ -18,10 +18,13 @@ public class AnniversaryDTO implements Parcelable {
 
     private Date createDate;
 
-    private NotificationSendingDTO notificationSendingDTO;
+    private Long modelAnniversaryTypeId;
 
-    public AnniversaryDTO() {
-    }
+    private ModelAnniversaryTypeDTO modelAnniversaryTypeDTO;
+
+    private Long notificationSendingId;
+
+    private NotificationSendingDTO notificationSendingDTO;
 
 
     @Override
@@ -36,7 +39,13 @@ public class AnniversaryDTO implements Parcelable {
         dest.writeString(this.Location);
         dest.writeLong(this.date != null ? this.date.getTime() : -1);
         dest.writeLong(this.createDate != null ? this.createDate.getTime() : -1);
+        dest.writeValue(this.modelAnniversaryTypeId);
+        dest.writeParcelable(this.modelAnniversaryTypeDTO, flags);
+        dest.writeValue(this.notificationSendingId);
         dest.writeParcelable(this.notificationSendingDTO, flags);
+    }
+
+    public AnniversaryDTO() {
     }
 
     protected AnniversaryDTO(Parcel in) {
@@ -47,6 +56,9 @@ public class AnniversaryDTO implements Parcelable {
         this.date = tmpDate == -1 ? null : new Date(tmpDate);
         long tmpCreateDate = in.readLong();
         this.createDate = tmpCreateDate == -1 ? null : new Date(tmpCreateDate);
+        this.modelAnniversaryTypeId = (Long) in.readValue(Long.class.getClassLoader());
+        this.modelAnniversaryTypeDTO = in.readParcelable(ModelAnniversaryTypeDTO.class.getClassLoader());
+        this.notificationSendingId = (Long) in.readValue(Long.class.getClassLoader());
         this.notificationSendingDTO = in.readParcelable(NotificationSendingDTO.class.getClassLoader());
     }
 
@@ -102,23 +114,35 @@ public class AnniversaryDTO implements Parcelable {
         this.createDate = createDate;
     }
 
+    public Long getModelAnniversaryTypeId() {
+        return modelAnniversaryTypeId;
+    }
+
+    public void setModelAnniversaryTypeId(Long modelAnniversaryTypeId) {
+        this.modelAnniversaryTypeId = modelAnniversaryTypeId;
+    }
+
+    public ModelAnniversaryTypeDTO getModelAnniversaryTypeDTO() {
+        return modelAnniversaryTypeDTO;
+    }
+
+    public void setModelAnniversaryTypeDTO(ModelAnniversaryTypeDTO modelAnniversaryTypeDTO) {
+        this.modelAnniversaryTypeDTO = modelAnniversaryTypeDTO;
+    }
+
+    public Long getNotificationSendingId() {
+        return notificationSendingId;
+    }
+
+    public void setNotificationSendingId(Long notificationSendingId) {
+        this.notificationSendingId = notificationSendingId;
+    }
+
     public NotificationSendingDTO getNotificationSendingDTO() {
         return notificationSendingDTO;
     }
 
     public void setNotificationSendingDTO(NotificationSendingDTO notificationSendingDTO) {
         this.notificationSendingDTO = notificationSendingDTO;
-    }
-
-    @Override
-    public String toString() {
-        return "AnniversaryDTO{" +
-                "Title='" + Title + '\'' +
-                ", Description='" + Description + '\'' +
-                ", Location='" + Location + '\'' +
-                ", date=" + date +
-                ", createDate=" + createDate +
-                ", notificationSendingDTO=" + notificationSendingDTO +
-                '}';
     }
 }

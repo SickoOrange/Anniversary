@@ -129,7 +129,7 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
         super.onResume();
         // refresh the recycler view item, they are dynamically
         Log.e("TAG", "onResume");
-       // refreshItem();
+        // refreshItem();
     }
 
     private void refreshItem() {
@@ -221,17 +221,17 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-       switch (requestCode) {
+        switch (requestCode) {
             case REQUEST_NEW_ITEM:
                 if (data == null) {
                     Utils.showToast(ScrollingActivity.this, "然而你并没有添加任何新的内容", Toast.LENGTH_LONG);
                     return;
                 }
-                Anniversary dto = data.getParcelableExtra("obj");
+                Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
                 adapter.addNewItem(dto, anniversaryDao);
                 Utils.showToast(ScrollingActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 System.out.println(dto.toString());
                 break;
-               }
+        }
     }
 }
