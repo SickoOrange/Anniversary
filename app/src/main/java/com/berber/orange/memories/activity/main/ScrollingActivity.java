@@ -40,6 +40,7 @@ import com.berber.orange.memories.vega.VegaLayoutManager;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
 
@@ -55,19 +56,24 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
     private final int REQUEST_NEW_ITEM = 9001;
     private LinearLayoutManager linearLayoutManager;
     private NotificationSendingDao notificationSendingDao;
+    private Toolbar toolbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_test);
-        ScreenUtil.immerseStatusBar(this);
 
+        setContentView(R.layout.activity_test);
+        //ScreenUtil.immerseStatusBar(this);
+        toolbar = findViewById(R.id.toolbar);
+
+        ImmersionBar.with(this)
+                .titleBar(toolbar)
+                .init();
         daoSession = ((APP) getApplication()).getDaoSession();
         anniversaryDao = daoSession.getAnniversaryDao();
         notificationSendingDao = daoSession.getNotificationSendingDao();
 
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);

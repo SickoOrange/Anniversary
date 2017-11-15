@@ -79,12 +79,15 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
             //holder.mDate.setText(date.split(",")[0]);
-            holder.mAnniversaryDate.setText(date);
+            holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
         }
 
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
+        Log.e("TAG", anniversaryShowDate.toString());
+        Log.e("TAG", createDate.toString());
+
         long currentTimeMillis = System.currentTimeMillis();
 
 
@@ -94,11 +97,21 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         long restDays = currentRestMillis / (24 * 60 * 60 * 1000);
         long totalDay = totalRestMillis / (24 * 60 * 60 * 1000);
 
-        holder.mLeftdayLabel.setText(restDays + "/" + totalDay);
 
-        System.out.println(totalDay + " " + restDays);
-        int progress = (int) (restDays * 100.0 / totalDay);
-        holder.mCurrentAnniversaryProgress.setProgress(50);
+        if (totalDay == 0) {
+            String label = "0/0";
+            holder.mLeftdayLabel.setText(label);
+            holder.mCurrentAnniversaryProgress.setProgress(100);
+        } else if (totalDay == restDays) {
+            String label = restDays + "/" + totalDay;
+            holder.mLeftdayLabel.setText(label);
+            holder.mCurrentAnniversaryProgress.setProgress(0);
+        } else {
+            String label = restDays + "/" + totalDay;
+            holder.mLeftdayLabel.setText(label);
+            int progress = (int) (restDays * 100.0 / totalDay);
+            holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
+        }
 
 
 //        if (restDays >= 0) {

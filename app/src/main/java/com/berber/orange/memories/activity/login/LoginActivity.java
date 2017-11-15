@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.CoordinatorActivity;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
@@ -241,7 +242,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 user.setEmail(currentUser.getEmail());
                 user.setDisplayName(currentUser.getDisplayName());
                 user.setPhotoUri(currentUser.getPhotoUrl().toString());
-                Intent intent = new Intent(LoginActivity.this, ScrollingActivity.class);
+                Intent intent = new Intent(LoginActivity.this, CoordinatorActivity.class);
                 intent.putExtra("user", user);
                 //start to go to new activity
                 LoginActivity.this.startActivity(intent);

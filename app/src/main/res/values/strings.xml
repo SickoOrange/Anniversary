@@ -143,6 +143,7 @@
         <item>Month</item>
         <item>Year</item>
     </string-array>
+    <string name="title_activity_coordinator">CoordinatorActivity</string>
 
 
 </resources>

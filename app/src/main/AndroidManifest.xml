@@ -65,6 +65,10 @@
             android:name=".activity.additem.AddItemActivity"
             android:label="@string/title_activity_add"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".activity.CoordinatorActivity"
+            android:label="@string/title_activity_coordinator"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
