@@ -1,6 +1,8 @@
 package com.berber.orange.memories.adapter;
 
 import android.content.Context;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -10,13 +12,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
-
-import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,6 +69,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return new TimeLineViewHolder(inflate, viewType);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
         Log.e("TAG", "onBindViewHolder" + position);
@@ -109,10 +110,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //set anniversary status
         if (restDays <= (long) 20 && restDays >= 0) {
             holder.mAnniversaryStatusLabel.setText("Up Coming");
+            holder.mAnniversaryStatusLabel.setBackground(mContext.getResources().getDrawable(R.drawable.dot_text_view));
         } else if (restDays < 0) {
             holder.mAnniversaryStatusLabel.setText("Finish");
+            holder.mAnniversaryStatusLabel.setBackground(mContext.getResources().getDrawable(R.drawable.dot_text_view));
         } else {
             holder.mAnniversaryStatusLabel.setText("");
+            holder.mAnniversaryStatusLabel.setBackground(null);
         }
 
 
@@ -124,7 +128,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             String label = restDays + "/" + totalDay;
             holder.mLeftDayLabel.setText(label);
             int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
-            holder.mCurrentAnniversaryProgress.setProgress(100-progress);
+            holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
         } else {
             String label = restDays + "/" + totalDay;
             holder.mLeftDayLabel.setText(label);

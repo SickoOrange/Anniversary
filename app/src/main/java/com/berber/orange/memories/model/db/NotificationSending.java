@@ -1,9 +1,9 @@
-package com.berber.orange.memories.dbservice;
-
-import android.os.Parcel;
-import android.os.Parcelable;
+package com.berber.orange.memories.model.db;
 
 import com.berber.orange.memories.activity.model.NotificationType;
+import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.dbservice.DaoSession;
+import com.berber.orange.memories.dbservice.NotificationSendingDao;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;

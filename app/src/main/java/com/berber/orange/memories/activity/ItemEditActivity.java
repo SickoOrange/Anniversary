@@ -17,7 +17,7 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.activity.model.AnniversaryDTO;
-import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
 import com.prolificinteractive.materialcalendarview.CalendarDay;
 import com.prolificinteractive.materialcalendarview.MaterialCalendarView;

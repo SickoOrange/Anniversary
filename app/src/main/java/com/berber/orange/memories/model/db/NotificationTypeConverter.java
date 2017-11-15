@@ -1,4 +1,4 @@
-package com.berber.orange.memories.dbservice;
+package com.berber.orange.memories.model.db;
 
 import com.berber.orange.memories.activity.model.NotificationType;
 

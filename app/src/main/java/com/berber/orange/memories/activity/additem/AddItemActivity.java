@@ -26,13 +26,13 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
-import com.berber.orange.memories.dbservice.Anniversary;
+import com.berber.orange.memories.activity.pickplace.PickPlaceActivity;
+import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.dbservice.AnniversaryDao;
-import com.berber.orange.memories.dbservice.ModelAnniversaryType;
+import com.berber.orange.memories.model.db.ModelAnniversaryType;
 import com.berber.orange.memories.dbservice.ModelAnniversaryTypeDao;
-import com.berber.orange.memories.dbservice.NotificationSending;
+import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.dbservice.NotificationSendingDao;
-import com.berber.orange.memories.utils.ScreenUtil;
 import com.berber.orange.memories.utils.Utils;
 import com.gyf.barlibrary.ImmersionBar;
 

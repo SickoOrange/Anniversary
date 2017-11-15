@@ -1,4 +1,4 @@
-package com.berber.orange.memories.dbservice;
+package com.berber.orange.memories.model.db;
 
 import android.os.Parcel;
 import android.os.Parcelable;
