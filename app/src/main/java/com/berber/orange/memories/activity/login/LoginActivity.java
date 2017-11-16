@@ -14,7 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.CoordinatorActivity;
+import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;

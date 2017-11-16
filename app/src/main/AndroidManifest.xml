@@ -59,7 +59,7 @@
             android:label="@string/title_activity_add"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".activity.CoordinatorActivity"
+            android:name=".activity.main.CoordinatorActivity"
             android:label="@string/title_activity_coordinator"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".activity.pickplace.PickPlaceActivity"></activity>

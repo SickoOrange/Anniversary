@@ -270,20 +270,20 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         modelAnniversaryTypes = new ArrayList<>();
         modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("美食", R.mipmap.ic_category_0));
         modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("电影", R.mipmap.ic_category_1));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("酒店住宿", R.mipmap.ic_category_2));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("生活服务", R.mipmap.ic_category_3));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("KTV", R.mipmap.ic_category_4));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("旅游", R.mipmap.ic_category_5));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("学习培训", R.mipmap.ic_category_6));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("汽车服务", R.mipmap.ic_category_7));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("摄影写真", R.mipmap.ic_category_8));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("酒店", R.mipmap.ic_category_2));
+        // modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("KTV", R.mipmap.ic_category_4));
+        //modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("旅游", R.mipmap.ic_category_5));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("逛风景", R.mipmap.ic_category_6));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("炸鸡啤酒", R.mipmap.ic_category_7));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("冰激凌", R.mipmap.ic_category_8));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("K歌", R.mipmap.ic_category_3));
         modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("休闲娱乐", R.mipmap.ic_category_10));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("丽人", R.mipmap.ic_category_11));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("运动健身", R.mipmap.ic_category_12));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("大保健", R.mipmap.ic_category_13));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("美容", R.mipmap.ic_category_11));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("大宝剑", R.mipmap.ic_category_12));
+        // modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("旅游", R.mipmap.ic_category_13));
         modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("团购", R.mipmap.ic_category_14));
         modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("景点", R.mipmap.ic_category_16));
-        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("全部分类", R.mipmap.ic_category_15));
+        modelAnniversaryTypes.add(new ModelAnniversaryTypeDTO("自定义", R.mipmap.ic_category_15));
     }
 
     @Override

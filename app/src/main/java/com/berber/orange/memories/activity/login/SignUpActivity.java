@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.CoordinatorActivity;
+import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.service.DefaultCreateAccountListener;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;

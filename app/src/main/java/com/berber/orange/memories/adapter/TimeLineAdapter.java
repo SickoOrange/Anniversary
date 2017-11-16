@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
+import com.berber.orange.memories.model.db.GoogleLocation;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -85,6 +86,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
             //holder.mDate.setText(date.split(",")[0]);
             holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
+            //set location
+            GoogleLocation googleLocation = anniversary.getGoogleLocation();
+            if (googleLocation != null) {
+                holder.mAnniversaryDate.setText(date + ", " + googleLocation.getLocationName());
+            } else {
+                holder.mAnniversaryDate.setText(date);
+            }
         }
 
         //set image type

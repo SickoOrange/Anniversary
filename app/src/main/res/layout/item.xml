@@ -92,12 +92,11 @@
 
             <TextView
                 android:id="@+id/anniversary_date_label"
-                android:layout_width="wrap_content"
+                android:layout_width="250dp"
                 android:layout_height="wrap_content"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
-                android:gravity="center"
                 android:maxLines="1"
                 android:padding="2dp"
                 android:text="11.11.2017, Germany Nurnberg"
