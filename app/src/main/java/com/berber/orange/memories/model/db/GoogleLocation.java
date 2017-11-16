@@ -6,12 +6,15 @@ import org.greenrobot.greendao.annotation.ToOne;
 import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.DaoException;
 
+import java.io.Serializable;
+
 /**
  * Created by orange on 2017/11/15.
  */
 
 @Entity
-public class GoogleLocation {
+public class GoogleLocation implements Serializable {
+    private static final long serialVersionUID = -4165596024316056341L;
     @Id(autoincrement = true)
     private Long id;
 
@@ -26,17 +29,21 @@ public class GoogleLocation {
     @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
 
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
 
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 603161226)
     private transient GoogleLocationDao myDao;
 
     @Generated(hash = 450972880)
     public GoogleLocation(Long id, String locationName, String locationAdress,
-            String locationPhoneNumber, Long anniversaryId) {
+                          String locationPhoneNumber, Long anniversaryId) {
         this.id = id;
         this.locationName = locationName;
         this.locationAdress = locationAdress;
@@ -91,7 +98,9 @@ public class GoogleLocation {
     @Generated(hash = 1258510271)
     private transient Long anniversary__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
         Long __key = this.anniversaryId;
@@ -111,7 +120,9 @@ public class GoogleLocation {
         return anniversary;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
@@ -163,8 +174,6 @@ public class GoogleLocation {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getGoogleLocationDao() : null;
     }
-
-
 
 
 }

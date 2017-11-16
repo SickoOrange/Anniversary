@@ -376,6 +376,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversary.setNotificationSending(notificationSending);
             anniversary.setNotificationSendingId(notificationSendingId);
             anniversaryDao.update(anniversary);
+            isNotificationEnable = false;
         }
 
 
@@ -402,6 +403,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversary.setGoogleLocation(googleLocation);
             anniversary.setGoogleLocationId(insertGoogleLocationId);
             anniversaryDao.update(anniversary);
+            googleLocation = null;
         }
 
         Intent intent = new Intent();
