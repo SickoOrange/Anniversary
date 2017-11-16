@@ -1,13 +1,10 @@
 package com.berber.orange.memories.model.db;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
-import org.greenrobot.greendao.annotation.Generated;
 
 import java.io.Serializable;
+import org.greenrobot.greendao.annotation.Generated;
 
 /**
  * Created by User on 2017/11/05.
@@ -48,12 +45,5 @@ public class ModelAnniversaryType implements Serializable{
         this.imageResource = imageResource;
     }
 
-    @Override
-    public String toString() {
-        return "ModelAnniversaryType{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", imageResource=" + imageResource +
-                '}';
-    }
+
 }

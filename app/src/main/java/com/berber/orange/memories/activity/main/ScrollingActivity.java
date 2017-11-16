@@ -28,11 +28,11 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.dbservice.AnniversaryDao;
-import com.berber.orange.memories.dbservice.DaoSession;
+import com.berber.orange.memories.model.db.AnniversaryDao;
+import com.berber.orange.memories.model.db.DaoSession;
 import com.berber.orange.memories.model.db.NotificationSending;
-import com.berber.orange.memories.dbservice.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
+import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -104,21 +104,21 @@ public class ScrollingActivity extends AppCompatActivity implements NavigationVi
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
+//
+//        FloatingActionButton fab = findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//                startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
+//                //  startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class));
+//            }
+//        });
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-                startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
-                //  startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class));
-            }
-        });
-
-        TabLayout tab = findViewById(R.id.tab);
-        tab.addTab(tab.newTab().setText("Time Line"));
-        tab.addTab(tab.newTab().setText("Grid Line"));
+      //  TabLayout tab = findViewById(R.id.tab);
+//        tab.addTab(tab.newTab().setText("Time Line"));
+        //   tab.addTab(tab.newTab().setText("Grid Line"));
 
 
         ImageView imageView = findViewById(R.id.image_content);

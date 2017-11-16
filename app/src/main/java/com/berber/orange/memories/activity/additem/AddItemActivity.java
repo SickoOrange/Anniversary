@@ -19,6 +19,7 @@ import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -26,14 +27,22 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
-import com.berber.orange.memories.activity.pickplace.PickPlaceActivity;
 import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.model.db.AnniversaryDao;
+import com.berber.orange.memories.model.db.GoogleLocation;
+import com.berber.orange.memories.model.db.GoogleLocationDao;
 import com.berber.orange.memories.model.db.ModelAnniversaryType;
-import com.berber.orange.memories.dbservice.ModelAnniversaryTypeDao;
+import com.berber.orange.memories.model.db.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.model.db.NotificationSending;
-import com.berber.orange.memories.dbservice.NotificationSendingDao;
+import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.text.SimpleDateFormat;
@@ -44,11 +53,13 @@ import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-public class AddItemActivity extends AppCompatActivity implements View.OnClickListener {
+public class AddItemActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int HOME_ITEM_SIZE = 10;
 
     private static final int REQUEST_PLACE_CODE = 9002;
+    private static final int PLACE_PICKER_REQUEST = 1;
+
 
     private ViewPager viewPager;
     private ArrayList<ModelAnniversaryTypeDTO> modelAnniversaryTypes;
@@ -69,6 +80,9 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton selectedRadioTypeButton;
     private boolean isNotificationEnable = false;
     private Date currentPickDate = null;
+    private TextView mAnniversaryLocation;
+    private GoogleLocation googleLocation = null;
+    private GoogleLocationDao googleLocationDao;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +98,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Your Anniversary");
 
+
+        //google place api
+        GoogleApiClient mGoogleApiClient = new GoogleApiClient
+                .Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .addApi(Places.PLACE_DETECTION_API)
+                .enableAutoManage(this, this)
+                .build();
+
         initAnniversaryTypeData();
         initView();
         init();
@@ -92,6 +115,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         notificationSendingDao = ((APP) getApplication()).getDaoSession().getNotificationSendingDao();
         modelAnniversaryTypeDao = ((APP) getApplication()).getDaoSession().getModelAnniversaryTypeDao();
 
+        googleLocationDao = ((APP) getApplication()).getDaoSession().getGoogleLocationDao();
 
     }
 
@@ -170,8 +194,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryDateTextView.setText(splits[0]);
 
         //anniversary location
-        TextView anniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
-        anniversaryLocation.setOnClickListener(this);
+        mAnniversaryLocation = findViewById(R.id.anniversary_add_anni_location);
+        mAnniversaryLocation.setOnClickListener(this);
 
         //anniversary notification
         anniversaryNotificationTextView = findViewById(R.id.anniversary_add_anni_notification);
@@ -288,10 +312,21 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.anniversary_add_anni_location:
                 //open new activity for pick a place
-                Intent intent = new Intent(AddItemActivity.this, PickPlaceActivity.class);
-                startActivityForResult(intent, REQUEST_PLACE_CODE);
+                openPickerPlaceDialog();
                 break;
 
+        }
+    }
+
+    private void openPickerPlaceDialog() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+        try {
+            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException e) {
+            e.printStackTrace();
+        } catch (GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
         }
     }
 
@@ -357,6 +392,17 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversary.setModelAnniversaryType(modelAnniversaryType);
         anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
         anniversaryDao.update(anniversary);
+
+
+        //handle location information
+        if (googleLocation != null) {
+            googleLocation.setAnniversary(anniversary);
+            googleLocation.setAnniversaryId(anniversaryId);
+            long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
+            anniversary.setGoogleLocation(googleLocation);
+            anniversary.setGoogleLocationId(insertGoogleLocationId);
+            anniversaryDao.update(anniversary);
+        }
 
         Intent intent = new Intent();
         intent.putExtra("obj", anniversary);
@@ -484,5 +530,29 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     public TextView getAnniversaryTypeTextView() {
         return anniversaryTypeName;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(data, this);
+                String toastMsg = String.format("Place: %s", place.getName() + "/n" + place.getAddress() + "/n" + place.getPhoneNumber());
+                Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
+                mAnniversaryLocation.setText(place.getAddress());
+                googleLocation = new GoogleLocation();
+                googleLocation.setLocationName(place.getName().toString());
+                googleLocation.setLocationAdress(place.getAddress().toString());
+                googleLocation.setLocationPhoneNumber(place.getPhoneNumber().toString());
+                //set location label
+            }
+        }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // TODO: Please implement GoogleApiClient.OnConnectionFailedListener to
+        // handle connection failures.
     }
 }

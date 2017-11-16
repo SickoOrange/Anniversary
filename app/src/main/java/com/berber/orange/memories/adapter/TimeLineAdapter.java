@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.dbservice.AnniversaryDao;
+import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 

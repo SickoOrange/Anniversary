@@ -1,9 +1,6 @@
 package com.berber.orange.memories.model.db;
 
 import com.berber.orange.memories.activity.model.NotificationType;
-import com.berber.orange.memories.dbservice.AnniversaryDao;
-import com.berber.orange.memories.dbservice.DaoSession;
-import com.berber.orange.memories.dbservice.NotificationSendingDao;
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;
@@ -38,23 +35,17 @@ public class NotificationSending implements Serializable {
 
     @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
-
-    /**
-     * Used to resolve relations
-     */
+    /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-
-    /**
-     * Used for active entity operations.
-     */
+    /** Used for active entity operations. */
     @Generated(hash = 1437953480)
     private transient NotificationSendingDao myDao;
 
     @Generated(hash = 1879510796)
     public NotificationSending(Long id, Date sendingDate,
-                               NotificationType notificationType, String recipient,
-                               Long anniversaryId) {
+            NotificationType notificationType, String recipient,
+            Long anniversaryId) {
         this.id = id;
         this.sendingDate = sendingDate;
         this.notificationType = notificationType;
@@ -109,9 +100,7 @@ public class NotificationSending implements Serializable {
     @Generated(hash = 1258510271)
     private transient Long anniversary__resolvedKey;
 
-    /**
-     * To-one relationship, resolved on first access.
-     */
+    /** To-one relationship, resolved on first access. */
     @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
         Long __key = this.anniversaryId;
@@ -131,9 +120,7 @@ public class NotificationSending implements Serializable {
         return anniversary;
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
@@ -179,20 +166,12 @@ public class NotificationSending implements Serializable {
         myDao.update(this);
     }
 
-    @Override
-    public String toString() {
-        return "NotificationSending{" +
-                "id=" + id +
-                ", sendingDate=" + sendingDate +
-                ", notificationType=" + notificationType +
-                ", recipient='" + recipient + '\'' +
-                '}';
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1984972466)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getNotificationSendingDao() : null;
     }
+
+
 }

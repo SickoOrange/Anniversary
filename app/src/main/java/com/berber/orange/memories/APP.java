@@ -2,8 +2,9 @@ package com.berber.orange.memories;
 
 import android.app.Application;
 
-import com.berber.orange.memories.dbservice.DaoMaster;
-import com.berber.orange.memories.dbservice.DaoSession;
+
+import com.berber.orange.memories.model.db.DaoMaster;
+import com.berber.orange.memories.model.db.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 
