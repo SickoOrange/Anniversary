@@ -28,8 +28,8 @@
         android:layout_alignStart="@+id/anniversary_type_image_view"
         android:layout_below="@+id/anniversary_type_image_view"
         android:background="@drawable/dot_text_view"
-        android:padding="2dp"
         android:gravity="center"
+        android:padding="2dp"
         android:text="up coming"
         android:textColor="@android:color/black"
         android:textSize="7sp" />
@@ -114,14 +114,14 @@
             <!--android:src="@drawable/ic_notifications_black_18px" />-->
 
             <ImageView
-                android:id="@+id/anniversary_notification_type_email"
+                android:id="@+id/anniversary_notification_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:drawablePadding="5dp"
                 android:padding="3dp"
 
-                android:src="@drawable/ic_notifications_black_18px" />
+                android:src="@drawable/ic_notifications_off_black_18px" />
 
         </RelativeLayout>
 

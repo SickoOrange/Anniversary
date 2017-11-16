@@ -14,7 +14,7 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.main.ScrollingActivity;
+import com.berber.orange.memories.activity.CoordinatorActivity;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.service.DefaultCreateAccountListener;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
@@ -138,7 +138,7 @@ public class SignUpActivity extends AppCompatActivity {
 
                     @Override
                     public void onUploadProfileSucceed(Task<Void> task) {
-                        SignUpActivity.this.startActivity(new Intent(SignUpActivity.this, ScrollingActivity.class));
+                        SignUpActivity.this.startActivity(new Intent(SignUpActivity.this, CoordinatorActivity.class));
                     }
 
                     @Override

@@ -6,7 +6,6 @@ import android.support.v7.app.AppCompatActivity;
 
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.CoordinatorActivity;
-import com.berber.orange.memories.activity.main.ScrollingActivity;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
@@ -33,7 +31,6 @@ import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import org.json.JSONException;
@@ -155,7 +152,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     DefaultLoginInCallBack defaultSignInCallBack = new DefaultLoginInCallBack() {
         @Override
         public void loginSucceeds(FirebaseUser currentUser) {
-            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }
 
@@ -172,7 +169,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     GoogleLoginInCallBack googleSignInCallBack = new GoogleLoginInCallBack() {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
-            startActivity(new Intent(LoginActivity.this, ScrollingActivity.class));
+            startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }
 
@@ -216,7 +213,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             }
             myUser.setDisplayName(user.getDisplayName());
             myUser.setPhotoUri(user.getPhotoUrl().toString());
-            Intent intent = new Intent(LoginActivity.this, ScrollingActivity.class);
+            Intent intent = new Intent(LoginActivity.this, CoordinatorActivity.class);
             intent.putExtra("user", myUser);
 
 

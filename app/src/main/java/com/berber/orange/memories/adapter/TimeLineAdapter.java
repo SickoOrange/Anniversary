@@ -8,12 +8,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
+import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
@@ -88,8 +90,17 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //set image type
         holder.mAnniversaryTypeImage.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
 
-        //notification date
-        Date sendingDate = anniversary.getNotificationSending().getSendingDate();
+        //notification icon switch
+        NotificationSending notificationSending = anniversary.getNotificationSending();
+        if (notificationSending != null) {
+            holder.mNotificationIcon.setImageResource(R.drawable.ic_notifications_black_18px);
+        } else {
+            holder.mNotificationIcon.setImageResource(R.drawable.ic_notifications_off_black_18px);
+        }
+
+        //notification date for anniversary
+        // Date sendingDate = anniversary.getNotificationSending().getSendingDate();
+
 
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
@@ -97,7 +108,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         Log.e("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(anniversaryShowDate));
         Log.e("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(createDate));
         Log.e("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(System.currentTimeMillis())));
-        Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
+        // Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
 
         long currentTimeMillis = System.currentTimeMillis();
 
@@ -194,6 +205,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         NumberProgressBar mCurrentAnniversaryProgress;
 
+        ImageView mNotificationIcon;
+
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
             itemRoot = itemView.findViewById(R.id.item_layout);
@@ -206,7 +219,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             //  mAnniversaryNotificationDate = itemView.findViewById(R.id.anniversary_notification_date_label);
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
             mAnniversaryStatusLabel = itemView.findViewById(R.id.anniversary_status_label);
-
+            mNotificationIcon = itemView.findViewById(R.id.anniversary_notification_icon);
 
         }
     }
