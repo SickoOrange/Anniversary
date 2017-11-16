@@ -31,7 +31,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> {
-    private List<Anniversary> mDateSets;
+    private List<Anniversary> mDateSets = new ArrayList<>();
     private Context mContext;
 
     public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {

@@ -4,9 +4,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
@@ -36,6 +34,7 @@ import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -173,15 +172,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     }
 
     private List<Anniversary> getData() {
-
-        List<NotificationSending> list = notificationSendingDao.queryBuilder().list();
-        if (list.isEmpty()) {
-            return null;
-        }
-        NotificationSending notificationSending = list.get(0);
-        Anniversary anniversary = notificationSending.getAnniversary();
-        System.out.println(anniversary);
-        return anniversaryDao.queryBuilder().list();
+        List<Anniversary> anniversaries = anniversaryDao.queryBuilder().list();
+        return anniversaries.isEmpty() ? new ArrayList<Anniversary>() : anniversaries;
     }
 
     @Override
