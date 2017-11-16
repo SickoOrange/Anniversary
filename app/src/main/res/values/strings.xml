@@ -144,6 +144,7 @@
         <item>Year</item>
     </string-array>
     <string name="title_activity_coordinator">CoordinatorActivity</string>
+    <string name="action_change_image">更换封面</string>
 
 
 </resources>

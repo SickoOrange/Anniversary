@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.berber.orange.memories.activity.main.CoordinatorActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_change_image"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="@string/action_change_image"
         app:showAsAction="never" />
 
     <item

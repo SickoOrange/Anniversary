@@ -1,6 +1,7 @@
 package com.berber.orange.memories.activity.main;
 
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.design.widget.AppBarLayout;
@@ -12,6 +13,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -33,6 +35,10 @@ import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.MimeType;
+import com.zhihu.matisse.engine.impl.GlideEngine;
+import com.zhihu.matisse.filter.Filter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,6 +57,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     private Toolbar toolbar;
     //因为setExpanded会调用事件监听，所以通过标志过滤掉
     public static int expendedtag = 2;
+    private static final int REQUEST_CHOOSE_IMAGE = 9898;
+    private ImageView mLandingPageImageView;
 
     @Override
     protected void initView() {
@@ -143,8 +151,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 //        tab.addTab(tab.newTab().setText("Grid Line"));
 
 
-        ImageView imageView = findViewById(R.id.image_content);
-        Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(imageView);
+        mLandingPageImageView = findViewById(R.id.image_content);
+        Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
         initRecycler();
     }
 
@@ -195,6 +203,19 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
                 startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
                 return true;
+            case R.id.action_change_image:
+                // TODO: 2017/11/16 pick image and change the background
+                Matisse.from(CoordinatorActivity.this)
+                        .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                        .countable(true)
+                        .maxSelectable(9)
+                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                        .thumbnailScale(0.85f)
+                        .imageEngine(new GlideEngine())
+                        .forResult(REQUEST_CHOOSE_IMAGE);
+                return true;
         }
 
 //        //noinspection SimplifiableIfStatement
@@ -242,6 +263,13 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
                 adapter.addNewItem(dto, anniversaryDao);
                 Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
+                break;
+            case REQUEST_CHOOSE_IMAGE:
+                List<Uri> mSelected = Matisse.obtainResult(data);
+                if (!mSelected.isEmpty()) {
+                    Glide.with(this).load(mSelected.get(0)).into(mLandingPageImageView);
+                }
+                Log.d("Matisse", "mSelected: " + mSelected);
                 break;
         }
     }
