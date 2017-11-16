@@ -3,7 +3,9 @@ package com.berber.orange.memories.activity.main;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
+import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
+import com.berber.orange.memories.Manifest;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
@@ -44,8 +47,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
 
-public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, EasyPermissions.PermissionCallbacks {
     private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
     private DaoSession daoSession;
@@ -59,6 +64,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     public static int expendedtag = 2;
     private static final int REQUEST_CHOOSE_IMAGE = 9898;
     private ImageView mLandingPageImageView;
+
+    private static final int RC_PICK_IMAGE_PERM = 123;
 
     @Override
     protected void initView() {
@@ -191,6 +198,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -205,17 +213,20 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 return true;
             case R.id.action_change_image:
                 // TODO: 2017/11/16 pick image and change the background
-                Matisse.from(CoordinatorActivity.this)
-                        .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
-                        .countable(true)
-                        .maxSelectable(9)
-                        .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                        .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                        .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                        .thumbnailScale(0.85f)
-                        .imageEngine(new GlideEngine())
-                        .forResult(REQUEST_CHOOSE_IMAGE);
-                return true;
+                if (hasPermissionToPickImage()) {
+                    openMattiseDialog();
+                    return true;
+                } else {
+                    EasyPermissions.requestPermissions(
+                            this,
+                            "Pick Image",
+                            RC_PICK_IMAGE_PERM,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    );
+                    return true;
+                }
+
         }
 
 //        //noinspection SimplifiableIfStatement
@@ -265,13 +276,70 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 break;
             case REQUEST_CHOOSE_IMAGE:
+                if (data == null) {
+                    return;
+                }
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     Glide.with(this).load(mSelected.get(0)).into(mLandingPageImageView);
                 }
                 Log.d("Matisse", "mSelected: " + mSelected);
                 break;
+            case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
+                String yes = getString(R.string.yes);
+                String no = getString(R.string.no);
+
+                // Do something after user returned from app settings screen, like showing a Toast.
+//                Toast.makeText(
+//                        this,
+//                        getString(R.string.returned_from_app_settings_to_activity,
+//                                hasPermissionToPickImage() ? yes : no,
+//                                hasLocationAndContactsPermissions() ? yes : no,
+//                                hasSmsPermission() ? yes : no),
+//                        Toast.LENGTH_LONG)
+//                        .show();
+                break;
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    private boolean hasPermissionToPickImage() {
+        return EasyPermissions.hasPermissions(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        openMattiseDialog();
+    }
+
+    private void openMattiseDialog() {
+        Matisse.from(CoordinatorActivity.this)
+                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
+                .countable(true)
+                .maxSelectable(9)
+                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
+                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
+                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+                .thumbnailScale(0.85f)
+                .imageEngine(new GlideEngine())
+                .forResult(REQUEST_CHOOSE_IMAGE);
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
 }

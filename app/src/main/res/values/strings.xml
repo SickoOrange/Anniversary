@@ -145,6 +145,8 @@
     </string-array>
     <string name="title_activity_coordinator">CoordinatorActivity</string>
     <string name="action_change_image">更换封面</string>
+    <string name="yes">YES</string>
+    <string name="no">No</string>
 
 
 </resources>

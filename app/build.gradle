@@ -6,10 +6,11 @@ android {
     buildToolsVersion "26.0.2"
     defaultConfig {
         applicationId "com.berber.orange.memories"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true //Add this
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -34,7 +35,7 @@ dependencies {
     compile 'com.zhihu.android:matisse:0.5.0-alpha4'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     compile 'com.google.firebase:firebase-auth:11.0.4'
-    compile 'com.google.android.gms:play-services-auth:11.0.4'
+    //compile 'com.google.android.gms:play-services-auth:11.0.4'
     compile 'com.google.android.gms:play-services:11.0.4'
     compile 'com.android.support:support-v4:26.+'
 
