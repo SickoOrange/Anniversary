@@ -1,6 +1,7 @@
 package com.berber.orange.memories.activity.additem;
 
 import android.content.Intent;
+import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -43,6 +44,7 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.firebase.auth.AdditionalUserInfo;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.text.SimpleDateFormat;
@@ -508,15 +510,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         int currentDay = datePicker.getDayOfMonth();
                         Date mSelectedDate = new Date(currentYear - 1900, currentMonth, currentDay);
 
-                        if (mSelectedDate.getTime() < System.currentTimeMillis()) {
-                            //Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
-                            //disable notification function
-
-                            anniversaryNotificationTextView.setText("notification not enable");
-                            anniversaryNotificationTextView.setEnabled(false);
-                        } else {
-                            anniversaryNotificationTextView.setEnabled(true);
-                        }
+//                        if (mSelectedDate.getTime() <= System.currentTimeMillis()) {
+//                            //Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
+//                            //disable notification function
+//
+//                            anniversaryNotificationTextView.setText("当前日期不支持通知设置");
+//                            anniversaryNotificationTextView.setEnabled(false);
+//                        } else {
+//                            anniversaryNotificationTextView.setText("请设定通知频率以及通知类型");
+//                            anniversaryNotificationTextView.setEnabled(true);
+//                        }
                         currentPickDate = mSelectedDate;
                         anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                     }
