@@ -16,6 +16,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.GoogleLocation;
+import com.berber.orange.memories.model.db.ModelAnniversaryType;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -96,7 +97,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
         //set image type
-        holder.mAnniversaryTypeImage.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
+        ModelAnniversaryType modelAnniversaryType = anniversary.getModelAnniversaryType();
+        if (modelAnniversaryType != null) {
+            holder.mAnniversaryTypeImage.setImageResource(modelAnniversaryType.getImageResource());
+        }
 
         //notification icon switch
         NotificationSending notificationSending = anniversary.getNotificationSending();

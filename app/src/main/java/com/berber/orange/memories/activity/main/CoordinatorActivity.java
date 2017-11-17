@@ -91,15 +91,15 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 if (getSupportActionBar().getHeight() - appBarLayout.getHeight() == verticalOffset) {
                     //折叠监听
                     // Toast.makeText(CoordinatorActivity.this, "折叠了", Toast.LENGTH_SHORT).show();
-                    mImmersionBar.statusBarDarkFont(true, 0.2f);
+                    //mImmersionBar.statusBarDarkFont(true, 0.2f);
                     toolbar.setTitle("Anniversary");
-                    mImmersionBar.init();
+                    //mImmersionBar.init();
                 }
                 if (expendedtag == 2 && verticalOffset == 0) {
                     //展开监听
                     //Toast.makeText(CoordinatorActivity.this, "展开了", Toast.LENGTH_SHORT).show();
-                    mImmersionBar.statusBarDarkFont(false, 0.2f);
-                    mImmersionBar.init();
+                    //  mImmersionBar.statusBarDarkFont(false, 0.2f);
+                    // mImmersionBar.init();
                     toolbar.setTitle("");
 
                 }
@@ -167,6 +167,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     protected void initImmersionBar() {
         super.initImmersionBar();
         mImmersionBar.titleBar(toolbar);
+        mImmersionBar.statusBarDarkFont(true, 0.2f);
+        mImmersionBar.init();
     }
 
     @Override

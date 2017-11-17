@@ -384,15 +384,17 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) currentChild.getAdapter();
         ModelAnniversaryTypeDTO currentImageResource = adapter.getCurrentImageResource();
 
-        //handle anniversaryType
-        ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
-        modelAnniversaryType.setName(currentImageResource.getName());
-        modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
-        long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
+        if (currentImageResource != null) {
+            //handle anniversaryType
+            ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
+            modelAnniversaryType.setName(currentImageResource.getName());
+            modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
+            long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
 
-        anniversary.setModelAnniversaryType(modelAnniversaryType);
-        anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
-        anniversaryDao.update(anniversary);
+            anniversary.setModelAnniversaryType(modelAnniversaryType);
+            anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
+            anniversaryDao.update(anniversary);
+        }
 
 
         //handle location information
@@ -504,12 +506,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         int currentYear = datePicker.getYear();
                         int currentMonth = datePicker.getMonth();
                         int currentDay = datePicker.getDayOfMonth();
-                        currentPickDate = new Date(currentYear - 1900, currentMonth, currentDay);
+                        Date mSelectedDate = new Date(currentYear - 1900, currentMonth, currentDay);
 
-                        if (currentPickDate.getTime() < System.currentTimeMillis()) {
+                        if (mSelectedDate.getTime() < System.currentTimeMillis()) {
                             Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
                             return;
                         }
+                        currentPickDate=mSelectedDate;
                         anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                     }
                 })
