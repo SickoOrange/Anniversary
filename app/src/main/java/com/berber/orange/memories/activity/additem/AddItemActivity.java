@@ -509,10 +509,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         Date mSelectedDate = new Date(currentYear - 1900, currentMonth, currentDay);
 
                         if (mSelectedDate.getTime() < System.currentTimeMillis()) {
-                            Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
-                            return;
+                            //Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
+                            //disable notification function
+
+                            anniversaryNotificationTextView.setText("notification not enable");
+                            anniversaryNotificationTextView.setEnabled(false);
+                        } else {
+                            anniversaryNotificationTextView.setEnabled(true);
                         }
-                        currentPickDate=mSelectedDate;
+                        currentPickDate = mSelectedDate;
                         anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                     }
                 })
