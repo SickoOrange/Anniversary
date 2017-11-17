@@ -21,7 +21,6 @@ import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -101,61 +100,58 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
-        Log.e("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(anniversaryShowDate));
-        Log.e("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(createDate));
-        Log.e("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(new Date(System.currentTimeMillis())));
+        Log.e("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(anniversaryShowDate));
+        Log.e("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(createDate));
+        Log.e("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
         // Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
 
         long currentTimeMillis = System.currentTimeMillis();
         long currentRestMillis = anniversaryShowDate.getTime() - currentTimeMillis;
         long totalRestMillis = anniversaryShowDate.getTime() - createDate.getTime();
 
-        long restDays = currentRestMillis / (24 * 60 * 60 * 1000) + 1;
 
-        long totalDay = totalRestMillis / (24 * 60 * 60 * 1000);
-
-        if (totalDay < 0) {
-            totalDay = totalDay - 1;
-        } else {
-            totalDay = totalDay + 1;
-        }
-
-        //set anniversary status
-        if (restDays <= (long) 20 && restDays >= 0) {
-            holder.mAnniversaryStatusLabel.setText("Up Coming");
-            holder.mAnniversaryStatusLabel.setBackground(mContext.getResources().getDrawable(R.drawable.dot_text_view));
-        } else if (restDays < 0) {
-            holder.mAnniversaryStatusLabel.setText("Finish");
-            holder.mAnniversaryStatusLabel.setBackground(mContext.getResources().getDrawable(R.drawable.dot_text_view));
-        } else {
-            holder.mAnniversaryStatusLabel.setText("");
+        if (totalRestMillis < 0 && totalRestMillis > (-1 * 24 * 60 * 60 * 1000)) {
+            //当天的情况下 (纪念日时间默认当然00:00)
+            holder.mLeftDayLabel.setText("0/0");
+            holder.mCurrentAnniversaryProgress.setProgress(100);
+            holder.mAnniversaryStatusLabel.setText("In Progress");
             holder.mAnniversaryStatusLabel.setBackground(null);
-        }
 
+        } else if (totalRestMillis <= (-1 * 24 * 60 * 60 * 1000)) {
+            //已经结束了
+            double totalDay = totalRestMillis * 1.0 / (24 * 60 * 60 * 1000);
+            if (totalDay < 0) {
+                totalDay = totalDay - 1;
+                holder.mLeftDayLabel.setText("0/" + (long) totalDay);
+            }
+            holder.mCurrentAnniversaryProgress.setProgress(100);
+            holder.mAnniversaryStatusLabel.setText("Finish");
+            holder.mAnniversaryStatusLabel.setBackground(null);
 
-        if (totalDay == 0) {
-            String label = "0/0";
-            holder.mLeftDayLabel.setText(label);
-            holder.mCurrentAnniversaryProgress.setProgress(100);
-        }
-        //else if (totalDay == restDays) {
-//            String label = restDays + "/" + totalDay;
-//            holder.mLeftDayLabel.setText(label);
-//            int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
-//            holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
-        //}
-        else if (restDays < 0) {
-            //created Date>show Date
-            String label = 0 + "/" + totalDay;
-            holder.mLeftDayLabel.setText(label);
-            holder.mCurrentAnniversaryProgress.setProgress(100);
         } else {
-            String label = restDays + "/" + totalDay;
-            holder.mLeftDayLabel.setText(label);
+            //没有结束的
+            double restDays = currentRestMillis * 1.0 / (24 * 60 * 60 * 1000);
+            double totalDay = totalRestMillis * 1.0 / (24 * 60 * 60 * 1000);
+
+            if (restDays > 0) {
+                restDays = restDays + 1;
+            }
+
+            if (totalDay > 0) {
+                totalDay = totalDay + 1;
+            }
+
+            holder.mLeftDayLabel.setText((long) restDays + "/" + (long) totalDay);
             int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
             holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
+            if ((long) restDays < 7) {
+                holder.mAnniversaryStatusLabel.setText("Up Coming");
+                holder.mAnniversaryStatusLabel.setBackground(null);
+            } else {
+                holder.mAnniversaryStatusLabel.setText("");
+                holder.mAnniversaryStatusLabel.setBackground(null);
+            }
         }
-
 
         if (position == 0)
 
