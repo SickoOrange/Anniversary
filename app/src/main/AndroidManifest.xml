@@ -67,6 +67,11 @@
             android:name=".MyReceiver"
             android:enabled="true"
             android:exported="true" />
+
+        <service
+            android:name=".NotificationService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

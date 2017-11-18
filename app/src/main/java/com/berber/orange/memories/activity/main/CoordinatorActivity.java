@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.Manifest;
+import com.berber.orange.memories.NotificationService;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
@@ -161,6 +162,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         mLandingPageImageView = findViewById(R.id.image_content);
         Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
         initRecycler();
+
+        Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
+        intent.setAction("My Service");
+        startService(intent);
     }
 
     @Override
