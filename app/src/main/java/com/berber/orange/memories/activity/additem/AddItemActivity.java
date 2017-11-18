@@ -1,5 +1,7 @@
 package com.berber.orange.memories.activity.additem;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -37,6 +40,7 @@ import com.berber.orange.memories.model.db.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
+import com.google.android.gms.auth.account.WorkAccountApi;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -85,11 +89,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private TextView mAnniversaryLocation;
     private GoogleLocation googleLocation = null;
     private GoogleLocationDao googleLocationDao;
+    public static final String INTENT_ALARM_LOG = "intent_alarm_log";
+    private AlarmManager alarmManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
+
 
         //ScreenUtil.immerseStatusBar(this);
         ImmersionBar.with(this)
@@ -99,6 +106,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle("Add Your Anniversary");
+
+        alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
 
         //google place api
@@ -367,6 +376,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //handle remind date
         if (isNotificationEnable) {
             Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeBeforeInMillis);
+            //setting a alarm
+            setupAlarm(notificationDate);
             NotificationSending notificationSending = new NotificationSending();
             notificationSending.setSendingDate(notificationDate);
             notificationSending.setRecipient("heylbly@gmail.com");
@@ -414,6 +425,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         intent.putExtra("obj", anniversary);
         setResult(REQUEST_NEW_ITEM, intent);
         finish();
+    }
+
+    private void setupAlarm(Date notificationDate) {
+        Intent intent = new Intent(INTENT_ALARM_LOG);
+        Log.e("TAG", "Create A Alarm");
+        PendingIntent pi = PendingIntent.getBroadcast(AddItemActivity.this, 0, intent, 0);
+        // alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +1000, pi);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 10 * 1000, pi);
     }
 
     private NotificationType getNotificationType(String notificationTypeString) {

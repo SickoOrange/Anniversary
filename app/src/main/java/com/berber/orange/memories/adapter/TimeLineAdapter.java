@@ -59,7 +59,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
-        Log.e("TAG", "onBindViewHolder" + position);
 
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
@@ -100,9 +99,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
-        Log.e("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(anniversaryShowDate));
-        Log.e("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(createDate));
-        Log.e("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
+        Log.d("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(anniversaryShowDate));
+        Log.d("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(createDate));
+        Log.d("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
         // Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
 
         long currentTimeMillis = System.currentTimeMillis();
