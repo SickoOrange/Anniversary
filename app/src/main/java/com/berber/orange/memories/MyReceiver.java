@@ -3,6 +3,7 @@ package com.berber.orange.memories;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.media.audiofx.LoudnessEnhancer;
 import android.util.Log;
 
 import com.berber.orange.memories.model.db.NotificationSending;
@@ -28,8 +29,9 @@ public class MyReceiver extends BroadcastReceiver {
     private void startScanTask(Context context) {
         APP mApplication = ((APP) context.getApplicationContext());
         NotificationSendingDao notificationSendingDao = mApplication.getDaoSession().getNotificationSendingDao();
-        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNotNull()).list();
+        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull()).list();
         for (NotificationSending notificationSending : list) {
+            Log.e("TAG", "sending data: " + notificationSending.getSendingDate().toString());
             sendingNotification(notificationSending);
             notificationSending.setSentDate(new Date());
         }
@@ -39,6 +41,6 @@ public class MyReceiver extends BroadcastReceiver {
     }
 
     private void sendingNotification(NotificationSending notificationSending) {
-
+        // TODO: 2017/11/18 notification function
     }
 }

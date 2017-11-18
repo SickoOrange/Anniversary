@@ -27,7 +27,6 @@ public class NotificationService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.e("TAG", "Notification Service onStartCommand");
         Notification.Builder builder = new Notification.Builder(this.getApplicationContext()); //获取一个Notification构造器
         Intent nfIntent = new Intent(this, CoordinatorActivity.class);
         builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)).setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
