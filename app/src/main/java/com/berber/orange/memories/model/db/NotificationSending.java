@@ -26,6 +26,8 @@ public class NotificationSending implements Serializable {
 
     private Date sendingDate;
 
+    private Date sentDate;
+
     @Convert(converter = NotificationTypeConverter.class, columnType = String.class)
     private NotificationType notificationType;
 
@@ -35,19 +37,23 @@ public class NotificationSending implements Serializable {
 
     @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1437953480)
     private transient NotificationSendingDao myDao;
 
-    @Generated(hash = 1879510796)
-    public NotificationSending(Long id, Date sendingDate,
-            NotificationType notificationType, String recipient,
-            Long anniversaryId) {
+    @Generated(hash = 358785660)
+    public NotificationSending(Long id, Date sendingDate, Date sentDate,
+            NotificationType notificationType, String recipient, Long anniversaryId) {
         this.id = id;
         this.sendingDate = sendingDate;
+        this.sentDate = sentDate;
         this.notificationType = notificationType;
         this.recipient = recipient;
         this.anniversaryId = anniversaryId;
@@ -100,7 +106,9 @@ public class NotificationSending implements Serializable {
     @Generated(hash = 1258510271)
     private transient Long anniversary__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
         Long __key = this.anniversaryId;
@@ -120,7 +128,9 @@ public class NotificationSending implements Serializable {
         return anniversary;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
@@ -164,6 +174,14 @@ public class NotificationSending implements Serializable {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public Date getSentDate() {
+        return this.sentDate;
+    }
+
+    public void setSentDate(Date sentDate) {
+        this.sentDate = sentDate;
     }
 
     /** called by internal mechanisms, do not call yourself. */

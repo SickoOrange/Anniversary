@@ -1,5 +1,8 @@
 package com.berber.orange.memories.activity.main;
 
+import android.app.ActivityManager;
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.net.Uri;
@@ -163,9 +166,17 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
         initRecycler();
 
-        Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
-        intent.setAction("My Service");
-        startService(intent);
+
+        boolean notificationService = isMyServiceRunning(NotificationService.class);
+        if (!notificationService) {
+            Log.e("TAG", "服务不存在，正在启动服务");
+
+            Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
+            intent.setAction("AnniversaryNotificationAction");
+            startService(intent);
+        } else {
+            Log.e("TAG", "服务已经存在");
+        }
     }
 
     @Override
@@ -348,5 +359,15 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
             new AppSettingsDialog.Builder(this).build().show();
         }
+    }
+
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }

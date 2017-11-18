@@ -1,16 +1,21 @@
 package com.berber.orange.memories;
 
+import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.os.IBinder;
+import android.os.SystemClock;
 import android.util.Log;
 
+import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
 
 public class NotificationService extends Service {
+    public static final String INTENT_ALARM_LOG = "intent_alarm_log";
+
     public NotificationService() {
     }
 
@@ -35,6 +40,19 @@ public class NotificationService extends Service {
         Notification notification = builder.build(); // 获取构建好的Notification
         notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
         startForeground(110, notification);
+
+        AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
+
+        int anHour = 5 * 1000; // 这是一小时的毫秒数
+
+        long triggerAtTime = SystemClock.elapsedRealtime() + anHour;
+
+        Intent i = new Intent(this, MyReceiver.class);
+        i.setAction(INTENT_ALARM_LOG);
+
+        PendingIntent pi = PendingIntent.getBroadcast(this, 0, i, 0);
+
+        manager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, triggerAtTime, pi);
         return START_STICKY;
     }
 
