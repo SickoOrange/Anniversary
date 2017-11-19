@@ -31,6 +31,9 @@ public class MyReceiver extends BroadcastReceiver {
         NotificationSendingDao notificationSendingDao = mApplication.getDaoSession().getNotificationSendingDao();
         Date currentDate = new Date();
         List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull(), NotificationSendingDao.Properties.SendingDate.le(currentDate)).list();
+        if (list.isEmpty()) {
+                Log.e("TAG","sending list is empty");
+        }
         for (NotificationSending notificationSending : list) {
             Log.e("TAG", "sending data: " + notificationSending.getSendingDate().toString());
             sendingNotification(notificationSending);

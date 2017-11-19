@@ -68,7 +68,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
             //holder.mDate.setText(date.split(",")[0]);
-            holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
+           // holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
             //set location
             GoogleLocation googleLocation = anniversary.getGoogleLocation();
             if (googleLocation != null) {

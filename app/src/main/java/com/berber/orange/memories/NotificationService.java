@@ -23,22 +23,23 @@ public class NotificationService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.e("TAG", "Notification Service on Create");
-    }
-
-    @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
         Notification.Builder builder = new Notification.Builder(this.getApplicationContext()); //获取一个Notification构造器
         Intent nfIntent = new Intent(this, CoordinatorActivity.class);
         builder.setContentIntent(PendingIntent.getActivity(this, 0, nfIntent, 0)).setLargeIcon(BitmapFactory.decodeResource(this.getResources(),
                 R.drawable.ic_mr_button_connected_13_light))// 设置下拉列表中的图标(大图标)
                 .setContentTitle("Anniversary 通知服务")// 设置下拉列表里的标题
                 .setSmallIcon(R.mipmap.ic_launcher)// 设置状态栏内的小图标
-                .setContentText("通知服务依赖此服务的运行，请勿关闭")// 设置上下文内容
+                .setContentText("Anniversary 通知服务依赖此服务的运行，请勿关闭")// 设置上下文内容
                 .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
 
         Notification notification = builder.build(); // 获取构建好的Notification
         notification.defaults = Notification.DEFAULT_SOUND; //设置为默认的声音
         startForeground(110, notification);
+
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
 
         AlarmManager manager = (AlarmManager) getSystemService(ALARM_SERVICE);
 
