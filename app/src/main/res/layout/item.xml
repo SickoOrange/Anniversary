@@ -97,6 +97,7 @@
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
+                android:layout_centerVertical="true"
                 android:maxLines="1"
                 android:padding="2dp"
                 android:text="11.11.2017, Germany Nurnberg"

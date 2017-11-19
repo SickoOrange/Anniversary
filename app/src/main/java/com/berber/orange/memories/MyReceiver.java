@@ -29,11 +29,12 @@ public class MyReceiver extends BroadcastReceiver {
     private void startScanTask(Context context) {
         APP mApplication = ((APP) context.getApplicationContext());
         NotificationSendingDao notificationSendingDao = mApplication.getDaoSession().getNotificationSendingDao();
-        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull()).list();
+        Date currentDate = new Date();
+        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull(), NotificationSendingDao.Properties.SendingDate.le(currentDate)).list();
         for (NotificationSending notificationSending : list) {
             Log.e("TAG", "sending data: " + notificationSending.getSendingDate().toString());
             sendingNotification(notificationSending);
-            notificationSending.setSentDate(new Date());
+            notificationSending.setSentDate(currentDate);
         }
 
         notificationSendingDao.updateInTx(list);
