@@ -61,7 +61,7 @@ public class MyReceiver extends BroadcastReceiver {
         builder.setContentIntent(PendingIntent.getActivity(context, 0, nfIntent, 0))
                 .setLargeIcon(BitmapFactory.decodeResource(context.getResources(),
                         R.drawable.ic_mr_button_connected_13_light))// 设置下拉列表中的图标(大图标)
-                .setContentTitle("你有一个新的通知提醒，请点击查看")// 设置下拉列表里的标题
+                .setContentTitle("你有一个新的通知提醒,点击查看")// 设置下拉列表里的标题
                 .setSmallIcon(R.mipmap.ic_launcher)// 设置状态栏内的小图标
                 .setContentText(notificationSending.getAnniversary().getTitle())// 设置上下文内容
                 .setWhen(System.currentTimeMillis()); // 设置该通知发生的时间
