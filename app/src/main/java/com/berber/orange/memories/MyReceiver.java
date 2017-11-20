@@ -17,7 +17,7 @@ public class MyReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         String action = intent.getAction();
-        if (action == NotificationService.INTENT_ALARM_LOG) {
+        if (NotificationService.INTENT_ALARM_LOG.equals(action)) {
             Log.e("AlarmReceiver", "启动扫描服务");
             startScanTask(context);
             Intent i = new Intent(context, NotificationService.class);
