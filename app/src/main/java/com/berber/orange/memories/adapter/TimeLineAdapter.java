@@ -68,7 +68,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
             //holder.mDate.setText(date.split(",")[0]);
-           // holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
+            // holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
             //set location
             GoogleLocation googleLocation = anniversary.getGoogleLocation();
             if (googleLocation != null) {
@@ -142,7 +142,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
             holder.mLeftDayLabel.setText((long) restDays + "/" + (long) totalDay);
             int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
-            holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
+
+            if (progress < 0) {
+                holder.mCurrentAnniversaryProgress.setProgress(100);
+            } else {
+                holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
+            }
             if ((long) restDays < 7) {
                 holder.mAnniversaryStatusLabel.setText("Up Coming");
                 holder.mAnniversaryStatusLabel.setBackground(null);
