@@ -1,9 +1,7 @@
 package com.berber.orange.memories.activity.additem;
 
 import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.hardware.camera2.TotalCaptureResult;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewPager;
@@ -40,7 +38,6 @@ import com.berber.orange.memories.model.db.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
-import com.google.android.gms.auth.account.WorkAccountApi;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -48,11 +45,11 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.firebase.auth.AdditionalUserInfo;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -78,7 +75,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton selectedRadioFrequencyButton;
     private CircleImageView anniversaryTypeImage;
     private TextView anniversaryTypeName;
-    private long notificationTimeBeforeInMillis;
+    private Calendar notificationTimeInCalendar;
     private final int REQUEST_NEW_ITEM = 9001;
     private AnniversaryDao anniversaryDao;
     private NotificationSendingDao notificationSendingDao;
@@ -263,7 +260,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 String msg = frequencyString + " " + selectedRadioFrequencyButton.getText().toString() + " before" + ",   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
-                notificationTimeBeforeInMillis = calculateNotificationTimeInMillis(frequencyString, selectedRadioFrequencyButton.getText().toString());
+                notificationTimeInCalendar = calculateNotificationTimeInCalendar(frequencyString, selectedRadioFrequencyButton.getText().toString());
                 isNotificationEnable = true;
             }
         });
@@ -375,9 +372,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         //handle remind date
         if (isNotificationEnable) {
-            Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeBeforeInMillis);
+            //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
+            Date notificationDate = notificationTimeInCalendar.getTime();
+            Log.e("TAG", notificationDate.toString());
             //setting a alarm
-            setupAlarm(notificationDate);
+            //setupAlarm(notificationDate);
             NotificationSending notificationSending = new NotificationSending();
             notificationSending.setSendingDate(notificationDate);
             notificationSending.setRecipient("heylbly@gmail.com");
@@ -427,13 +426,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         finish();
     }
 
-    private void setupAlarm(Date notificationDate) {
-        Intent intent = new Intent(INTENT_ALARM_LOG);
-        Log.e("TAG", "Create A Alarm");
-        PendingIntent pi = PendingIntent.getBroadcast(AddItemActivity.this, 0, intent, 0);
-        // alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +1000, pi);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 10 * 1000, pi);
-    }
+//    private void setupAlarm(Date notificationDate) {
+//        Intent intent = new Intent(INTENT_ALARM_LOG);
+//        Log.e("TAG", "Create A Alarm");
+//        PendingIntent pi = PendingIntent.getBroadcast(AddItemActivity.this, 0, intent, 0);
+//        // alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +1000, pi);
+//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 10 * 1000, pi);
+//    }
 
     private NotificationType getNotificationType(String notificationTypeString) {
         NotificationType notificationType = null;
@@ -461,26 +460,32 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
 
-    private long calculateNotificationTimeInMillis(String value, String frequency) {
+    private Calendar calculateNotificationTimeInCalendar(String value, String frequency) {
         long hourIndex = 0;
         int prefixIndex = Integer.valueOf(value);
+        Calendar instance = Calendar.getInstance();
         switch (frequency) {
             case "minute":
-                hourIndex = prefixIndex * 60 * 1000;
+                //hourIndex = prefixIndex * 60 * 1000;
+                instance.add(Calendar.MINUTE, prefixIndex * (-1));
                 break;
             case "hour":
-                hourIndex = prefixIndex * 60 * 60 * 1000;
+                //hourIndex = prefixIndex * 60 * 60 * 1000;
+                instance.add(Calendar.HOUR, prefixIndex * (-1));
                 break;
             case "week":
-                hourIndex = prefixIndex * 24 * 7 * 3600 * 1000;
+                //hourIndex = prefixIndex * 24 * 7 * 3600 * 1000;
+                instance.add(Calendar.WEEK_OF_YEAR, prefixIndex * (-1));
                 break;
             case "day":
-                hourIndex = prefixIndex * 24 * 3600 * 1000;
+                //hourIndex = prefixIndex * 24 * 3600 * 1000;
+                instance.add(Calendar.DAY_OF_MONTH, prefixIndex * (-1));
                 break;
             case "month":
+                instance.add(Calendar.MONTH, prefixIndex * (-1));
                 break;
         }
-        return hourIndex;
+        return instance;
     }
 
 

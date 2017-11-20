@@ -63,8 +63,13 @@ public class ExampleUnitTest {
     @Test
     public void calculateAnniversaryNotificationDate() {
         Date currentDate = new Date();
-        long timeInMillis = currentDate.getTime() - (long) (24 * 3600 * 1000);
-        System.out.println(new Date(timeInMillis));
+        Calendar instance = Calendar.getInstance();
+        instance.setTime(currentDate);
+        instance.add(Calendar.WEEK_OF_YEAR, 5*-1);
+        //long timeInMillis = currentDate.getTime() - (long) (27*24 * 3600 * 1000);
+        //System.out.println(new Date(timeInMillis));
+        Date time = instance.getTime();
+        System.out.println(time.toString());
     }
 
     private double calculateHourIndex(String msg) {
@@ -134,8 +139,8 @@ public class ExampleUnitTest {
         // long totalInMillis = showDate.getTime() - createdDate.getTime();
         System.out.println(restInMillis);
 
-        long rest = restInMillis / (1000*60*60);
-        System.out.println(100-(8588000*100.0/8900987));
+        long rest = restInMillis / (1000 * 60 * 60);
+        System.out.println(100 - (8588000 * 100.0 / 8900987));
         System.out.println(rest);
     }
 
