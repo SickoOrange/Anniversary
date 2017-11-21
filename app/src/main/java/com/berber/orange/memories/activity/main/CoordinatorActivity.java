@@ -198,7 +198,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        adapter = new TimeLineAdapter(getData(), this.getApplicationContext());
+        adapter = new TimeLineAdapter(getData(), this);
 
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(adapter);

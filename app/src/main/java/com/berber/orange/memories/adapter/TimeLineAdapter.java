@@ -1,6 +1,7 @@
 package com.berber.orange.memories.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.details.DetailsActivity;
+import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.GoogleLocation;
@@ -35,14 +38,14 @@ import de.hdodenhof.circleimageview.CircleImageView;
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> {
     private List<Anniversary> mDateSets = new ArrayList<>();
-    private Context mContext;
+    private CoordinatorActivity mContext;
 
     public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {
         if (mDateSets == null) {
             this.mDateSets = new ArrayList<>();
         }
         this.mDateSets = mDateSets;
-        mContext = context;
+        mContext = (CoordinatorActivity) context;
     }
 
     @Override
@@ -58,7 +61,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
-    public void onBindViewHolder(final TimeLineViewHolder holder, int position) {
+    public void onBindViewHolder(final TimeLineViewHolder holder, final int position) {
 
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
@@ -181,6 +184,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             @Override
             public void onClick(View view) {
                 // TODO: 2017/11/14 open details page
+                Anniversary selectedTarget = mDateSets.get(position);
+                Intent intent = new Intent(mContext, DetailsActivity.class);
+                intent.putExtra("obj", selectedTarget);
+                mContext.startActivity(intent);
             }
         });
     }
