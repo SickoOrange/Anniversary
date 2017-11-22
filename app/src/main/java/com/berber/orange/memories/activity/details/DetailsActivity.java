@@ -21,8 +21,6 @@ public class DetailsActivity extends AppCompatActivity {
         if (intent != null) {
             Anniversary anniversary = (Anniversary) intent.getSerializableExtra("obj");
             Utils.showToast(this, anniversary.getTitle(), Toast.LENGTH_LONG);
-        } else {
-            Utils.showToast(this, "No Information", Toast.LENGTH_LONG);
         }
     }
 }
