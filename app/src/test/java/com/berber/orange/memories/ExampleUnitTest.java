@@ -65,7 +65,7 @@ public class ExampleUnitTest {
         Date currentDate = new Date();
         Calendar instance = Calendar.getInstance();
         instance.setTime(currentDate);
-        instance.add(Calendar.WEEK_OF_YEAR, 5*-1);
+        instance.add(Calendar.WEEK_OF_YEAR, 5 * -1);
         //long timeInMillis = currentDate.getTime() - (long) (27*24 * 3600 * 1000);
         //System.out.println(new Date(timeInMillis));
         Date time = instance.getTime();

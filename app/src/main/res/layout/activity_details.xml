@@ -6,4 +6,5 @@
     android:layout_height="match_parent"
     tools:context="com.berber.orange.memories.activity.details.DetailsActivity">
 
+
 </android.support.constraint.ConstraintLayout>

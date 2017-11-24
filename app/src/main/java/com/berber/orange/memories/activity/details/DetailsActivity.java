@@ -20,7 +20,13 @@ public class DetailsActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             Anniversary anniversary = (Anniversary) intent.getSerializableExtra("obj");
-            Utils.showToast(this, anniversary.getTitle(), Toast.LENGTH_LONG);
+            System.out.println("anniversary: " + anniversary.getTitle());
         }
     }
+
+    @Override
+    public void onBackPressed() {
+        finish();
+    }
+
 }
