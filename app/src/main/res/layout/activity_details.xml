@@ -46,70 +46,264 @@
         android:layout_height="match_parent"
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/details_cardview_1"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/details_cardview_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="3dp">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/details_anni_type"
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:layout_margin="2dp"
+                        android:padding="2dp"
+                        android:src="@mipmap/ic_category_1" />
+
+                    <TextView
+                        android:id="@+id/details_anni_title"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:layout_toRightOf="@id/details_anni_type"
+                        android:padding="2dp"
+                        android:text="今天不吃鸡"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/details_anni_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_anni_title"
+                        android:layout_marginLeft="2dp"
+                        android:layout_toRightOf="@id/details_anni_type"
+                        android:drawableLeft="@drawable/ic_event_available_black_18px"
+                        android:gravity="center"
+                        android:paddingLeft="2dp"
+                        android:text="2017-11-11"
+                        android:textColor="#a1a1a1"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:id="@+id/details_anni_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/details_anni_type"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="15dp"
+                        android:ellipsize="none"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="以前我是这么认为的,作为一个宅鸡送的快递员,你成功地干掉了所有的顾客 独享了外卖的鸡肉晚餐 岂不是美滋滋"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="30dp"
+                        android:layout_below="@id/details_anni_description"
+                        android:layout_marginTop="10dp"
+                        android:orientation="horizontal">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="5dp"
+                            android:src="@drawable/com_facebook_favicon_blue"
+                            android:tint="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="我喜欢" />
+
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_marginLeft="20dp"
+                            android:src="@drawable/com_facebook_favicon_blue"
+                            android:tint="@color/black" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="2dp"
+                            android:gravity="center"
+                            android:padding="5dp"
+                            android:text="我要分享" />
+
+                    </LinearLayout>
+                </RelativeLayout>
+
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/details_cardview_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:padding="3dp">
-
-                <de.hdodenhof.circleimageview.CircleImageView
-                    android:id="@+id/details_anni_type"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    android:layout_margin="2dp"
-                    android:padding="2dp"
-                    android:src="@mipmap/ic_category_1" />
-
+               >
                 <TextView
-                    android:id="@+id/details_anni_title"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="2dp"
-                    android:layout_toRightOf="@id/details_anni_type"
-                    android:padding="2dp"
-                    android:text="今天不吃鸡"
-                    android:textSize="14dp"
-                    android:textColor="@color/black" />
-
-                <TextView
-                    android:id="@+id/details_anni_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/details_anni_title"
-                    android:layout_marginLeft="2dp"
-                    android:layout_toRightOf="@id/details_anni_type"
-                    android:drawableLeft="@drawable/ic_event_available_black_18px"
-                    android:gravity="center"
-                    android:paddingLeft="2dp"
-                    android:text="2017-11-11"
-                    android:textColor="#a1a1a1"
-                    android:textSize="12dp" />
-
-                <TextView
-                    android:id="@+id/details_anni_description"
+                    android:id="@+id/details_anni_mimi"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/details_anni_type"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginLeft="2dp"
                     android:layout_marginBottom="2dp"
-                    android:ellipsize="none"
-                    android:inputType="textMultiLine"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
                     android:minLines="1"
                     android:paddingLeft="5dp"
                     android:singleLine="false"
-                    android:text="以前我是这么认为的,作为一个宅鸡送的快递员,你成功地干掉了所有的顾客 独享了外卖的鸡肉晚餐 岂不是美滋滋"
+                    android:text="我们发现你并没有添加照片，是否尝试添加照片来记录你的回忆...."
+                    android:textColor="#a1a1a1"
+                    android:textSize="12dp" />
+
+                <!--<Button-->
+                    <!--android:id="@+id/details_add_images_btn"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:text="好的，点我添加"-->
+                    <!--android:background="@color/transparent"-->
+                    <!--/>-->
+
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="25dp"
+                    android:layout_below="@id/details_anni_mimi"
+                    android:layout_alignParentRight="true"
+                    android:text="好的，点我添加"
+                    android:layout_margin="5dp"
+                    android:padding="2dp"
+                    android:textColor="@color/redSelect"
+
+                    android:background="@color/transparent"/>
+
+            </RelativeLayout>
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/details_cardview_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:elevation="5dp">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+
+                    <TextView
+                        android:id="@+id/details_anni_rest_day"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:inputType="textMultiLine"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="距离剩下的天数还剩：                                                  120天"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/details_awo"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/details_anni_rest_day"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="您已经为此次事件开启了通知提醒功能, 系统将会在下列时间准点给您发送通知:"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+
+
+                    <TextView
+                        android:id="@+id/details_awo1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/details_awo"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:gravity="center"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="2017-15-11  00:00"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                    android:id="@+id/details_awo2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/details_awo1"
+                    android:layout_marginBottom="2dp"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginTop="5dp"
+                    android:minLines="1"
+                    android:paddingLeft="5dp"
+                    android:singleLine="false"
+                    android:text="通知类型：系统消息，电子邮件"
                     android:textColor="@color/black"
                     android:textSize="14dp" />
-            </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/details_awo3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/details_awo2"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="电子邮件: heylbly@gmail.com"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
 
-        </android.support.v7.widget.CardView>
+
+
+                </RelativeLayout>
+
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+
+
     </android.support.v4.widget.NestedScrollView>
 
 </android.support.design.widget.CoordinatorLayout>
