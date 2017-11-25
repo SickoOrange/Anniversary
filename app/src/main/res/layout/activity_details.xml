@@ -212,20 +212,18 @@
                 android:layout_margin="5dp"
                 android:elevation="5dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:padding="5dp">
 
 
                     <TextView
                         android:id="@+id/details_anni_rest_day"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_alignParentTop="true"
                         android:gravity="center"
-                        android:inputType="textMultiLine"
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
@@ -239,7 +237,6 @@
                         android:layout_margin="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/details_anni_rest_day"
                         android:layout_marginTop="5dp"
                         android:padding="3dp" />
 
@@ -247,7 +244,6 @@
                         android:id="@+id/details_awo"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/details_anni_progressbar"
                         android:layout_marginBottom="2dp"
                         android:layout_marginLeft="2dp"
                         android:layout_marginRight="2dp"
@@ -266,7 +262,6 @@
                         android:id="@+id/details_awo1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/details_awo"
                         android:layout_marginBottom="2dp"
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
@@ -282,7 +277,6 @@
                     android:id="@+id/details_awo2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/details_awo1"
                     android:layout_marginBottom="2dp"
                     android:layout_marginLeft="2dp"
                     android:layout_marginTop="5dp"
@@ -297,7 +291,6 @@
                         android:id="@+id/details_awo3"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/details_awo2"
                         android:layout_marginBottom="2dp"
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
@@ -311,7 +304,7 @@
 
 
 
-                </RelativeLayout>
+                </LinearLayout>
 
             </android.support.v7.widget.CardView>
         </LinearLayout>
