@@ -297,7 +297,7 @@
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
-                        android:text="电子邮件: heylbly@gmail.com"
+                        android:text="电子邮件:    heylbly@gmail.com"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
 
