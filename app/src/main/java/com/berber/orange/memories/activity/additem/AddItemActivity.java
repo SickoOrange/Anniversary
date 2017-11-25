@@ -575,6 +575,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         if (requestCode == PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
+                Log.e("TAG", place.getId());
                 String toastMsg = String.format("Place: %s", place.getName() + "/n" + place.getAddress() + "/n" + place.getPhoneNumber());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 mAnniversaryLocation.setText(place.getAddress());

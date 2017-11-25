@@ -52,7 +52,7 @@ dependencies {
     compile 'org.greenrobot:greendao:3.2.2'
     //compile 'com.dinuscxj:circleprogressbar:1.1.1'
     compile 'com.daimajia.numberprogressbar:library:1.4@aar'
-
+    compile 'com.youth.banner:banner:1.4.10'
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
     testCompile 'junit:junit:4.12'
 }

@@ -2,20 +2,25 @@ package com.berber.orange.memories.activity;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.places.Places;
 import com.gyf.barlibrary.ImmersionBar;
 
 /**
  * Created by orange on 2017/11/15.
  */
 
-public abstract class BaseActivity extends AppCompatActivity {
+public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
+   // protected GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -27,6 +32,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (isImmersionBarEnabled()) {
             initImmersionBar();
         }
+
+
 
 
     }
@@ -46,7 +53,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void initImmersionBar() {
         //在BaseActivity里初始化
         mImmersionBar = ImmersionBar.with(this);
-       // mImmersionBar.statusBarDarkFont(true, 0.2f);
+        // mImmersionBar.statusBarDarkFont(true, 0.2f);
         mImmersionBar.init();
     }
 
@@ -69,5 +76,10 @@ public abstract class BaseActivity extends AppCompatActivity {
         if ((localView != null) && (this.imm != null)) {
             this.imm.hideSoftInputFromWindow(localView.getWindowToken(), 2);
         }
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        // TODO: 2017/11/25  
     }
 }

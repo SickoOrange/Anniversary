@@ -365,6 +365,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
+
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
@@ -386,7 +387,7 @@
                             android:layout_height="wrap_content"
                             android:layout_alignParentEnd="true"
                             android:layout_alignParentRight="true"
-                            android:checked="true"/>
+                            android:checked="true" />
                     </RelativeLayout>
 
                     <TextView
@@ -451,6 +452,7 @@
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
+
             <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -459,7 +461,30 @@
                 android:layout_marginRight="5dp"
                 android:elevation="5dp">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
+                    <Button
+                        android:id="@+id/details_select_place_btn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="get" />
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/place_image"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:src="@drawable/profile"/>-->
+
+                    <com.youth.banner.Banner
+                        android:id="@+id/details_place_photo_banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp" />
+
+
+                </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>
 
