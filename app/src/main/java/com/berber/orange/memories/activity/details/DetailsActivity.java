@@ -55,12 +55,17 @@ public class DetailsActivity extends BaseActivity {
 
 
         //time progress recycler view
-        timeProgressRecyclerView = findViewById(R.id.time_progress_recycler_view);
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-        timeProgressRecyclerView.setLayoutManager(linearLayoutManager);
-        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
-        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
+//        timeProgressRecyclerView = findViewById(R.id.time_progress_recycler_view);
+//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+//        linearLayoutManager .setSmoothScrollbarEnabled(true);
+//        linearLayoutManager.setAutoMeasureEnabled(true);
+//
+//        timeProgressRecyclerView.setHasFixedSize(true);
+//        timeProgressRecyclerView.setNestedScrollingEnabled(false);
+//        timeProgressRecyclerView.setLayoutManager(linearLayoutManager);
+//        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
+//        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
     }
 
     @Override

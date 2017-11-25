@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="50dp"
     android:background="@drawable/item_ripple"
     tools:ignore="MissingPrefix">
 
@@ -16,7 +16,7 @@
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:paddingTop="37dp"
+        android:paddingTop="17dp"
         app:beginLine="#E0E0E0"
         app:endLine="#E0E0E0"
         app:lineSize="2dp"
