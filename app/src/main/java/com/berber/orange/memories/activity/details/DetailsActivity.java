@@ -176,7 +176,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         banner.setVisibility(View.VISIBLE);
         banner.start();
-        fadingTextView.setVisibility(View.GONE);
     }
 
     static class PlacePhotoTask extends AsyncTask<String, Void, List<PlacePhotoTask.AttributedPhoto>> {

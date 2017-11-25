@@ -22,6 +22,8 @@ public class GoogleLocation implements Serializable {
 
     private String locationAdress;
 
+    private String placeId;
+
     private String locationPhoneNumber;
 
     private Long anniversaryId;
@@ -41,12 +43,13 @@ public class GoogleLocation implements Serializable {
     @Generated(hash = 603161226)
     private transient GoogleLocationDao myDao;
 
-    @Generated(hash = 450972880)
-    public GoogleLocation(Long id, String locationName, String locationAdress,
-                          String locationPhoneNumber, Long anniversaryId) {
+    @Generated(hash = 543577967)
+    public GoogleLocation(Long id, String locationName, String locationAdress, String placeId,
+            String locationPhoneNumber, Long anniversaryId) {
         this.id = id;
         this.locationName = locationName;
         this.locationAdress = locationAdress;
+        this.placeId = placeId;
         this.locationPhoneNumber = locationPhoneNumber;
         this.anniversaryId = anniversaryId;
     }
@@ -166,6 +169,14 @@ public class GoogleLocation implements Serializable {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public String getPlaceId() {
+        return this.placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
     }
 
     /** called by internal mechanisms, do not call yourself. */

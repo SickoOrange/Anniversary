@@ -2,6 +2,7 @@ package com.berber.orange.memories;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.berber.orange.memories.model.db.DaoMaster;
 
@@ -26,5 +27,8 @@ public class UpgradeDatabaseHelper extends DaoMaster.OpenHelper {
 //            default:
 //                return;
 //        }
+        Log.i("greenDAO", "Upgrading schema from version " + oldVersion + " to " + newVersion + " by migrating all tables data");
+        //db.execSQL("ALTER TABLE "+MyDao.TABLENAME+" ADD COLUMN 'NEW_COL_1' INTEGER;");
+        //onCreate(db);
     }
 }
