@@ -5,17 +5,20 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.View;
 import android.widget.Toast;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.utils.Utils;
+import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import java.io.Serializable;
 
 public class DetailsActivity extends BaseActivity {
     private Toolbar toolbar;
+    private NumberProgressBar detailsAnniProgressbar;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +45,18 @@ public class DetailsActivity extends BaseActivity {
         if (actionBar != null) {
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
+
+
+        detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
+        detailsAnniProgressbar.setProgress(47);
+    }
+
+    @Override
+    protected void initImmersionBar() {
+        super.initImmersionBar();
+        mImmersionBar.titleBar(toolbar);
+        mImmersionBar.statusBarDarkFont(true, 0.2f);
+        mImmersionBar.init();
     }
 
     @Override
