@@ -1,7 +1,6 @@
 package com.berber.orange.memories.activity.main;
 
 import android.app.ActivityManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
@@ -27,12 +26,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
-import com.berber.orange.memories.Manifest;
 import com.berber.orange.memories.NotificationService;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
-import com.berber.orange.memories.adapter.TimeLineAdapter;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;

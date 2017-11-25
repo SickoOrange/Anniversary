@@ -1,4 +1,4 @@
-package com.berber.orange.memories.adapter;
+package com.berber.orange.memories.activity.main;
 
 import android.content.Context;
 import android.content.Intent;
@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
-import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.GoogleLocation;
