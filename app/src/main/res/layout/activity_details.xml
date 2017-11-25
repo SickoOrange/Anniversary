@@ -473,49 +473,69 @@
                         android:layout_marginBottom="2dp"
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
+                        android:gravity="center"
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
-                        android:text="地点：TH Nürnberg, Zentralbibiliothek"
-                        android:textColor="@color/black"
+                        android:text="地点有关信息"
+                        android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
-                    <!--<TextView-->
-                        <!--android:id="@+id/details_position1"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_marginBottom="2dp"-->
-                        <!--android:layout_marginLeft="2dp"-->
-                        <!--android:layout_marginTop="5dp"-->
-                        <!--android:minLines="1"-->
-                        <!--android:paddingLeft="5dp"-->
-                        <!--android:singleLine="false"-->
-                        <!--android:text="在这个地点我们为你找到了一些有趣的图片"-->
-                        <!--android:textColor="@color/black"-->
-                        <!--android:textSize="14dp" />-->
-
-                    <!--<com.tomer.fadingtextview.FadingTextView-->
-                        <!--android:id="@+id/fadingTextView"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:layout_gravity="center"-->
-                        <!--android:gravity="center"-->
-                        <!--app:texts="@array/loadingPlacePhotoRequest"-->
-                        <!--app:timeout="1500" />-->
-
-                    <Button
-                        android:id="@+id/details_select_place_btn"
-                        android:layout_width="wrap_content"
+                    <TextView
+                        android:id="@+id/details_location_name"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="get" />
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="location_name"
+                        android:textColor="#a1a1a1"
+                        android:textSize="14dp" />
 
-                    <!--<ImageView-->
-                    <!--android:id="@+id/place_image"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:src="@drawable/profile"/>-->
+                    <TextView
+                        android:id="@+id/details_location_address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="location_name"
+                        android:textColor="#a1a1a1"
+                        android:textSize="14dp" />
 
+                    <TextView
+                        android:id="@+id/details_location_number"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="location_name"
+                        android:textColor="#a1a1a1"
+                        android:textSize="14dp" />
 
+                    <TextView
+                        android:id="@+id/details_location_request_photo_hint"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="在这个地点我们为你找到了一些有趣的图片:"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
 
                     <com.youth.banner.Banner

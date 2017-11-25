@@ -3,22 +3,12 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.telecom.Call;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
@@ -29,34 +19,24 @@ import com.berber.orange.memories.model.db.DaoSession;
 import com.berber.orange.memories.model.db.GoogleLocation;
 import com.berber.orange.memories.model.db.GoogleLocationDao;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
-import com.berber.orange.memories.utils.Utils;
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.animation.DrawableCrossFadeFactory;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
+
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.google.android.gms.ads.reward.mediation.InitializableMediationRewardedVideoAdAdapter;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.location.places.GeoDataApi;
+
 import com.google.android.gms.location.places.PlacePhotoMetadata;
 import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
-import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
-import com.tomer.fadingtextview.FadingTextView;
 import com.youth.banner.Banner;
-import com.youth.banner.WeakHandler;
 
-import org.greenrobot.greendao.query.Query;
 
-import java.io.ByteArrayOutputStream;
-import java.io.Serializable;
 import java.lang.ref.WeakReference;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import de.hdodenhof.circleimageview.CircleImageView;
 
 public class DetailsActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
@@ -65,6 +45,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0";
     private Banner placePhotoBanner;
     private GoogleApiClient googleApiClient;
+    private TextView mLocationNameTV;
+    private TextView mLocationAddressTV;
+    private TextView mLocationNumberTV;
+    private TextView mAnniversaryTitleTV;
+    private TextView mAnniversaryDateTV;
+    private TextView mAnniversaryDescriptionTV;
+    private CircleImageView mAnniversaryTypeIV;
     //private FadingTextView fadingTextView;
 
     @Override
@@ -91,12 +78,11 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         AnniversaryDao anniversaryDao = daoSession.getAnniversaryDao();
         NotificationSendingDao notificationSendingDao = daoSession.getNotificationSendingDao();
         GoogleLocationDao googleLocationDao = daoSession.getGoogleLocationDao();
-        Anniversary anniversary = (Anniversary) intent.getSerializableExtra("obj");
-        Long locationDatabaseId = anniversary.getGoogleLocationId();
 
 
-        Button selectedPlace = findViewById(R.id.details_select_place_btn);
-        selectedPlace.setOnClickListener(this);
+        Long anniversaryId = intent.getLongExtra("obj", 0);
+        List<Anniversary> anniversaryList = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversaryId)).list();
+
 
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
         // fadingTextView = findViewById(R.id.fadingTextView);
@@ -104,18 +90,55 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         detailsAnniProgressbar.setProgress(47);
 
-        List<GoogleLocation> list = googleLocationDao.queryBuilder().where(GoogleLocationDao.Properties.Id.eq(locationDatabaseId)).build().list();
 
-        if (list.size() == 1) {
+        mAnniversaryTitleTV = findViewById(R.id.details_anni_title);
+        mAnniversaryDateTV = findViewById(R.id.details_anni_date);
+        mAnniversaryDescriptionTV = findViewById(R.id.details_anni_description);
+        mAnniversaryTypeIV = findViewById(R.id.details_anni_type);
+
+
+        mLocationNameTV = findViewById(R.id.details_location_name);
+        mLocationAddressTV = findViewById(R.id.details_location_address);
+        mLocationNumberTV = findViewById(R.id.details_location_number);
+
+
+        if (anniversaryList.size() == 1) {
+            Anniversary anniversary = anniversaryList.get(0);
             googleApiClient = new GoogleApiClient
                     .Builder(this)
                     .addApi(Places.GEO_DATA_API)
                     .addApi(Places.PLACE_DETECTION_API)
                     .enableAutoManage(this, this)
                     .build();
+
+
+            //set anniversary information
+            String title = anniversary.getTitle();
+            mAnniversaryTitleTV.setText(title);
+
+            DateFormat instance = SimpleDateFormat.getDateInstance();
+            mAnniversaryDateTV.setText(instance.format(anniversary.getDate()));
+
+            String description = anniversary.getDescription();
+            if (TextUtils.isEmpty(description)) {
+                mAnniversaryDescriptionTV.setText("你暂时还没有对此次事件添加对应的描述");
+            } else {
+                mAnniversaryDescriptionTV.setText(description);
+            }
+
+            mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
+
+
+            GoogleLocation googleLocation = anniversary.getGoogleLocation();
             //get place photo
-            doPlacePhotoRequest(list.get(0).getPlaceId(), googleApiClient);
+            doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
+
+            //set location information about location
+            mLocationNameTV.setText(googleLocation.getLocationName());
+            mLocationAddressTV.setText(googleLocation.getLocationAddress());
+            mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber());
         }
+
     }
 
 
@@ -135,9 +158,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.details_select_place_btn:
-                //doPlacePhotoRequest(placeId);
-                break;
+
         }
     }
 
@@ -207,7 +228,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     for (int i = 0; i < count; i++) {
                         PlacePhotoMetadata placePhotoMetadata = photoMetadata.get(i);
                         CharSequence attributions = placePhotoMetadata.getAttributions();
-                        Log.e("TAG", "AttributedPhoto: " + attributions.toString());
                         Bitmap bitmap = placePhotoMetadata.getPhoto(mGoogleApiClient).await().getBitmap();
                         attributedPhoto = new AttributedPhoto(attributions, bitmap);
                         list.add(attributedPhoto);

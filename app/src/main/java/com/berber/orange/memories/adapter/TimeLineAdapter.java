@@ -186,7 +186,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 // TODO: 2017/11/14 open details page
                 Anniversary selectedTarget = mDateSets.get(position);
                 Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra("obj", selectedTarget);
+                intent.putExtra("obj", selectedTarget.getId());
                 mContext.startActivity(intent);
             }
         });
