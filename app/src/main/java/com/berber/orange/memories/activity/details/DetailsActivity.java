@@ -20,9 +20,15 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.model.db.Anniversary;
+import com.berber.orange.memories.model.db.AnniversaryDao;
+import com.berber.orange.memories.model.db.DaoSession;
+import com.berber.orange.memories.model.db.GoogleLocation;
+import com.berber.orange.memories.model.db.GoogleLocationDao;
+import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -44,6 +50,8 @@ import com.tomer.fadingtextview.FadingTextView;
 import com.youth.banner.Banner;
 import com.youth.banner.WeakHandler;
 
+import org.greenrobot.greendao.query.Query;
+
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
 import java.lang.ref.WeakReference;
@@ -53,24 +61,11 @@ import java.util.List;
 public class DetailsActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
     private NumberProgressBar detailsAnniProgressbar;
-    private RecyclerView timeProgressRecyclerView;
 
     private final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0";
-    private ImageView imageView;
-    private GoogleApiClient mGoogleApiClient;
     private Banner placePhotoBanner;
-    private FadingTextView fadingTextView;
-
-//    @Override
-//    protected void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//        setContentView(R.layout.activity_details);
-//        Intent intent = getIntent();
-//        if (intent != null) {
-//            Anniversary anniversary = (Anniversary) intent.getSerializableExtra("obj");
-//            System.out.println("anniversary: " + anniversary.getTitle());
-//        }
-//    }
+    private GoogleApiClient googleApiClient;
+    //private FadingTextView fadingTextView;
 
     @Override
     protected int setLayoutId() {
@@ -87,40 +82,42 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        mGoogleApiClient = new GoogleApiClient
-                .Builder(this)
-                .addApi(Places.GEO_DATA_API)
-                .addApi(Places.PLACE_DETECTION_API)
-                .enableAutoManage(this, this)
-                .build();
+        Intent intent = getIntent();
+        if (intent == null) {
+            return;
+        }
+
+        DaoSession daoSession = ((APP) getApplication()).getDaoSession();
+        AnniversaryDao anniversaryDao = daoSession.getAnniversaryDao();
+        NotificationSendingDao notificationSendingDao = daoSession.getNotificationSendingDao();
+        GoogleLocationDao googleLocationDao = daoSession.getGoogleLocationDao();
+        Anniversary anniversary = (Anniversary) intent.getSerializableExtra("obj");
+        Long locationDatabaseId = anniversary.getGoogleLocationId();
 
 
         Button selectedPlace = findViewById(R.id.details_select_place_btn);
         selectedPlace.setOnClickListener(this);
 
-        // imageView = findViewById(R.id.place_image);
-
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
-        fadingTextView = findViewById(R.id.fadingTextView);
-
+        // fadingTextView = findViewById(R.id.fadingTextView);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         detailsAnniProgressbar.setProgress(47);
 
+        List<GoogleLocation> list = googleLocationDao.queryBuilder().where(GoogleLocationDao.Properties.Id.eq(locationDatabaseId)).build().list();
 
-        //time progress recycler view
-//        timeProgressRecyclerView = findViewById(R.id.time_progress_recycler_view);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-//        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
-//        linearLayoutManager .setSmoothScrollbarEnabled(true);
-//        linearLayoutManager.setAutoMeasureEnabled(true);
-//
-//        timeProgressRecyclerView.setHasFixedSize(true);
-//        timeProgressRecyclerView.setNestedScrollingEnabled(false);
-//        timeProgressRecyclerView.setLayoutManager(linearLayoutManager);
-//        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
-//        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
+        if (list.size() == 1) {
+            googleApiClient = new GoogleApiClient
+                    .Builder(this)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(this, this)
+                    .build();
+            //get place photo
+            doPlacePhotoRequest(list.get(0).getPlaceId(), googleApiClient);
+        }
     }
+
 
     @Override
     protected void initImmersionBar() {
@@ -139,14 +136,14 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.details_select_place_btn:
-                doPlacePhotoRequest(placeId);
+                //doPlacePhotoRequest(placeId);
                 break;
         }
     }
 
     @SuppressLint("StaticFieldLeak")
-    private void doPlacePhotoRequest(String placeId) {
-        new PlacePhotoTask(this) {
+    private void doPlacePhotoRequest(String placeId, GoogleApiClient googleApiClient) {
+        new PlacePhotoTask(this, googleApiClient) {
             @Override
             protected void onPreExecute() {
                 // TODO: 2017/11/25  do some loading prepare work
@@ -182,8 +179,11 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         private final WeakReference<DetailsActivity> mTarget;
 
-        public PlacePhotoTask(DetailsActivity activity) {
+        private GoogleApiClient mGoogleApiClient;
+
+        public PlacePhotoTask(DetailsActivity activity, GoogleApiClient GoogleApiClient) {
             mTarget = new WeakReference<>(activity);
+            this.mGoogleApiClient = GoogleApiClient;
         }
 
         @Override
@@ -197,7 +197,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
             AttributedPhoto attributedPhoto = null;
 
-            PlacePhotoMetadataResult result = Places.GeoDataApi.getPlacePhotos(mTarget.get().mGoogleApiClient, placeId).await();
+            PlacePhotoMetadataResult result = Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId).await();
             List<AttributedPhoto> list = new ArrayList<>();
             if (result.getStatus().isSuccess()) {
                 PlacePhotoMetadataBuffer photoMetadata = result.getPhotoMetadata();
@@ -207,7 +207,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     for (int i = 0; i < count; i++) {
                         PlacePhotoMetadata placePhotoMetadata = photoMetadata.get(i);
                         CharSequence attributions = placePhotoMetadata.getAttributions();
-                        Bitmap bitmap = placePhotoMetadata.getPhoto(mTarget.get().mGoogleApiClient).await().getBitmap();
+                        Log.e("TAG", "AttributedPhoto: " + attributions.toString());
+                        Bitmap bitmap = placePhotoMetadata.getPhoto(mGoogleApiClient).await().getBitmap();
                         attributedPhoto = new AttributedPhoto(attributions, bitmap);
                         list.add(attributedPhoto);
                     }

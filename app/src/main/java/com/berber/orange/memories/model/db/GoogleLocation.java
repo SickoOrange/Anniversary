@@ -20,9 +20,18 @@ public class GoogleLocation implements Serializable {
 
     private String locationName;
 
-    private String locationAdress;
+    private String locationAddress;
 
     private String placeId;
+
+    private String webSiteUri;
+
+    private Double latitude;
+
+    private Double longitude;
+
+    private int rating;
+    private String attribution;
 
     private String locationPhoneNumber;
 
@@ -30,26 +39,27 @@ public class GoogleLocation implements Serializable {
 
     @ToOne(joinProperty = "anniversaryId")
     private Anniversary anniversary;
-
-    /**
-     * Used to resolve relations
-     */
+    /** Used to resolve relations */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-
-    /**
-     * Used for active entity operations.
-     */
+    /** Used for active entity operations. */
     @Generated(hash = 603161226)
     private transient GoogleLocationDao myDao;
 
-    @Generated(hash = 543577967)
-    public GoogleLocation(Long id, String locationName, String locationAdress, String placeId,
-            String locationPhoneNumber, Long anniversaryId) {
+    @Generated(hash = 2116290635)
+    public GoogleLocation(Long id, String locationName, String locationAddress,
+            String placeId, String webSiteUri, Double latitude, Double longitude,
+            int rating, String attribution, String locationPhoneNumber,
+            Long anniversaryId) {
         this.id = id;
         this.locationName = locationName;
-        this.locationAdress = locationAdress;
+        this.locationAddress = locationAddress;
         this.placeId = placeId;
+        this.webSiteUri = webSiteUri;
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.rating = rating;
+        this.attribution = attribution;
         this.locationPhoneNumber = locationPhoneNumber;
         this.anniversaryId = anniversaryId;
     }
@@ -74,12 +84,60 @@ public class GoogleLocation implements Serializable {
         this.locationName = locationName;
     }
 
-    public String getLocationAdress() {
-        return this.locationAdress;
+    public String getLocationAddress() {
+        return this.locationAddress;
     }
 
-    public void setLocationAdress(String locationAdress) {
-        this.locationAdress = locationAdress;
+    public void setLocationAddress(String locationAddress) {
+        this.locationAddress = locationAddress;
+    }
+
+    public String getPlaceId() {
+        return this.placeId;
+    }
+
+    public void setPlaceId(String placeId) {
+        this.placeId = placeId;
+    }
+
+    public String getWebSiteUri() {
+        return this.webSiteUri;
+    }
+
+    public void setWebSiteUri(String webSiteUri) {
+        this.webSiteUri = webSiteUri;
+    }
+
+    public Double getLatitude() {
+        return this.latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return this.longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getRating() {
+        return this.rating;
+    }
+
+    public void setRating(int rating) {
+        this.rating = rating;
+    }
+
+    public String getAttribution() {
+        return this.attribution;
+    }
+
+    public void setAttribution(String attribution) {
+        this.attribution = attribution;
     }
 
     public String getLocationPhoneNumber() {
@@ -101,9 +159,7 @@ public class GoogleLocation implements Serializable {
     @Generated(hash = 1258510271)
     private transient Long anniversary__resolvedKey;
 
-    /**
-     * To-one relationship, resolved on first access.
-     */
+    /** To-one relationship, resolved on first access. */
     @Generated(hash = 426657723)
     public Anniversary getAnniversary() {
         Long __key = this.anniversaryId;
@@ -123,9 +179,7 @@ public class GoogleLocation implements Serializable {
         return anniversary;
     }
 
-    /**
-     * called by internal mechanisms, do not call yourself.
-     */
+    /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 500642566)
     public void setAnniversary(Anniversary anniversary) {
         synchronized (this) {
@@ -171,20 +225,14 @@ public class GoogleLocation implements Serializable {
         myDao.update(this);
     }
 
-    public String getPlaceId() {
-        return this.placeId;
-    }
-
-    public void setPlaceId(String placeId) {
-        this.placeId = placeId;
-    }
-
     /** called by internal mechanisms, do not call yourself. */
     @Generated(hash = 1750685977)
     public void __setDaoSession(DaoSession daoSession) {
         this.daoSession = daoSession;
         myDao = daoSession != null ? daoSession.getGoogleLocationDao() : null;
     }
+
+    
 
 
 }

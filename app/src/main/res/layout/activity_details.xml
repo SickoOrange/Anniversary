@@ -494,14 +494,14 @@
                         <!--android:textColor="@color/black"-->
                         <!--android:textSize="14dp" />-->
 
-                    <com.tomer.fadingtextview.FadingTextView
-                        android:id="@+id/fadingTextView"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:gravity="center"
-                        app:texts="@array/loadingPlacePhotoRequest"
-                        app:timeout="1500" />
+                    <!--<com.tomer.fadingtextview.FadingTextView-->
+                        <!--android:id="@+id/fadingTextView"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:layout_gravity="center"-->
+                        <!--android:gravity="center"-->
+                        <!--app:texts="@array/loadingPlacePhotoRequest"-->
+                        <!--app:timeout="1500" />-->
 
                     <Button
                         android:id="@+id/details_select_place_btn"

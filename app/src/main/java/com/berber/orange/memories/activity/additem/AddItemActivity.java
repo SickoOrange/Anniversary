@@ -580,9 +580,14 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 mAnniversaryLocation.setText(place.getAddress());
                 googleLocation = new GoogleLocation();
-                googleLocation.setLocationName(place.getName().toString());
-                googleLocation.setLocationAdress(place.getAddress().toString());
-                googleLocation.setLocationPhoneNumber(place.getPhoneNumber().toString());
+                googleLocation.setLocationName(place.getName() == null ? null : place.getName().toString());
+                googleLocation.setLocationAddress(place.getAddress() == null ? null : place.getAddress().toString());
+                googleLocation.setLocationPhoneNumber(place.getPhoneNumber() == null ? null : place.getPhoneNumber().toString());
+                googleLocation.setPlaceId(place.getId());
+                googleLocation.setAttribution(place.getAttributions() == null ? null : place.getAttributions().toString());
+                googleLocation.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
+                googleLocation.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
+                googleLocation.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
                 //set location label
             }
         }

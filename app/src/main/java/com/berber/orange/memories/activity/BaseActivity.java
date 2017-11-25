@@ -20,7 +20,7 @@ import com.gyf.barlibrary.ImmersionBar;
 public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
-   // protected GoogleApiClient mGoogleApiClient;
+    //protected GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -32,8 +32,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         if (isImmersionBarEnabled()) {
             initImmersionBar();
         }
-
-
 
 
     }
