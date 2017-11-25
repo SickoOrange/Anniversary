@@ -1,9 +1,11 @@
 package com.berber.orange.memories.activity.details;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
@@ -38,10 +40,13 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.PlacePhotoResult;
 import com.google.android.gms.location.places.Places;
+import com.tomer.fadingtextview.FadingTextView;
 import com.youth.banner.Banner;
+import com.youth.banner.WeakHandler;
 
 import java.io.ByteArrayOutputStream;
 import java.io.Serializable;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +59,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private ImageView imageView;
     private GoogleApiClient mGoogleApiClient;
     private Banner placePhotoBanner;
+    private FadingTextView fadingTextView;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +101,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         // imageView = findViewById(R.id.place_image);
 
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
+        fadingTextView = findViewById(R.id.fadingTextView);
 
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
@@ -132,82 +139,95 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.details_select_place_btn:
-                //ChIJG7XcqqNXn0cRjP0Qfvclf7A
-                // ChIJrTLr-GyuEmsRBfy61i59si0
-                //ChIJl5NHB5FXn0cRmUfmpIqCF28
-                Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, "ChIJrTLr-GyuEmsRBfy61i59si0").setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
-                    @Override
-                    public void onResult(@NonNull PlacePhotoMetadataResult placePhotoMetadataResult) {
-                        if (!placePhotoMetadataResult.getStatus().isSuccess()) {
-                            return;
-                        }
-                        PlacePhotoMetadataBuffer photoMetadata = placePhotoMetadataResult.getPhotoMetadata();
-
-                        if (photoMetadata.getCount() <= 0) {
-                            return;
-                        }
-                        Log.e("TAG", "find bit map: " + photoMetadata.getCount());
-                        final List<Bitmap> bitmaps = new ArrayList<>();
-                        final int count = photoMetadata.getCount();
-                        for (int i = 0; i < count; i++) {
-
-                            final int finalI = i;
-                            photoMetadata.get(i).getPhoto(mGoogleApiClient).setResultCallback(new ResultCallback<PlacePhotoResult>() {
-                                @Override
-                                public void onResult(@NonNull PlacePhotoResult placePhotoResult) {
-                                    if (!placePhotoResult.getStatus().isSuccess()) {
-                                        return;
-                                    }
-                                    Bitmap bitmap = placePhotoResult.getBitmap();
-                                    // ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                                    //  bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-                                    bitmaps.add(bitmap);
-
-                                    if (finalI == count - 1) {
-                                        Log.e("TAG", "bit map list load finish" + bitmaps.size());
-                                        if (!bitmaps.isEmpty()) {
-                                            setBannerImageLoader(placePhotoBanner,bitmaps);
-                                        }
-                                    }
-                                }
-                            });
-                        }
-
-
-                        photoMetadata.release();
-
-//                        placePhotoMetadata.getPhoto(mGoogleApiClient).setResultCallback(new ResultCallback<PlacePhotoResult>() {
-//                            @Override
-//                            public void onResult(@NonNull PlacePhotoResult placePhotoResult) {
-//                                if (!placePhotoResult.getStatus().isSuccess()) {
-//                                    return;
-//                                }
-//                                Bitmap bitmap = placePhotoResult.getBitmap();
-//                                ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                                bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-//
-//                                Glide.with(DetailsActivity.this).load(stream.toByteArray()).into(new SimpleTarget<GlideDrawable>() {
-//                                    @Override
-//                                    public void onResourceReady(GlideDrawable resource, GlideAnimation<? super GlideDrawable> glideAnimation) {
-//                                        imageView.setImageDrawable(resource);
-//                                    }
-//                                });
-//                            }
-//                        });
-                    }
-                });
-
+                doPlacePhotoRequest(placeId);
                 break;
         }
     }
 
-    public void setBannerImageLoader(Banner banner,List<Bitmap> images) {
+    @SuppressLint("StaticFieldLeak")
+    private void doPlacePhotoRequest(String placeId) {
+        new PlacePhotoTask(this) {
+            @Override
+            protected void onPreExecute() {
+                // TODO: 2017/11/25  do some loading prepare work
+            }
+
+            @Override
+            protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
+                List<Bitmap> list = new ArrayList<>();
+                if (!attributedPhotos.isEmpty()) {
+                    for (AttributedPhoto photo : attributedPhotos) {
+                        list.add(photo.bitmap);
+                    }
+                }
+                setBannerImageLoader(placePhotoBanner, list);
+
+            }
+        }.execute(placeId);
+    }
+
+    public void setBannerImageLoader(Banner banner, List<Bitmap> images) {
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         banner.setImages(images);
         //banner设置方法全部调用完毕时最后调用
         banner.setDelayTime(2500);
+
+        banner.setVisibility(View.VISIBLE);
         banner.start();
+        fadingTextView.setVisibility(View.GONE);
     }
+
+    static class PlacePhotoTask extends AsyncTask<String, Void, List<PlacePhotoTask.AttributedPhoto>> {
+
+        private final WeakReference<DetailsActivity> mTarget;
+
+        public PlacePhotoTask(DetailsActivity activity) {
+            mTarget = new WeakReference<>(activity);
+        }
+
+        @Override
+        protected List<PlacePhotoTask.AttributedPhoto> doInBackground(String... strings) {
+            if (strings.length != 1) {
+                return null;
+            }
+
+            //get place id
+            final String placeId = strings[0];
+
+            AttributedPhoto attributedPhoto = null;
+
+            PlacePhotoMetadataResult result = Places.GeoDataApi.getPlacePhotos(mTarget.get().mGoogleApiClient, placeId).await();
+            List<AttributedPhoto> list = new ArrayList<>();
+            if (result.getStatus().isSuccess()) {
+                PlacePhotoMetadataBuffer photoMetadata = result.getPhotoMetadata();
+                if (photoMetadata.getCount() > 0 && !isCancelled()) {
+
+                    int count = photoMetadata.getCount();
+                    for (int i = 0; i < count; i++) {
+                        PlacePhotoMetadata placePhotoMetadata = photoMetadata.get(i);
+                        CharSequence attributions = placePhotoMetadata.getAttributions();
+                        Bitmap bitmap = placePhotoMetadata.getPhoto(mTarget.get().mGoogleApiClient).await().getBitmap();
+                        attributedPhoto = new AttributedPhoto(attributions, bitmap);
+                        list.add(attributedPhoto);
+                    }
+                }
+                photoMetadata.release();
+            }
+
+            return list;
+        }
+
+        class AttributedPhoto {
+            final CharSequence attribution;
+            final Bitmap bitmap;
+
+            AttributedPhoto(CharSequence attribution, Bitmap bitmap) {
+                this.attribution = attribution;
+                this.bitmap = bitmap;
+            }
+        }
+    }
+
 }

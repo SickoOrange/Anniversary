@@ -148,5 +148,10 @@
     <string name="yes">YES</string>
     <string name="no">No</string>
 
+    <string-array name="loadingPlacePhotoRequest">
+        <item>在这个地点我们为你找到了一些有趣的图片</item>
+        <item>正在努力加载...</item>
+    </string-array>
+
 
 </resources>

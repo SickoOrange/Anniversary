@@ -466,6 +466,34 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:id="@+id/details_position"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="地点：TH Nürnberg, Zentralbibiliothek"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/details_position1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="在这个地点我们为你找到了一些有趣的图片"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
                     <Button
                         android:id="@+id/details_select_place_btn"
                         android:layout_width="wrap_content"
@@ -478,10 +506,26 @@
                     <!--android:layout_height="wrap_content"-->
                     <!--android:src="@drawable/profile"/>-->
 
-                    <com.youth.banner.Banner
-                        android:id="@+id/details_place_photo_banner"
+                    <FrameLayout
                         android:layout_width="match_parent"
-                        android:layout_height="250dp" />
+                        android:layout_height="wrap_content">
+
+                        <com.youth.banner.Banner
+                            android:id="@+id/details_place_photo_banner"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone" />
+
+                        <com.tomer.fadingtextview.FadingTextView
+                            android:id="@+id/fadingTextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:gravity="center"
+                            app:texts="@array/loadingPlacePhotoRequest"
+                            app:timeout="1500" />
+
+                    </FrameLayout>
 
 
                 </LinearLayout>
