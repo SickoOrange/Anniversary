@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
@@ -19,6 +21,7 @@ import java.io.Serializable;
 public class DetailsActivity extends BaseActivity {
     private Toolbar toolbar;
     private NumberProgressBar detailsAnniProgressbar;
+    private RecyclerView timeProgressRecyclerView;
 
 //    @Override
 //    protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +52,15 @@ public class DetailsActivity extends BaseActivity {
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         detailsAnniProgressbar.setProgress(47);
+
+
+        //time progress recycler view
+        timeProgressRecyclerView = findViewById(R.id.time_progress_recycler_view);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        timeProgressRecyclerView.setLayoutManager(linearLayoutManager);
+        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
+        timeProgressRecyclerView.setAdapter(new MyTimeProgressAdapter(this));
     }
 
     @Override

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="90dp"
+    android:background="@drawable/item_ripple"
+    tools:ignore="MissingPrefix">
+
+    <com.berber.orange.memories.widget.TimeLineMarker
+        android:id="@+id/time_progress_drawable"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="50dp"
+        android:paddingBottom="1dp"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:paddingTop="37dp"
+        app:beginLine="#E0E0E0"
+        app:endLine="#E0E0E0"
+        app:lineSize="2dp"
+        app:marker="@drawable/ic_timeline_marker"
+        app:markerSize="15dp" />
+
+    <TextView
+        android:id="@+id/time_progress_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@id/time_progress_drawable"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="2dp"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:padding="3dp"
+        android:text="今天是老婆的生日"
+        android:textColor="@color/black"
+        android:textSize="14sp" />
+</RelativeLayout>

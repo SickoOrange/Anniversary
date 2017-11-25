@@ -164,25 +164,25 @@
                 android:layout_margin="5dp"
                 android:elevation="5dp">
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-               >
-                <TextView
-                    android:id="@+id/details_anni_mimi"
+                <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="5dp"
-                    android:minLines="1"
-                    android:paddingLeft="5dp"
-                    android:singleLine="false"
-                    android:text="我们发现你并没有添加照片，是否尝试添加照片来记录你的回忆...."
-                    android:textColor="#a1a1a1"
-                    android:textSize="12dp" />
+                    android:layout_height="wrap_content">
 
-                <!--<Button-->
+                    <TextView
+                        android:id="@+id/details_anni_mimi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="我们发现你并没有添加照片，是否尝试添加照片来记录你的回忆...."
+                        android:textColor="#a1a1a1"
+                        android:textSize="12dp" />
+
+                    <!--<Button-->
                     <!--android:id="@+id/details_add_images_btn"-->
                     <!--android:layout_width="wrap_content"-->
                     <!--android:layout_height="wrap_content"-->
@@ -190,19 +190,19 @@
                     <!--android:background="@color/transparent"-->
                     <!--/>-->
 
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="25dp"
-                    android:layout_below="@id/details_anni_mimi"
-                    android:layout_alignParentRight="true"
-                    android:text="好的，点我添加"
-                    android:layout_margin="5dp"
-                    android:padding="2dp"
-                    android:textColor="@color/redSelect"
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="25dp"
+                        android:layout_alignParentRight="true"
+                        android:layout_below="@id/details_anni_mimi"
+                        android:layout_margin="5dp"
+                        android:background="@color/transparent"
+                        android:padding="2dp"
+                        android:text="好的，点我添加"
 
-                    android:background="@color/transparent"/>
+                        android:textColor="@color/redSelect" />
 
-            </RelativeLayout>
+                </RelativeLayout>
             </android.support.v7.widget.CardView>
 
             <android.support.v7.widget.CardView
@@ -220,7 +220,7 @@
 
 
                     <TextView
-                        android:id="@+id/details_anni_rest_day"
+                        android:id="@+id/details_anni_oo1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -234,11 +234,70 @@
                     <com.daimajia.numberprogressbar.NumberProgressBar
                         android:id="@+id/details_anni_progressbar"
                         style="@style/NumberProgressBar_Default"
-                        android:layout_margin="20dp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_margin="20dp"
                         android:layout_marginTop="5dp"
                         android:padding="3dp" />
+
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/time_progress_recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+
+                    <TextView
+                        android:id="@+id/details_oo2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="false"
+                        android:text="已经过去了: 190天 "
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/details_oo3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="false"
+                        android:text="还剩下: 50天 "
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
+                    <TextView
+                        android:id="@+id/details_oo4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_marginTop="5dp"
+                        android:gravity="center"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:singleLine="false"
+                        android:text="总共: 240天 "
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
+
 
                     <TextView
                         android:id="@+id/details_awo"
@@ -257,7 +316,6 @@
                         android:textSize="14dp" />
 
 
-
                     <TextView
                         android:id="@+id/details_awo1"
                         android:layout_width="match_parent"
@@ -265,8 +323,8 @@
                         android:layout_marginBottom="2dp"
                         android:layout_marginLeft="2dp"
                         android:layout_marginTop="5dp"
-                        android:minLines="1"
                         android:gravity="center"
+                        android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="2017-15-11  00:00"
@@ -274,18 +332,18 @@
                         android:textSize="14dp" />
 
                     <TextView
-                    android:id="@+id/details_awo2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="2dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginTop="5dp"
-                    android:minLines="1"
-                    android:paddingLeft="5dp"
-                    android:singleLine="false"
-                    android:text="通知类型：系统消息，电子邮件"
-                    android:textColor="@color/black"
-                    android:textSize="14dp" />
+                        android:id="@+id/details_awo2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="2dp"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginTop="5dp"
+                        android:minLines="1"
+                        android:paddingLeft="5dp"
+                        android:singleLine="false"
+                        android:text="通知类型：系统消息，电子邮件"
+                        android:textColor="@color/black"
+                        android:textSize="14dp" />
 
                     <TextView
                         android:id="@+id/details_awo3"
@@ -300,8 +358,6 @@
                         android:text="电子邮件:    heylbly@gmail.com"
                         android:textColor="@color/black"
                         android:textSize="14dp" />
-
-
 
 
                 </LinearLayout>
