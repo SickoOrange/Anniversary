@@ -4,20 +4,24 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
+import android.provider.Telephony;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
 import com.berber.orange.memories.model.db.GoogleLocation;
 import com.berber.orange.memories.model.db.GoogleLocationDao;
+import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -55,6 +59,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private TextView mTimeProgressLabel1;
     private TextView mTimeProgressLabel2;
     private TextView mTimeProgressLabel3;
+    private TextView mNotificationDateTV;
+    private TextView mNotificationTypeTV;
+    private TextView mNotificationEmailTV;
+    private Switch notificationButton;
+    private TextView mNotificationHint;
+    private TextView detailsLocationRequestPhotoHint;
     //private FadingTextView fadingTextView;
 
     @Override
@@ -100,6 +110,99 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mTimeProgressLabel2 = findViewById(R.id.time_progress_label2);
         mTimeProgressLabel3 = findViewById(R.id.time_progress_label3);
 
+        updateDateInformationUI(dateInformation);
+
+        mNotificationHint = findViewById(R.id.details_notification_hint);
+        mNotificationDateTV = findViewById(R.id.details_notification_date);
+        mNotificationTypeTV = findViewById(R.id.details_notification_type);
+        mNotificationEmailTV = findViewById(R.id.details_notification_email);
+
+        notificationButton = findViewById(R.id.details_notification_btn);
+
+
+        mAnniversaryTitleTV = findViewById(R.id.details_anni_title);
+        mAnniversaryDateTV = findViewById(R.id.details_anni_date);
+        mAnniversaryDescriptionTV = findViewById(R.id.details_anni_description);
+        mAnniversaryTypeIV = findViewById(R.id.details_anni_type);
+
+
+        mLocationNameTV = findViewById(R.id.details_location_name);
+        mLocationAddressTV = findViewById(R.id.details_location_address);
+        mLocationNumberTV = findViewById(R.id.details_location_number);
+
+        detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
+
+
+        if (anniversaryList.size() == 1) {
+            Anniversary anniversary = anniversaryList.get(0);
+            googleApiClient = new GoogleApiClient
+                    .Builder(this)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .enableAutoManage(this, this)
+                    .build();
+            updateUI(anniversary);
+        }
+
+    }
+
+    private void updateUI(Anniversary anniversary) {
+        //set anniversary information
+        String title = anniversary.getTitle();
+        mAnniversaryTitleTV.setText(title);
+
+        DateFormat instance = SimpleDateFormat.getDateInstance();
+        mAnniversaryDateTV.setText(instance.format(anniversary.getDate()));
+
+        String description = anniversary.getDescription();
+        if (TextUtils.isEmpty(description)) {
+            mAnniversaryDescriptionTV.setText("你暂时还没有对此次事件添加对应的描述");
+        } else {
+            mAnniversaryDescriptionTV.setText(description);
+        }
+
+        mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
+
+
+        GoogleLocation googleLocation = anniversary.getGoogleLocation();
+        //get place photo
+        doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
+
+        //set location information about location
+        mLocationNameTV.setText(googleLocation.getLocationName());
+        mLocationAddressTV.setText(googleLocation.getLocationAddress());
+        mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber());
+
+        // update notification ui
+        NotificationSending notificationSending = anniversary.getNotificationSending();
+        notificationButton.setChecked(notificationSending != null);
+        if (notificationSending != null) {
+            mNotificationDateTV.setText(SimpleDateFormat.getDateInstance().format(notificationSending.getSendingDate()));
+            NotificationType notificationType = notificationSending.getNotificationType();
+            String notificationString = "";
+            switch (notificationType) {
+                case ALL:
+                    notificationString = "系统消息，电子邮件";
+                    break;
+                case EMAIL:
+                    notificationString = "电子邮件";
+                    break;
+                case NOTIFICATION:
+                    notificationString = "系统消息";
+                    break;
+            }
+            mNotificationTypeTV.setText(notificationString);
+        } else {
+            //hide all the notification content
+            mNotificationHint.setVisibility(View.GONE);
+            mNotificationDateTV.setVisibility(View.GONE);
+            mNotificationTypeTV.setVisibility(View.GONE);
+            mNotificationEmailTV.setVisibility(View.GONE);
+
+        }
+    }
+
+    private void updateDateInformationUI(String dateInformation) {
         if (!TextUtils.isEmpty(dateInformation) && dateInformation.contains("/")) {
             String[] split = dateInformation.split("/");
             String total = split[1];
@@ -114,58 +217,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 mTimeProgressLabel2.setText(String.format("距离事件已经过去了%s天", String.valueOf(past)));
                 mTimeProgressLabel3.setText(String.format("距离事件开始还剩下%s天", rest));
             }
-
         }
-
-
-        mAnniversaryTitleTV = findViewById(R.id.details_anni_title);
-        mAnniversaryDateTV = findViewById(R.id.details_anni_date);
-        mAnniversaryDescriptionTV = findViewById(R.id.details_anni_description);
-        mAnniversaryTypeIV = findViewById(R.id.details_anni_type);
-
-
-        mLocationNameTV = findViewById(R.id.details_location_name);
-        mLocationAddressTV = findViewById(R.id.details_location_address);
-        mLocationNumberTV = findViewById(R.id.details_location_number);
-
-
-        if (anniversaryList.size() == 1) {
-            Anniversary anniversary = anniversaryList.get(0);
-            googleApiClient = new GoogleApiClient
-                    .Builder(this)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .enableAutoManage(this, this)
-                    .build();
-
-
-            //set anniversary information
-            String title = anniversary.getTitle();
-            mAnniversaryTitleTV.setText(title);
-
-            DateFormat instance = SimpleDateFormat.getDateInstance();
-            mAnniversaryDateTV.setText(instance.format(anniversary.getDate()));
-
-            String description = anniversary.getDescription();
-            if (TextUtils.isEmpty(description)) {
-                mAnniversaryDescriptionTV.setText("你暂时还没有对此次事件添加对应的描述");
-            } else {
-                mAnniversaryDescriptionTV.setText(description);
-            }
-
-            mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
-
-
-            GoogleLocation googleLocation = anniversary.getGoogleLocation();
-            //get place photo
-            doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
-
-            //set location information about location
-            mLocationNameTV.setText(googleLocation.getLocationName());
-            mLocationAddressTV.setText(googleLocation.getLocationAddress());
-            mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber());
-        }
-
     }
 
 
@@ -212,6 +264,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void setBannerImageLoader(Banner banner, List<Bitmap> images) {
+
+        if (images.isEmpty()) {
+            detailsLocationRequestPhotoHint.setText("很遗憾,我们并没有找到有关次地点的相关图片.");
+        } else {
+            detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片.");
+        }
+
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
