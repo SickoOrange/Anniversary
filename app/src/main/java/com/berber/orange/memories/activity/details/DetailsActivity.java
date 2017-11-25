@@ -52,6 +52,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private TextView mAnniversaryDateTV;
     private TextView mAnniversaryDescriptionTV;
     private CircleImageView mAnniversaryTypeIV;
+    private TextView mTimeProgressLabel1;
+    private TextView mTimeProgressLabel2;
+    private TextView mTimeProgressLabel3;
     //private FadingTextView fadingTextView;
 
     @Override
@@ -80,15 +83,39 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         GoogleLocationDao googleLocationDao = daoSession.getGoogleLocationDao();
 
 
-        Long anniversaryId = intent.getLongExtra("obj", 0);
+        Long anniversaryId = intent.getLongExtra("anniversaryId", 0);
         List<Anniversary> anniversaryList = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversaryId)).list();
 
+        int progressValue = intent.getIntExtra("progressValue", 0);
+
+        String dateInformation = intent.getStringExtra("dateInformation");
 
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
         // fadingTextView = findViewById(R.id.fadingTextView);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
-        detailsAnniProgressbar.setProgress(47);
+        detailsAnniProgressbar.setProgress(progressValue);
+
+        mTimeProgressLabel1 = findViewById(R.id.time_progress_label1);
+        mTimeProgressLabel2 = findViewById(R.id.time_progress_label2);
+        mTimeProgressLabel3 = findViewById(R.id.time_progress_label3);
+
+        if (!TextUtils.isEmpty(dateInformation) && dateInformation.contains("/")) {
+            String[] split = dateInformation.split("/");
+            String total = split[1];
+            String rest = split[0];
+            int past = Integer.valueOf(total) - Integer.valueOf(rest);
+            mTimeProgressLabel1.setText(String.format("距离事件开始还有%s天", total));
+
+            if (past < 0) {
+                mTimeProgressLabel2.setText(String.format("距离事件已经过去了%s天", String.valueOf(past * -1)));
+                mTimeProgressLabel3.setText(String.format("距离事件开始还剩下%s天", "0"));
+            } else {
+                mTimeProgressLabel2.setText(String.format("距离事件已经过去了%s天", String.valueOf(past)));
+                mTimeProgressLabel3.setText(String.format("距离事件开始还剩下%s天", rest));
+            }
+
+        }
 
 
         mAnniversaryTitleTV = findViewById(R.id.details_anni_title);

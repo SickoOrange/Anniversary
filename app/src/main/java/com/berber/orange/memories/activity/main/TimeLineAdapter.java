@@ -94,10 +94,45 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.mNotificationIcon.setImageResource(R.drawable.ic_notifications_off_black_18px);
         }
 
-        //notification date for anniversary
-        // Date sendingDate = anniversary.getNotificationSending().getSendingDate();
+
+        calculateDate(holder, anniversary);
 
 
+        if (position == 0)
+
+        {
+            holder.mTimeLine.setBeginLineView(false);
+            holder.mTimeLine.setEndLineView(true);
+        } else if (position == mDateSets.size() - 1)
+
+        {
+            holder.mTimeLine.setBeginLineView(true);
+            holder.mTimeLine.setEndLineView(false);
+        } else
+
+        {
+            holder.mTimeLine.setBeginLineView(true);
+            holder.mTimeLine.setEndLineView(true);
+        }
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener()
+
+        {
+            @Override
+            public void onClick(View view) {
+                // TODO: 2017/11/14 open details page
+                Anniversary selectedTarget = mDateSets.get(position);
+                Intent intent = new Intent(mContext, DetailsActivity.class);
+                intent.putExtra("anniversaryId", selectedTarget.getId());
+                intent.putExtra("progressValue", holder.mCurrentAnniversaryProgress.getProgress());
+                intent.putExtra("dateInformation", holder.mLeftDayLabel.getText().toString());
+                mContext.startActivity(intent);
+            }
+        });
+    }
+
+    private void calculateDate(TimeLineViewHolder holder, Anniversary anniversary) {
         //calculate left date progress
         Date createDate = anniversary.getCreateDate();
         Date anniversaryShowDate = anniversary.getDate();
@@ -112,7 +147,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
 
         if (totalRestMillis < 0 && totalRestMillis > (-1 * 24 * 60 * 60 * 1000)) {
-            //当天的情况下 (纪念日时间默认当然00:00)
+            //当天的情况下 (纪念日时间默认当天00:00)
             holder.mLeftDayLabel.setText("0/0");
             holder.mCurrentAnniversaryProgress.setProgress(100);
             holder.mAnniversaryStatusLabel.setText("In Progress");
@@ -158,37 +193,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 holder.mAnniversaryStatusLabel.setBackground(null);
             }
         }
-
-        if (position == 0)
-
-        {
-            holder.mTimeLine.setBeginLineView(false);
-            holder.mTimeLine.setEndLineView(true);
-        } else if (position == mDateSets.size() - 1)
-
-        {
-            holder.mTimeLine.setBeginLineView(true);
-            holder.mTimeLine.setEndLineView(false);
-        } else
-
-        {
-            holder.mTimeLine.setBeginLineView(true);
-            holder.mTimeLine.setEndLineView(true);
-        }
-
-
-        holder.itemView.setOnClickListener(new View.OnClickListener()
-
-        {
-            @Override
-            public void onClick(View view) {
-                // TODO: 2017/11/14 open details page
-                Anniversary selectedTarget = mDateSets.get(position);
-                Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra("obj", selectedTarget.getId());
-                mContext.startActivity(intent);
-            }
-        });
     }
 
 
