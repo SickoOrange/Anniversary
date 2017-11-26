@@ -111,7 +111,7 @@
                         android:textColor="@color/black"
                         android:textSize="14dp" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
                         android:layout_below="@id/details_anni_description"
@@ -122,10 +122,11 @@
                             android:id="@+id/details_icon_favorite"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_toLeftOf="@+id/details_icon_share"
+                            android:layout_marginRight="15dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
-                            android:layout_gravity="center_vertical"
                             android:focusable="true"
                             android:src="@drawable/ic_favorite_border_black_24px" />
 
@@ -133,10 +134,11 @@
                             android:id="@+id/details_icon_share"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginLeft="10dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
-                            android:layout_gravity="center_vertical"
                             android:focusable="true"
                             android:src="@drawable/ic_menu_share" />
 
@@ -171,7 +173,7 @@
                         <!--android:padding="5dp"-->
                         <!--android:text="我要分享" />-->
 
-                    </LinearLayout>
+                    </RelativeLayout>
                 </RelativeLayout>
 
 
