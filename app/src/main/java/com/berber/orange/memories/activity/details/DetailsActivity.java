@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class DetailsActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
     private NumberProgressBar detailsAnniProgressbar;
+    private boolean isFavoriteClick;
 
     private final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0";
     private Banner placePhotoBanner;
@@ -67,6 +69,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private Switch notificationButton;
     private TextView mNotificationHint;
     private TextView detailsLocationRequestPhotoHint;
+    private ImageView favoriteButton;
+    private AlphaAnimation alphaAnimationIcon;
     //private FadingTextView fadingTextView;
 
     @Override
@@ -133,6 +137,11 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
+
+        favoriteButton = findViewById(R.id.details_icon_favorite);
+        favoriteButton.setOnClickListener(this);
+        alphaAnimationIcon = new AlphaAnimation(0.2f, 1.0f);
+        alphaAnimationIcon.setDuration(500);
 
         ImageView detaisImageContent = findViewById(R.id.details_image_content);
         Glide.with(this).load(R.drawable.baby2).into(detaisImageContent);
@@ -242,7 +251,19 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.details_icon_favorite:
+                System.out.println("click");
+                if (!isFavoriteClick) {
+                    favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
+                    //  favoriteButton.setAnimation(alphaAnimationIcon);
+                    isFavoriteClick = true;
+                } else {
+                    favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24px);
+                    //favoriteButton.setAnimation(alphaAnimationIcon);
+                    isFavoriteClick = false;
+                }
 
+                break;
         }
     }
 
@@ -283,7 +304,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         //banner设置方法全部调用完毕时最后调用
         banner.setDelayTime(2500);
 
-        banner.setVisibility(View.VISIBLE);
         banner.start();
     }
 
