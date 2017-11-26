@@ -64,7 +64,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
-        holder.mAnniversaryTitle.setText(anniversary.getTitle() + " " + position);
+        holder.mAnniversaryTitle.setText(anniversary.getTitle());
 
         //set object date
         if (anniversary.getDate() != null) {

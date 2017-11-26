@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -24,6 +25,7 @@ import com.berber.orange.memories.model.db.GoogleLocationDao;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
 
+import com.bumptech.glide.Glide;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.google.android.gms.common.api.GoogleApiClient;
 
@@ -131,6 +133,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
+
+        ImageView detaisImageContent = findViewById(R.id.details_image_content);
+        Glide.with(this).load(R.drawable.baby2).into(detaisImageContent);
 
 
         if (anniversaryList.size() == 1) {

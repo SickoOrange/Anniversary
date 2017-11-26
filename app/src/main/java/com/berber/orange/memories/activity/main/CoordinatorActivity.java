@@ -160,7 +160,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
 
         mLandingPageImageView = findViewById(R.id.image_content);
-        Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
+        //"https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg"
+        Glide.with(this).load(R.drawable.baby1).into(mLandingPageImageView);
         initRecycler();
 
 

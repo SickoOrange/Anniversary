@@ -37,7 +37,7 @@ public class MyReceiver extends BroadcastReceiver {
         Date currentDate = new Date();
 
         //NotificationSendingDao.Properties.SentDate.le(currentDate)
-        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull(), NotificationSendingDao.Properties.SentDate.le(currentDate)).list();
+        List<NotificationSending> list = notificationSendingDao.queryBuilder().where(NotificationSendingDao.Properties.SentDate.isNull(), NotificationSendingDao.Properties.SendingDate.le(currentDate)).list();
         if (list.isEmpty()) {
             Log.e("TAG", "sending list is empty");
         }
