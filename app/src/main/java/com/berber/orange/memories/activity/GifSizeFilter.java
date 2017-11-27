@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.berber.orange.memories.activity.main;
+package com.berber.orange.memories.activity;
 
 import android.content.Context;
 import android.graphics.Point;
@@ -28,13 +28,13 @@ import com.zhihu.matisse.internal.utils.PhotoMetadataUtils;
 import java.util.HashSet;
 import java.util.Set;
 
-class GifSizeFilter extends Filter {
+public class GifSizeFilter extends Filter {
 
     private int mMinWidth;
     private int mMinHeight;
     private int mMaxSize;
 
-    GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
+    public GifSizeFilter(int minWidth, int minHeight, int maxSizeInBytes) {
         mMinWidth = minWidth;
         mMinHeight = minHeight;
         mMaxSize = maxSizeInBytes;

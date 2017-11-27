@@ -29,6 +29,8 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.NotificationService;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.GifSizeFilter;
+import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
@@ -48,10 +50,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener, EasyPermissions.PermissionCallbacks {
+public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
     private DaoSession daoSession;
@@ -63,10 +64,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     private Toolbar toolbar;
     //因为setExpanded会调用事件监听，所以通过标志过滤掉
     public static int expendedtag = 2;
-    private static final int REQUEST_CHOOSE_IMAGE = 9898;
+    public static final int COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE = 9898;
     private ImageView mLandingPageImageView;
 
-    private static final int RC_PICK_IMAGE_PERM = 123;
+    public static final int RC_PICK_IMAGE_PERM = 123;
 
     @Override
     protected void initView() {
@@ -190,6 +191,13 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         return R.layout.activity_main;
     }
 
+    @Override
+    protected void doTaskAfterPermissionsGranted(int requestCode) {
+        if (requestCode == RC_PICK_IMAGE_PERM) {
+            MatisseImagePicker.open(this, COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
+        }
+    }
+
     private void initRecycler() {
 
         recycler = findViewById(R.id.time_line_recycler);
@@ -229,8 +237,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 return true;
             case R.id.action_change_image:
                 // TODO: 2017/11/16 pick image and change the background
-                if (hasPermissionToPickImage()) {
-                    openMattiseDialog();
+                if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    MatisseImagePicker.open(CoordinatorActivity.this, COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
                     return true;
                 } else {
                     EasyPermissions.requestPermissions(
@@ -291,7 +299,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 adapter.addNewItem(dto, anniversaryDao);
                 Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 break;
-            case REQUEST_CHOOSE_IMAGE:
+            case COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE:
                 if (data == null) {
                     return;
                 }
@@ -301,45 +309,12 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 }
                 Log.d("Matisse", "mSelected: " + mSelected);
                 break;
-            case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
-                String yes = getString(R.string.yes);
-                String no = getString(R.string.no);
 
-                // Do something after user returned from app settings screen, like showing a Toast.
-//                Toast.makeText(
-//                        this,
-//                        getString(R.string.returned_from_app_settings_to_activity,
-//                                hasPermissionToPickImage() ? yes : no,
-//                                hasLocationAndContactsPermissions() ? yes : no,
-//                                hasSmsPermission() ? yes : no),
-//                        Toast.LENGTH_LONG)
-//                        .show();
-                break;
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
-    private boolean hasPermissionToPickImage() {
-        return EasyPermissions.hasPermissions(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE);
-    }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        // EasyPermissions handles the request result.
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> perms) {
-        openMattiseDialog();
-    }
-
-    private void openMattiseDialog() {
+    private void openMatisseDialog() {
         Matisse.from(CoordinatorActivity.this)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
                 .countable(true)
@@ -349,15 +324,9 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
                 .thumbnailScale(0.85f)
                 .imageEngine(new GlideEngine())
-                .forResult(REQUEST_CHOOSE_IMAGE);
+                .forResult(COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
     }
 
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> perms) {
-        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
-            new AppSettingsDialog.Builder(this).build().show();
-        }
-    }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {
         ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);

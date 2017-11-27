@@ -123,8 +123,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_vertical"
-                            android:layout_toLeftOf="@+id/details_icon_share"
                             android:layout_marginRight="15dp"
+                            android:layout_toLeftOf="@+id/details_icon_share"
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
@@ -141,37 +141,6 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:src="@drawable/ic_menu_share" />
-
-                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_marginLeft="5dp"-->
-                        <!--android:src="@drawable/com_facebook_favicon_blue"-->
-                        <!--android:tint="@color/black" />-->
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_marginLeft="2dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:padding="5dp"-->
-                        <!--android:text="我喜欢" />-->
-
-
-                        <!--<de.hdodenhof.circleimageview.CircleImageView-->
-                        <!--android:layout_width="30dp"-->
-                        <!--android:layout_height="30dp"-->
-                        <!--android:layout_marginLeft="20dp"-->
-                        <!--android:src="@drawable/com_facebook_favicon_blue"-->
-                        <!--android:tint="@color/black" />-->
-
-                        <!--<TextView-->
-                        <!--android:layout_width="wrap_content"-->
-                        <!--android:layout_height="match_parent"-->
-                        <!--android:layout_marginLeft="2dp"-->
-                        <!--android:gravity="center"-->
-                        <!--android:padding="5dp"-->
-                        <!--android:text="我要分享" />-->
 
                     </RelativeLayout>
                 </RelativeLayout>
@@ -213,15 +182,15 @@
                     <!--/>-->
 
                     <Button
+                        android:id="@+id/details_add_image_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="25dp"
                         android:layout_alignParentRight="true"
                         android:layout_below="@id/details_anni_mimi"
                         android:layout_margin="5dp"
-                        android:background="@color/transparent"
+                        android:background="@null"
                         android:padding="2dp"
                         android:text="好的，点我添加"
-
                         android:textColor="@color/redSelect" />
 
                 </RelativeLayout>

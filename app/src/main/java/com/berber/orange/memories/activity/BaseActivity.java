@@ -1,23 +1,31 @@
 package com.berber.orange.memories.activity;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.util.List;
+
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+
 /**
  * Created by orange on 2017/11/15.
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener {
+public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks {
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
     //protected GoogleApiClient mGoogleApiClient;
@@ -80,4 +88,35 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
         // TODO: 2017/11/25  
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
+    public boolean hasPermissionToPickImage(String... perms) {
+        return EasyPermissions.hasPermissions(this, perms);
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        // EasyPermissions handles the request result.
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+        doTaskAfterPermissionsGranted(requestCode);
+    }
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+        if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
+            new AppSettingsDialog.Builder(this).build().show();
+        }
+    }
+
+    protected abstract void doTaskAfterPermissionsGranted(int requestCode);
+
+
 }

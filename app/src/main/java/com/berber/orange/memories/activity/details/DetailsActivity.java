@@ -3,13 +3,15 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.provider.Telephony;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
@@ -35,6 +38,7 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
+import com.zhihu.matisse.Matisse;
 
 
 import java.lang.ref.WeakReference;
@@ -44,6 +48,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import pub.devrel.easypermissions.EasyPermissions;
+
 
 public class DetailsActivity extends BaseActivity implements View.OnClickListener {
     private Toolbar toolbar;
@@ -71,11 +77,19 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private TextView detailsLocationRequestPhotoHint;
     private ImageView favoriteButton;
     private AlphaAnimation alphaAnimationIcon;
+
+    private int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
+    private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
     //private FadingTextView fadingTextView;
 
     @Override
     protected int setLayoutId() {
         return R.layout.activity_details;
+    }
+
+    @Override
+    protected void doTaskAfterPermissionsGranted(int requestCode) {
+
     }
 
     @Override
@@ -138,13 +152,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
 
+        Button detailsAddImageButton = findViewById(R.id.details_add_image_btn);
+        detailsAddImageButton.setOnClickListener(this);
         favoriteButton = findViewById(R.id.details_icon_favorite);
         favoriteButton.setOnClickListener(this);
         alphaAnimationIcon = new AlphaAnimation(0.2f, 1.0f);
         alphaAnimationIcon.setDuration(500);
 
-        ImageView detaisImageContent = findViewById(R.id.details_image_content);
-        Glide.with(this).load(R.drawable.baby2).into(detaisImageContent);
+        ImageView detailsImageContent = findViewById(R.id.details_image_content);
+        Glide.with(this).load(R.drawable.baby2).into(detailsImageContent);
 
 
         if (anniversaryList.size() == 1) {
@@ -262,14 +278,44 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     //favoriteButton.setAnimation(alphaAnimationIcon);
                     isFavoriteClick = false;
                 }
-
                 break;
+            case R.id.details_add_image_btn:
+                if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    MatisseImagePicker.open(DetailsActivity.this, DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE);
+                } else {
+                    EasyPermissions.requestPermissions(
+                            this,
+                            "Pick Image",
+                            DETAILS_REQUEST_PICK_IMAGE_PERM,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    );
+                    break;
+                }
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE:
+                if (data == null) {
+                    return;
+                }
+                List<Uri> mSelected = Matisse.obtainResult(data);
+                if (!mSelected.isEmpty()) {
+                    // TODO: 2017/11/27 add image to the gallary and database
+                }
+                break;
+
+
         }
     }
 
     @SuppressLint("StaticFieldLeak")
     private void doPlacePhotoRequest(String placeId, GoogleApiClient googleApiClient) {
-        new PlacePhotoTask(this, googleApiClient) {
+        new PlacePhotoTask(DetailsActivity.this, googleApiClient) {
             @Override
             protected void onPreExecute() {
                 // TODO: 2017/11/25  do some loading prepare work
