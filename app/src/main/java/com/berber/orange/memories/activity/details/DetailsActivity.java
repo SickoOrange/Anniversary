@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -78,8 +79,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private ImageView favoriteButton;
     private AlphaAnimation alphaAnimationIcon;
 
-    private int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
+    private static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
+    //private TagFlowLayout imagesFlowLayout;
     //private FadingTextView fadingTextView;
 
     @Override
@@ -151,6 +153,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
+       // imagesFlowLayout = findViewById(R.id.details_images_flow);
 
         Button detailsAddImageButton = findViewById(R.id.details_add_image_btn);
         detailsAddImageButton.setOnClickListener(this);
@@ -306,6 +309,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     // TODO: 2017/11/27 add image to the gallary and database
+                    for (Uri uri : mSelected) {
+//                        CircleImageView circleImageView = new CircleImageView(this);
+//                        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(50, 50);
+//                        layoutParams.width = 150;
+//                        layoutParams.height = 50;
+//                        layoutParams.setMargins(5, 2, 2, 5);
+//                        circleImageView.setLayoutParams(layoutParams);
+//                        circleImageView.setImageURI(uri);
+//                        imagesFlowLayout.addView(circleImageView);
+
+                    }
                 }
                 break;
 
