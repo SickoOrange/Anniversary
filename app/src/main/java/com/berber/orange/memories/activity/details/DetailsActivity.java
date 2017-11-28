@@ -316,11 +316,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 if (!mSelected.isEmpty()) {
 //                    GridViewAdapter adapter = (GridViewAdapter) imageFlowLayout.getAdapter();
 //                    adapter.addNewItems(mSelected);
-                    CircleImageView imageView = (CircleImageView) new ImageView(this);
-                    imageView.setLayoutParams(new FlowLayout.LayoutParams(50, 50));
-                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                    imageView.setPadding(5, 5, 5, 5);
-                    imageView.setImageURI(mSelected.get(0));
+                    for (Uri uri : mSelected) {
+                        CircleImageView imageView = new CircleImageView(this);
+                        imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
+                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        imageView.setPadding(5, 5, 5, 5);
+                        imageView.setImageURI(uri);
+                        imageFlowLayout.addView(imageView);
+                    }
+
                 }
                 break;
 
