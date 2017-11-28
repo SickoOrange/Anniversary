@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.GridView;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -81,6 +83,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
     private static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
+    private GridView gridView;
     //private TagFlowLayout imagesFlowLayout;
     //private FadingTextView fadingTextView;
 
@@ -132,6 +135,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mTimeProgressLabel2 = findViewById(R.id.time_progress_label2);
         mTimeProgressLabel3 = findViewById(R.id.time_progress_label3);
 
+        gridView = findViewById(R.id.image_grid_view);
+        gridView.setAdapter(new GridViewAdapter(this, null));
+
         updateDateInformationUI(dateInformation);
 
         mNotificationHint = findViewById(R.id.details_notification_hint);
@@ -153,7 +159,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
-       // imagesFlowLayout = findViewById(R.id.details_images_flow);
+        // imagesFlowLayout = findViewById(R.id.details_images_flow);
 
         Button detailsAddImageButton = findViewById(R.id.details_add_image_btn);
         detailsAddImageButton.setOnClickListener(this);
