@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -314,18 +315,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
-                    // TODO: 2017/11/27 add image to the gallary and database
-                    for (Uri uri : mSelected) {
-//                        CircleImageView circleImageView = new CircleImageView(this);
-//                        ViewGroup.MarginLayoutParams layoutParams = new ViewGroup.MarginLayoutParams(50, 50);
-//                        layoutParams.width = 150;
-//                        layoutParams.height = 50;
-//                        layoutParams.setMargins(5, 2, 2, 5);
-//                        circleImageView.setLayoutParams(layoutParams);
-//                        circleImageView.setImageURI(uri);
-//                        imagesFlowLayout.addView(circleImageView);
-
-                    }
+                    GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
+                    adapter.addNewItems(mSelected);
                 }
                 break;
 

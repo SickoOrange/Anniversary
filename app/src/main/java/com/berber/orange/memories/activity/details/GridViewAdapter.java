@@ -12,7 +12,6 @@ import com.berber.orange.memories.R;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 /**
  * Created by orange on 2017/11/28.
@@ -23,7 +22,7 @@ public class GridViewAdapter extends BaseAdapter {
     private Context context;
 
     public GridViewAdapter(Context context, List<Uri> mDatas) {
-        if (mDatas == null) {
+        if (mDatas != null) {
             this.mDatas = mDatas;
         }
         this.context = context;
@@ -47,9 +46,15 @@ public class GridViewAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.grid_item, parent);
+            convertView = LayoutInflater.from(context).inflate(R.layout.grid_item, null);
             ((ImageView) convertView).setImageURI(mDatas.get(position));
         }
         return convertView;
+    }
+
+
+    public void addNewItems(List<Uri> uris) {
+        mDatas.addAll(uris);
+        notifyDataSetChanged();
     }
 }
