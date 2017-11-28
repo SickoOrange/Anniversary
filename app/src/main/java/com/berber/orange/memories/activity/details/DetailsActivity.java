@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
 import android.widget.GridView;
@@ -314,14 +316,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
-//                    GridViewAdapter adapter = (GridViewAdapter) imageFlowLayout.getAdapter();
-//                    adapter.addNewItems(mSelected);
                     for (Uri uri : mSelected) {
                         CircleImageView imageView = new CircleImageView(this);
                         imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
                         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                        FlowLayout.LayoutParams layoutParams = (FlowLayout.LayoutParams) imageView.getLayoutParams();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                            layoutParams.setMarginStart(10);
+                        }
                         imageView.setPadding(5, 5, 5, 5);
-                        imageView.setImageURI(uri);
+                        //imageView.setImageURI(uri);
+                        Glide.with(this).load(uri).into(imageView);
                         imageFlowLayout.addView(imageView);
                     }
 
