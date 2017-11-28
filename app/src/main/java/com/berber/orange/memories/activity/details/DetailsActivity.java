@@ -8,15 +8,11 @@ import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
-import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
-import android.widget.ListAdapter;
 import android.widget.Switch;
 import android.widget.TextView;
 
@@ -44,6 +40,8 @@ import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
 import com.zhihu.matisse.Matisse;
 
+
+import org.apmem.tools.layouts.FlowLayout;
 
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
@@ -84,7 +82,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
     private static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
-    private GridView gridView;
+    private FlowLayout imageFlowLayout;
     //private TagFlowLayout imagesFlowLayout;
     //private FadingTextView fadingTextView;
 
@@ -136,8 +134,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mTimeProgressLabel2 = findViewById(R.id.time_progress_label2);
         mTimeProgressLabel3 = findViewById(R.id.time_progress_label3);
 
-        gridView = findViewById(R.id.image_grid_view);
-        gridView.setAdapter(new GridViewAdapter(this, null));
+
+        imageFlowLayout = findViewById(R.id.image_gallery);
+//        imageFlowLayout.setAdapter(new GridViewAdapter(this, null));
 
         updateDateInformationUI(dateInformation);
 
@@ -315,8 +314,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
-                    GridViewAdapter adapter = (GridViewAdapter) gridView.getAdapter();
-                    adapter.addNewItems(mSelected);
+//                    GridViewAdapter adapter = (GridViewAdapter) imageFlowLayout.getAdapter();
+//                    adapter.addNewItems(mSelected);
+                    CircleImageView imageView = (CircleImageView) new ImageView(this);
+                    imageView.setLayoutParams(new FlowLayout.LayoutParams(50, 50));
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                    imageView.setPadding(5, 5, 5, 5);
+                    imageView.setImageURI(mSelected.get(0));
                 }
                 break;
 

@@ -56,7 +56,8 @@ dependencies {
     compile 'com.youth.banner:banner:1.4.10'
     compile 'com.gyf.barlibrary:barlibrary:2.3.0'
     compile 'com.tomer:fadingtextview:2.5'
-    compile 'com.dalong:flowlayout:2.0.0'
+   // compile 'com.dalong:flowlayout:2.0.0'
+    compile 'org.apmem.tools:layouts:1.10@aar'
     testCompile 'junit:junit:4.12'
 }
 
