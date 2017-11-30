@@ -344,6 +344,11 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         // handle anniversary title
         String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
+
+
+        //create file folder
+
+
         if (TextUtils.isEmpty(anniversaryTitle)) {
             alertWarningDialog("标题不能为空");
             return;

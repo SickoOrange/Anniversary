@@ -7,6 +7,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -17,6 +18,7 @@ import com.google.android.gms.location.places.Places;
 import com.gyf.barlibrary.ImmersionBar;
 import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 
+import java.io.File;
 import java.util.List;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
@@ -30,19 +32,28 @@ import pub.devrel.easypermissions.EasyPermissions;
 public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks {
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
+    protected String parentPath;
     //protected GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(setLayoutId());
+        initView();
 
         // init immersion bar
-        initView();
         if (isImmersionBarEnabled()) {
             initImmersionBar();
         }
 
+        //create folder to cache files
+        File file = new File(this.getFilesDir(), "picture");
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+            }
+        }
+
+        parentPath = file.getAbsolutePath();
 
 
     }
@@ -112,6 +123,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     public void onPermissionsGranted(int requestCode, List<String> perms) {
         doTaskAfterPermissionsGranted(requestCode);
     }
+
     @Override
     public void onPermissionsDenied(int requestCode, List<String> perms) {
         if (EasyPermissions.somePermissionPermanentlyDenied(this, perms)) {
