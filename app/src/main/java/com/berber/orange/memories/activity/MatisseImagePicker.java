@@ -19,7 +19,7 @@ public class MatisseImagePicker {
         Matisse.from(activity)
                 .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
                 .countable(true)
-                .maxSelectable(9)
+                .maxSelectable(4)
                 .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
                 .gridExpectedSize(activity.getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
                 .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)

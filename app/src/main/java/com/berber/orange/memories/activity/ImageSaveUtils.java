@@ -65,6 +65,7 @@ public class ImageSaveUtils {
 
         bitmap.recycle();
         decodeSampledBitmap.recycle();
+
     }
 
     private static InputStream getISFromBitmap(Bitmap bitmap) {
@@ -75,7 +76,6 @@ public class ImageSaveUtils {
         return new ByteArrayInputStream(baos.toByteArray());
     }
 
-    ;
 
     private static Bitmap decodeSampledBitmap(InputStream ins, int quality) {
 
