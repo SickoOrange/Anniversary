@@ -10,10 +10,8 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
-import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -23,6 +21,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
+import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
@@ -40,6 +39,7 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
+import com.youth.banner.BannerConfig;
 import com.zhihu.matisse.Matisse;
 
 
@@ -289,6 +289,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     //favoriteButton.setAnimation(alphaAnimationIcon);
                     isFavoriteClick = false;
                 }
+                Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
+                startActivity(intent);
                 break;
             case R.id.details_add_image_btn:
                 if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -367,13 +369,14 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片.");
         }
 
+        banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
+
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
         //设置图片集合
         banner.setImages(images);
         //banner设置方法全部调用完毕时最后调用
         banner.setDelayTime(2500);
-
         banner.start();
     }
 

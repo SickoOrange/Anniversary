@@ -15,6 +15,7 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
 import com.gyf.barlibrary.ImmersionBar;
+import com.zhihu.matisse.internal.ui.adapter.PreviewPagerAdapter;
 
 import java.util.List;
 
@@ -41,6 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         if (isImmersionBarEnabled()) {
             initImmersionBar();
         }
+
 
 
     }

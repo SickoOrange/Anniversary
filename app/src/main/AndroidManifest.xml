@@ -73,7 +73,8 @@
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.details.DetailsActivity"></activity>
+        <activity android:name=".activity.details.DetailsActivity" />
+        <activity android:name=".activity.preview.AnniPreviewActivity"></activity>
     </application>
 
 </manifest>
