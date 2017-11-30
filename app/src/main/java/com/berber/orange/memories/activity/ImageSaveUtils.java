@@ -50,9 +50,10 @@ public class ImageSaveUtils {
             file.delete();
         }
         FileOutputStream out;
+        Bitmap decodeSampledBitmap = decodeSampledBitmap(getISFromBitmap(bitmap), 100);
         try {
             out = new FileOutputStream(file);
-            if (decodeSampledBitmap(getISFromBitmap(bitmap), 100).compress(Bitmap.CompressFormat.PNG, 90, out)) {
+            if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
                 out.flush();
                 out.close();
             }
@@ -61,6 +62,9 @@ public class ImageSaveUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
+
+        bitmap.recycle();
+        decodeSampledBitmap.recycle();
     }
 
     private static InputStream getISFromBitmap(Bitmap bitmap) {
