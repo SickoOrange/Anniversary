@@ -47,6 +47,7 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.gyf.barlibrary.ImmersionBar;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -344,11 +345,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         // handle anniversary title
         String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
-
-
-        //create file folder
-
-
         if (TextUtils.isEmpty(anniversaryTitle)) {
             alertWarningDialog("标题不能为空");
             return;
@@ -423,6 +419,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversary.setGoogleLocationId(insertGoogleLocationId);
             anniversaryDao.update(anniversary);
             googleLocation = null;
+        }
+
+        //create folder to cache files
+        File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
+        if (!file.exists()) {
+            if (file.mkdirs()) {
+            }
         }
 
         Intent intent = new Intent();

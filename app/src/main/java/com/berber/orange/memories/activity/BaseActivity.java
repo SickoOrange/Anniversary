@@ -46,14 +46,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
             initImmersionBar();
         }
 
-        //create folder to cache files
-        File file = new File(this.getFilesDir(), "picture");
-        if (!file.exists()) {
-            if (file.mkdirs()) {
-            }
-        }
 
-        parentPath = file.getAbsolutePath();
+
+
 
 
     }
