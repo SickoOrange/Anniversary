@@ -144,20 +144,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
 
-//        FloatingActionButton fab = findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//                startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
-//                //  startActivityForResult(new Intent(ScrollingActivity.this, AddItemActivity.class));
-//            }
-//        });
-
-//        TabLayout tab = findViewById(R.id.tab);
-//        tab.addTab(tab.newTab().setText("Time Line"));
-//        tab.addTab(tab.newTab().setText("Grid Line"));
 
 
         mLandingPageImageView = findViewById(R.id.image_content);
@@ -165,17 +151,18 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         Glide.with(this).load(R.drawable.baby1).into(mLandingPageImageView);
         initRecycler();
 
+        // TODO: 2017/12/1 service disable
 
-        boolean notificationService = isMyServiceRunning(NotificationService.class);
-        if (!notificationService) {
-            Log.e("TAG", "服务不存在，正在启动服务");
-
-            Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
-            intent.setAction("AnniversaryNotificationAction");
-            startService(intent);
-        } else {
-            Log.e("TAG", "服务已经存在");
-        }
+//        boolean notificationService = isMyServiceRunning(NotificationService.class);
+//        if (!notificationService) {
+//            Log.e("TAG", "服务不存在，正在启动服务");
+//
+//            Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
+//            intent.setAction("AnniversaryNotificationAction");
+//            startService(intent);
+//        } else {
+//            Log.e("TAG", "服务已经存在");
+//        }
     }
 
     @Override

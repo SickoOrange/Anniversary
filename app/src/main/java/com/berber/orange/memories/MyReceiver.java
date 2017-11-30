@@ -27,7 +27,7 @@ public class MyReceiver extends BroadcastReceiver {
             startScanTask(context);
             Intent i = new Intent(context, NotificationService.class);
             context.startService(i);
-        }
+    }
 
     }
 
