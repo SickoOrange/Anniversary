@@ -9,6 +9,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.ImageSaveUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
@@ -45,6 +47,8 @@ import com.zhihu.matisse.Matisse;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -85,6 +89,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
     private FlowLayout imageFlowLayout;
+    private Long anniversaryId;
     //private TagFlowLayout imagesFlowLayout;
     //private FadingTextView fadingTextView;
 
@@ -119,7 +124,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         GoogleLocationDao googleLocationDao = daoSession.getGoogleLocationDao();
 
 
-        Long anniversaryId = intent.getLongExtra("anniversaryId", 0);
+        anniversaryId = intent.getLongExtra("anniversaryId", 0);
         List<Anniversary> anniversaryList = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversaryId)).list();
 
         int progressValue = intent.getIntExtra("progressValue", 0);
@@ -318,19 +323,33 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
-                    for (Uri uri : mSelected) {
+                    for (final Uri uri : mSelected) {
                         CircleImageView imageView = new CircleImageView(this);
                         imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
                         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
                         FlowLayout.LayoutParams layoutParams = (FlowLayout.LayoutParams) imageView.getLayoutParams();
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            layoutParams.setMarginStart(10);
+                            layoutParams.setMarginStart(17);
                         }
                         imageView.setPadding(5, 5, 5, 5);
                         //imageView.setImageURI(uri);
                         Glide.with(this).load(uri).into(imageView);
                         imageFlowLayout.addView(imageView);
+
+                        //save to local
+                        new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    ImageSaveUtils.saveBitmap(DetailsActivity.this, ImageSaveUtils.getBitmap(DetailsActivity.this, uri), anniversaryId);
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                Log.e("TAG", "file saved successfully");
+                            }
+                        }).start();
                     }
+
 
                 }
                 break;
