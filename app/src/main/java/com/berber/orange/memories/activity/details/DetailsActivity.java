@@ -342,7 +342,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                                     @Override
                                     public void run() {
                                         try {
-                                            ImageUtils.saveBitmap(DetailsActivity.this, ImageUtils.getBitmap(DetailsActivity.this, uri), file);
+                                            ImageUtils.saveBitmap(DetailsActivity.this, uri, file);
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                         }

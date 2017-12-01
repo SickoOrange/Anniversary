@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
-import android.provider.MediaStore;
 import android.util.Log;
 
 import java.io.ByteArrayInputStream;
@@ -23,30 +22,31 @@ import java.util.List;
  */
 
 public class ImageUtils {
-    public static Bitmap getBitmap(Context context, Uri uri) {
-        Bitmap bitmap = null;
-        try {
-            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver(), uri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return bitmap;
+    public static InputStream getBitmapStream(Context context, Uri uri) throws FileNotFoundException {
+//        Bitmap bitmap = null;
+//        try {
+//            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver().get, uri);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        return context.getContentResolver().openInputStream(uri);
+
     }
 
 
-    public static void saveBitmap(Context context, Bitmap bitmap, File file) throws IOException {
+    public static void saveBitmap(Context context, Uri uri, File file) throws IOException {
         FileOutputStream out;
-        Bitmap decodeSampledBitmap = decodeSampledBitmap(getISFromBitmap(bitmap), 100);
+        Bitmap decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file);
         try {
             out = new FileOutputStream(file);
             if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
                 out.flush();
                 out.close();
             }
-        } catch (FileNotFoundException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+            file.delete();
         }
         Log.e("TAG", "Finish");
     }
@@ -59,8 +59,54 @@ public class ImageUtils {
         return new ByteArrayInputStream(baos.toByteArray());
     }
 
+//    public static Bitmap decodeSampledBitmapFromUri(Context context, Uri imageUri, int reqWidth, int reqHeight) throws FileNotFoundException {
+//
+//        // Get input stream of the image
+//        final BitmapFactory.Options options = new BitmapFactory.Options();
+//        InputStream iStream = null;
+//        try {
+//            iStream = context.getContentResolver().openInputStream(imageUri);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//
+//        // First decode with inJustDecodeBounds=true to check dimensions
+//        options.inJustDecodeBounds = true;
+//        BitmapFactory.decodeStream(iStream, null, options);
+//
+//        // Calculate inSampleSize
+//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
+//
+//        // Decode bitmap with inSampleSize set
+//        options.inJustDecodeBounds = false;
+//        return BitmapFactory.decodeStream(iStream, null, options);
+//    }
 
-    private static Bitmap decodeSampledBitmap(InputStream ins, int quality) {
+//    private static int calculateInSampleSize(
+//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
+//        // Raw height and width of image
+//        final int height = options.outHeight;
+//        final int width = options.outWidth;
+//        int inSampleSize = 1;
+//
+//        if (height > reqHeight || width > reqWidth) {
+//
+//            final int halfHeight = height / 2;
+//            final int halfWidth = width / 2;
+//
+//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
+//            // height and width larger than the requested height and width.
+//            while ((halfHeight / inSampleSize) >= reqHeight
+//                    && (halfWidth / inSampleSize) >= reqWidth) {
+//                inSampleSize *= 2;
+//            }
+//        }
+//
+//        return inSampleSize;
+//    }
+
+
+    private static Bitmap decodeSampledBitmap(InputStream ins, int quality, File file) {
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         Bitmap bm = null;
@@ -79,7 +125,7 @@ public class ImageUtils {
             Log.e("原图片高度：", picHeight + "");
             Log.e("原图片宽度：", picWidth + "");
 
-            opts.inSampleSize = 2;//设置缩放比例
+            opts.inSampleSize = 4;//设置缩放比例
 
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
 
@@ -108,6 +154,8 @@ public class ImageUtils {
                     e.printStackTrace();
                 }
             }
+            file.delete();
+
         }
         return bm;
     }
