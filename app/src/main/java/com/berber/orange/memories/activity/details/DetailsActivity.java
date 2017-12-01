@@ -3,6 +3,7 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -191,6 +192,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     .enableAutoManage(this, this)
                     .build();
             updateUI(anniversary);
+
+            //update image flow layout
             List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
             if (!images.isEmpty()) {
                 for (File image : images) {
@@ -198,6 +201,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
             }
 
+            //update place flow layout
+            List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversary.getId());
+            if (!places.isEmpty()) {
+                for (File place : places) {
+                    updateGallery(placeFlowLayout, place);
+                }
+            }
 
         }
 
@@ -224,7 +234,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         GoogleLocation googleLocation = anniversary.getGoogleLocation();
         //get place photo
-        doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
+        // TODO: 2017/12/1 change into button click event
+        //doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
 
         //set location information about location
         mLocationNameTV.setText(googleLocation.getLocationName());
@@ -422,12 +433,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                         }
                     }).start();
                 }
-//                for (Bitmap bitmap : list) {
-//                    Log.e("TAG", "update place");
-//                    updateGallery(placeFlowLayout, bitmap);
-//                }
-//                setBannerImageLoader(placePhotoBanner, list);
-
             }
         }.execute(placeId);
     }
