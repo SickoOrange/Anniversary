@@ -3,6 +3,7 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -42,6 +43,7 @@ import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.zhihu.matisse.Matisse;
+import com.zhihu.matisse.engine.impl.GlideEngine;
 
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -89,6 +91,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
+    private FlowLayout placeFlowLayout;
     //private TagFlowLayout imagesFlowLayout;
     //private FadingTextView fadingTextView;
 
@@ -130,7 +133,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         String dateInformation = intent.getStringExtra("dateInformation");
 
-        placePhotoBanner = findViewById(R.id.details_place_photo_banner);
+        //placePhotoBanner = findViewById(R.id.details_place_photo_banner);
         // fadingTextView = findViewById(R.id.fadingTextView);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
@@ -143,6 +146,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         imageFlowLayout = findViewById(R.id.image_gallery);
 //        imageFlowLayout.setAdapter(new GridViewAdapter(this, null));
+
+        placeFlowLayout = findViewById(R.id.place_gallery);
 
         updateDateInformationUI(dateInformation);
 
@@ -190,7 +195,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
             if (!images.isEmpty()) {
                 for (File image : images) {
-                    updateImageGallery(image);
+                    updateGallery(imageFlowLayout, image);
                 }
             }
 
@@ -332,7 +337,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 final List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     for (final Uri uri : mSelected) {
-                        updateImageGallery(uri);
+                        updateGallery(imageFlowLayout, uri);
                         //save to local
                         final File file = ImageUtils.getFile(this, anniversaryId);
                         if (!file.exists()) {
@@ -362,7 +367,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void updateImageGallery(Object image) {
+    private void updateGallery(FlowLayout layout, Object image) {
         CircleImageView imageView = new CircleImageView(this);
         imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -372,7 +377,11 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
         imageView.setPadding(5, 5, 5, 5);
         //imageView.setImageURI(uri);
-        Glide.with(this).load(image).into(imageView);
+        if (image instanceof Bitmap) {
+            Glide.with(this).load(image).asBitmap().into(imageView);
+        } else {
+            Glide.with(this).load(image).into(imageView);
+        }
         imageFlowLayout.addView(imageView);
     }
 
@@ -387,12 +396,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             @Override
             protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
                 List<Bitmap> list = new ArrayList<>();
-                if (!attributedPhotos.isEmpty()) {
-                    for (AttributedPhoto photo : attributedPhotos) {
-                        list.add(photo.bitmap);
-                    }
+                for (Bitmap bitmap : list) {
+                    updateGallery(placeFlowLayout, bitmap);
                 }
-                setBannerImageLoader(placePhotoBanner, list);
+//                if (!attributedPhotos.isEmpty()) {
+//                    for (AttributedPhoto photo : attributedPhotos) {
+//                        list.add(photo.bitmap);
+//                    }
+//                }
+//                setBannerImageLoader(placePhotoBanner, list);
 
             }
         }.execute(placeId);
