@@ -64,7 +64,7 @@ public class ImageUtils {
             byte[] bytes = new byte[1024];
             if (resource instanceof InputStream) {
                 bytes = readStream((InputStream) resource);
-                opts.inSampleSize = 4;//设置缩放比例
+                opts.inSampleSize = 2;//设置缩放比例
             } else if (resource instanceof Bitmap) {
                 Bitmap bitmap = (Bitmap) resource;
                 ByteArrayOutputStream baosTmp = new ByteArrayOutputStream();

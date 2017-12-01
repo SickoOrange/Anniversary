@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity.details;
+package com.berber.orange.memories.activity;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,18 +15,20 @@ import java.io.ByteArrayOutputStream;
  * Created by orange on 2017/11/25.
  */
 
-class GlideImageLoader extends ImageLoader {
+public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
         Log.e("TAG", "display image in banner");
 
+
+       imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         if (path instanceof Bitmap) {
             Bitmap bitmap = (Bitmap) path;
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-            Glide.with(context).load(stream.toByteArray()).into(imageView);
+            Glide.with(context).load(stream.toByteArray()).fitCenter().into(imageView);
         } else {
-            Glide.with(context).load(path).into(imageView);
+            Glide.with(context).load(path).fitCenter().into(imageView);
         }
 
     }

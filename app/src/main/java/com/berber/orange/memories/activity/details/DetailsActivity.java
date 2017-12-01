@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.GlideImageLoader;
 import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
@@ -41,7 +42,6 @@ import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
 import com.google.android.gms.location.places.PlacePhotoMetadataResult;
 import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
 import com.zhihu.matisse.Matisse;
 
 
@@ -146,7 +146,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         imageFlowLayout = findViewById(R.id.image_gallery);
 //        imageFlowLayout.setAdapter(new GridViewAdapter(this, null));
 
-       // placeFlowLayout = findViewById(R.id.place_gallery);
+        // placeFlowLayout = findViewById(R.id.place_gallery);
 
         updateDateInformationUI(dateInformation);
 
@@ -319,8 +319,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     //favoriteButton.setAnimation(alphaAnimationIcon);
                     isFavoriteClick = false;
                 }
-                Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
-                startActivity(intent);
+
                 break;
             case R.id.details_add_image_btn:
                 if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -379,7 +378,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void updateGallery(FlowLayout layout, Object image) {
+    private void updateGallery(FlowLayout layout, final Object image) {
         CircleImageView imageView = new CircleImageView(this);
         imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -397,7 +396,25 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         } else {
             Glide.with(this).load(image).into(imageView);
         }
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                int childCount = imageFlowLayout.getChildCount();
+                int index = 0;
+                for (int i = 0; i < childCount; i++) {
+                    CircleImageView currentImage = (CircleImageView) imageFlowLayout.getChildAt(i);
+                    if (v == currentImage) {
+                        index = i;
+                    }
+                }
+                Log.e("TAG", String.valueOf(index));
+                Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
+                intent.putExtra("anniversaryId", anniversaryId);
+                intent.putExtra("currentId", index);
+                startActivity(intent);
+            }
+        });
         layout.addView(imageView);
     }
 
@@ -429,7 +446,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片.");
         }
 
-       // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
+        // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
 
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
