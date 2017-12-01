@@ -10,6 +10,7 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -48,6 +49,7 @@ import com.zhihu.matisse.engine.impl.GlideEngine;
 
 import org.apmem.tools.layouts.FlowLayout;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
@@ -378,7 +380,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         imageView.setPadding(5, 5, 5, 5);
         //imageView.setImageURI(uri);
         if (image instanceof Bitmap) {
-            Glide.with(this).load(image).asBitmap().into(imageView);
+            Bitmap bitmap = (Bitmap) image;
+            ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+            Glide.with(this).load(outputStream.toByteArray()).into(imageView);
         } else {
             Glide.with(this).load(image).into(imageView);
         }
@@ -396,14 +401,16 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             @Override
             protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
                 List<Bitmap> list = new ArrayList<>();
+
+                if (!attributedPhotos.isEmpty()) {
+                    for (AttributedPhoto photo : attributedPhotos) {
+                        list.add(photo.bitmap);
+                    }
+                }
                 for (Bitmap bitmap : list) {
+                    Log.e("TAG", "update place");
                     updateGallery(placeFlowLayout, bitmap);
                 }
-//                if (!attributedPhotos.isEmpty()) {
-//                    for (AttributedPhoto photo : attributedPhotos) {
-//                        list.add(photo.bitmap);
-//                    }
-//                }
 //                setBannerImageLoader(placePhotoBanner, list);
 
             }
