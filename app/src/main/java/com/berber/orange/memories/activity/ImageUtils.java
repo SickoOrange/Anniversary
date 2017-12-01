@@ -34,20 +34,7 @@ public class ImageUtils {
     }
 
 
-    public static void saveBitmap(Context context, Bitmap bitmap, Long anniversaryId) throws IOException {
-        String fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
-        File obj = new File(fileParent);
-        if (!obj.exists()) {
-            obj.mkdirs();
-        }
-
-
-        String fileName = "anni_" + getFileIndex(obj) + ".png";
-
-        File file = new File(fileParent, fileName);
-        if (file.exists()) {
-            file.delete();
-        }
+    public static void saveBitmap(Context context, Bitmap bitmap, File file) throws IOException {
         FileOutputStream out;
         Bitmap decodeSampledBitmap = decodeSampledBitmap(getISFromBitmap(bitmap), 100);
         try {
@@ -153,12 +140,20 @@ public class ImageUtils {
         return list;
     }
 
-    private synchronized static int getFileIndex(File obj) {
+    public static File getFile(Context context, Long anniversaryId) {
+
+        String fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
+        File obj = new File(fileParent);
+        if (!obj.exists()) {
+            obj.mkdirs();
+        }
         int length = 0;
         if (obj.isDirectory()) {
             File[] listFiles = obj.listFiles();
             length = listFiles.length;
         }
-        return (int) (Math.random() * 100);
+        String fileName = "anni_" + length + ".png";
+        File targetFile = new File(fileParent, fileName);
+        return targetFile;
     }
 }

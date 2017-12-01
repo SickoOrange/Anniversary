@@ -9,7 +9,6 @@ import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -335,17 +334,26 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     for (final Uri uri : mSelected) {
                         updateImageGallery(uri);
                         //save to local
-                        new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                try {
-                                    ImageUtils.saveBitmap(DetailsActivity.this, ImageUtils.getBitmap(DetailsActivity.this,  uri), anniversaryId);
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+                        final File file = ImageUtils.getFile(this, anniversaryId);
+                        if (!file.exists()) {
+                            try {
+                                file.createNewFile();
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        try {
+                                            ImageUtils.saveBitmap(DetailsActivity.this, ImageUtils.getBitmap(DetailsActivity.this, uri), file);
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                        }
 
+                                    }
+                                }).start();
+                            } catch (IOException e) {
+                                e.printStackTrace();
                             }
-                        }).start();
+                        }
+
                     }
                 }
                 break;
