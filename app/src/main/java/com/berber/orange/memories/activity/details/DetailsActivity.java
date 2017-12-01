@@ -20,7 +20,7 @@ import android.widget.TextView;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.ImageSaveUtils;
+import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
@@ -188,7 +188,16 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     .enableAutoManage(this, this)
                     .build();
             updateUI(anniversary);
+            List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
+            if (!images.isEmpty()) {
+                for (File image : images) {
+                    updateImageGallery(image);
+                }
+            }
+
+
         }
+
 
     }
 
@@ -321,41 +330,42 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 if (data == null) {
                     return;
                 }
-                List<Uri> mSelected = Matisse.obtainResult(data);
+                final List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     for (final Uri uri : mSelected) {
-                        CircleImageView imageView = new CircleImageView(this);
-                        imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
-                        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                        FlowLayout.LayoutParams layoutParams = (FlowLayout.LayoutParams) imageView.getLayoutParams();
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                            layoutParams.setMarginStart(17);
-                        }
-                        imageView.setPadding(5, 5, 5, 5);
-                        //imageView.setImageURI(uri);
-                        Glide.with(this).load(uri).into(imageView);
-                        imageFlowLayout.addView(imageView);
-
+                        updateImageGallery(uri);
                         //save to local
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
                                 try {
-                                    ImageSaveUtils.saveBitmap(DetailsActivity.this, ImageSaveUtils.getBitmap(DetailsActivity.this, uri), anniversaryId);
+                                    ImageUtils.saveBitmap(DetailsActivity.this, ImageUtils.getBitmap(DetailsActivity.this,  uri), anniversaryId);
                                 } catch (IOException e) {
                                     e.printStackTrace();
                                 }
-                                Log.e("TAG", "file saved successfully");
+
                             }
                         }).start();
                     }
-
-
                 }
                 break;
 
 
         }
+    }
+
+    private void updateImageGallery(Object image) {
+        CircleImageView imageView = new CircleImageView(this);
+        imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
+        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        FlowLayout.LayoutParams layoutParams = (FlowLayout.LayoutParams) imageView.getLayoutParams();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            layoutParams.setMarginStart(17);
+        }
+        imageView.setPadding(5, 5, 5, 5);
+        //imageView.setImageURI(uri);
+        Glide.with(this).load(image).into(imageView);
+        imageFlowLayout.addView(imageView);
     }
 
     @SuppressLint("StaticFieldLeak")

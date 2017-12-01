@@ -14,13 +14,15 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ya yin
  * Created by orange on 2017/11/30.
  */
 
-public class ImageSaveUtils {
+public class ImageUtils {
     public static Bitmap getBitmap(Context context, Uri uri) {
         Bitmap bitmap = null;
         try {
@@ -38,12 +40,9 @@ public class ImageSaveUtils {
         if (!obj.exists()) {
             obj.mkdirs();
         }
-        int length = 0;
-        if (obj.isDirectory()) {
-            File[] listFiles = obj.listFiles();
-            length = listFiles.length;
-        }
-        String fileName = "anni_" + length + ".png";
+
+
+        String fileName = "anni_" + getFileIndex(obj) + ".png";
 
         File file = new File(fileParent, fileName);
         if (file.exists()) {
@@ -62,10 +61,7 @@ public class ImageSaveUtils {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
-        bitmap.recycle();
-        decodeSampledBitmap.recycle();
-
+        Log.e("TAG", "Finish");
     }
 
     private static InputStream getISFromBitmap(Bitmap bitmap) {
@@ -142,5 +138,27 @@ public class ImageSaveUtils {
         outStream.close();
         inStream.close();
         return outStream.toByteArray();
+    }
+
+
+    public static List<File> readImages(String path) {
+        List<File> list = new ArrayList<>();
+        File file = new File(path);
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (File child : files) {
+                list.add(child);
+            }
+        }
+        return list;
+    }
+
+    private synchronized static int getFileIndex(File obj) {
+        int length = 0;
+        if (obj.isDirectory()) {
+            File[] listFiles = obj.listFiles();
+            length = listFiles.length;
+        }
+        return (int) (Math.random() * 100);
     }
 }
