@@ -45,6 +45,7 @@ public class AnniPreviewActivity extends BaseActivity {
         banner.setDelayTime(2500);
         banner.start();
 
+
         banner.setOnBannerListener(new OnBannerListener() {
             @Override
             public void OnBannerClick(int position) {
