@@ -3,13 +3,13 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -65,7 +65,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private NumberProgressBar detailsAnniProgressbar;
     private boolean isFavoriteClick;
 
-    private final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0";
     private Banner placePhotoBanner;
     private GoogleApiClient googleApiClient;
     private TextView mLocationNameTV;
@@ -133,7 +132,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         String dateInformation = intent.getStringExtra("dateInformation");
 
-        //placePhotoBanner = findViewById(R.id.details_place_photo_banner);
+        placePhotoBanner = findViewById(R.id.details_place_photo_banner);
         // fadingTextView = findViewById(R.id.fadingTextView);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
@@ -147,7 +146,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         imageFlowLayout = findViewById(R.id.image_gallery);
 //        imageFlowLayout.setAdapter(new GridViewAdapter(this, null));
 
-        placeFlowLayout = findViewById(R.id.place_gallery);
+       // placeFlowLayout = findViewById(R.id.place_gallery);
 
         updateDateInformationUI(dateInformation);
 
@@ -204,9 +203,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             //update place flow layout
             List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversary.getId());
             if (!places.isEmpty()) {
-                for (File place : places) {
-                    updateGallery(placeFlowLayout, place);
-                }
+                // updateGallery(placeFlowLayout, place);
+                setBannerImageLoader(placePhotoBanner, places);
             } else {
                 //do network request to get relative place image and save it into local storage
                 GoogleLocation googleLocation = anniversary.getGoogleLocation();
@@ -413,18 +411,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
-//                List<Bitmap> list = new ArrayList<>();
-//
-//                if (!attributedPhotos.isEmpty()) {
-//                    for (AttributedPhoto photo : attributedPhotos) {
-//                        list.add(photo.bitmap);
-//                    }
-//                }
+                //download finish update place
+                List<File> places = ImageUtils.readImages(DetailsActivity.this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+                if (!places.isEmpty()) {
+                    // updateGallery(placeFlowLayout, place);
+                    setBannerImageLoader(placePhotoBanner, places);
+                }
             }
         }.execute(placeId, String.valueOf(anniversaryId));
     }
 
-    public void setBannerImageLoader(Banner banner, List<Bitmap> images) {
+    public void setBannerImageLoader(Banner banner, List<File> images) {
 
         if (images.isEmpty()) {
             detailsLocationRequestPhotoHint.setText("很遗憾,我们并没有找到有关次地点的相关图片.");
@@ -432,7 +429,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片.");
         }
 
-        banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
+       // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
 
         //设置图片加载器
         banner.setImageLoader(new GlideImageLoader());
@@ -456,13 +453,14 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         @Override
         protected List<PlacePhotoTask.AttributedPhoto> doInBackground(String... strings) {
-            if (strings.length != 1) {
+            if (strings.length != 2) {
                 return null;
             }
 
             //get place id
             final String placeId = strings[0];
             final String anniversaryId = strings[1];
+            Log.e("TAG", placeId);
 
             AttributedPhoto attributedPhoto = null;
 

@@ -64,11 +64,13 @@ public class ImageUtils {
             byte[] bytes = new byte[1024];
             if (resource instanceof InputStream) {
                 bytes = readStream((InputStream) resource);
+                opts.inSampleSize = 4;//设置缩放比例
             } else if (resource instanceof Bitmap) {
                 Bitmap bitmap = (Bitmap) resource;
                 ByteArrayOutputStream baosTmp = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.PNG, 100, baosTmp);
                 bytes = baosTmp.toByteArray();
+                opts.inSampleSize = 1;//设置缩放比例
             }
 
             opts.inJustDecodeBounds = true;
@@ -82,7 +84,7 @@ public class ImageUtils {
             Log.e("原图片高度：", picHeight + "");
             Log.e("原图片宽度：", picWidth + "");
 
-            opts.inSampleSize = 4;//设置缩放比例
+
 
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
 
@@ -152,7 +154,7 @@ public class ImageUtils {
                 fileParent = context.getFilesDir() + "/place/anniversary_" + anniversaryId;
 
                 break;
-            case "image":
+            case "picture":
                 fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
                 break;
         }

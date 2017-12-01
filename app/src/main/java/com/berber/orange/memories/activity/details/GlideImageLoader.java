@@ -18,10 +18,16 @@ import java.io.ByteArrayOutputStream;
 class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Log.e("TAG","display image in banner");
-        Bitmap bitmap = (Bitmap) path;
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
-        Glide.with(context).load(stream.toByteArray()).into(imageView);
+        Log.e("TAG", "display image in banner");
+
+        if (path instanceof Bitmap) {
+            Bitmap bitmap = (Bitmap) path;
+            ByteArrayOutputStream stream = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, stream);
+            Glide.with(context).load(stream.toByteArray()).into(imageView);
+        } else {
+            Glide.with(context).load(path).into(imageView);
+        }
+
     }
 }

@@ -538,22 +538,21 @@
                         android:textSize="14dp" />
 
 
-                    <!--<com.youth.banner.Banner-->
-                    <!--android:id="@+id/details_place_photo_banner"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="250dp" />-->
-
-                    <org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                        android:id="@+id/place_gallery"
+                    <com.youth.banner.Banner
+                        android:id="@+id/details_place_photo_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:paddingBottom="2dp"
-                        android:paddingLeft="5dp"
-                        android:paddingRight="5dp"
-                        android:paddingTop="2dp">
+                        android:layout_height="250dp" />
 
-                    </org.apmem.tools.layouts.FlowLayout>
+                    <!--<org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+                        <!--android:id="@+id/place_gallery"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:orientation="horizontal"-->
+                        <!--android:paddingBottom="2dp"-->
+                        <!--android:paddingLeft="5dp"-->
+                        <!--android:paddingRight="5dp"-->
+                        <!--android:paddingTop="2dp">-->
+                    <!--</org.apmem.tools.layouts.FlowLayout>-->
 
 
                 </LinearLayout>
