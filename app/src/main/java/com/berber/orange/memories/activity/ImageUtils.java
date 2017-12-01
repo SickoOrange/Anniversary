@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -22,28 +21,32 @@ import java.util.List;
  */
 
 public class ImageUtils {
-    public static InputStream getBitmapStream(Context context, Uri uri) throws FileNotFoundException {
-//        Bitmap bitmap = null;
-//        try {
-//            bitmap = MediaStore.Images.Media.getBitmap(context.getContentResolver().get, uri);
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
 
+    private static InputStream getBitmapStream(Context context, Uri uri) throws FileNotFoundException {
         return context.getContentResolver().openInputStream(uri);
 
     }
 
 
-    public static void saveBitmap(Context context, Uri uri, File file) throws IOException {
+    public static void saveBitmap(Context context, Object resource, File file) throws IOException {
         FileOutputStream out;
-        Bitmap decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file);
+        Bitmap decodeSampledBitmap = null;
+        if (resource instanceof Uri) {
+            Uri uri = (Uri) resource;
+            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file);
+        } else if (resource instanceof Bitmap) {
+            Bitmap sourceBitmap = (Bitmap) resource;
+            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file);
+        }
         try {
             out = new FileOutputStream(file);
-            if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
-                out.flush();
-                out.close();
+            if (decodeSampledBitmap != null) {
+                if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
+                    out.flush();
+                    out.close();
+                }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
             file.delete();
@@ -51,68 +54,22 @@ public class ImageUtils {
         Log.e("TAG", "Finish");
     }
 
-    private static InputStream getISFromBitmap(Bitmap bitmap) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
-
-        return new ByteArrayInputStream(baos.toByteArray());
-    }
-
-//    public static Bitmap decodeSampledBitmapFromUri(Context context, Uri imageUri, int reqWidth, int reqHeight) throws FileNotFoundException {
-//
-//        // Get input stream of the image
-//        final BitmapFactory.Options options = new BitmapFactory.Options();
-//        InputStream iStream = null;
-//        try {
-//            iStream = context.getContentResolver().openInputStream(imageUri);
-//        } catch (FileNotFoundException e) {
-//            e.printStackTrace();
-//        }
-//
-//        // First decode with inJustDecodeBounds=true to check dimensions
-//        options.inJustDecodeBounds = true;
-//        BitmapFactory.decodeStream(iStream, null, options);
-//
-//        // Calculate inSampleSize
-//        options.inSampleSize = calculateInSampleSize(options, reqWidth, reqHeight);
-//
-//        // Decode bitmap with inSampleSize set
-//        options.inJustDecodeBounds = false;
-//        return BitmapFactory.decodeStream(iStream, null, options);
-//    }
-
-//    private static int calculateInSampleSize(
-//            BitmapFactory.Options options, int reqWidth, int reqHeight) {
-//        // Raw height and width of image
-//        final int height = options.outHeight;
-//        final int width = options.outWidth;
-//        int inSampleSize = 1;
-//
-//        if (height > reqHeight || width > reqWidth) {
-//
-//            final int halfHeight = height / 2;
-//            final int halfWidth = width / 2;
-//
-//            // Calculate the largest inSampleSize value that is a power of 2 and keeps both
-//            // height and width larger than the requested height and width.
-//            while ((halfHeight / inSampleSize) >= reqHeight
-//                    && (halfWidth / inSampleSize) >= reqWidth) {
-//                inSampleSize *= 2;
-//            }
-//        }
-//
-//        return inSampleSize;
-//    }
-
-
-    private static Bitmap decodeSampledBitmap(InputStream ins, int quality, File file) {
+    private static Bitmap decodeSampledBitmap(Object resource, int quality, File file) {
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         Bitmap bm = null;
         ByteArrayOutputStream baos = null;
         try {
-            byte[] bytes = readStream(ins);
+            byte[] bytes = new byte[1024];
+            if (resource instanceof InputStream) {
+                bytes = readStream((InputStream) resource);
+            } else if (resource instanceof Bitmap) {
+                Bitmap bitmap = (Bitmap) resource;
+                ByteArrayOutputStream baosTmp = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, baosTmp);
+                bytes = baosTmp.toByteArray();
+            }
 
             opts.inJustDecodeBounds = true;
 
@@ -188,9 +145,17 @@ public class ImageUtils {
         return list;
     }
 
-    public static File getFile(Context context, Long anniversaryId) {
+    public static File getFile(Context context, Long anniversaryId, String flag) {
+        String fileParent = null;
+        switch (flag) {
+            case "place":
+                fileParent = context.getFilesDir() + "/place/anniversary_" + anniversaryId;
 
-        String fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
+                break;
+            case "image":
+                fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
+                break;
+        }
         File obj = new File(fileParent);
         if (!obj.exists()) {
             obj.mkdirs();

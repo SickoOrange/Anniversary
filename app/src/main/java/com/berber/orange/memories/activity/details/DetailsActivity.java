@@ -3,14 +3,12 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -44,7 +42,6 @@ import com.google.android.gms.location.places.Places;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.zhihu.matisse.Matisse;
-import com.zhihu.matisse.engine.impl.GlideEngine;
 
 
 import org.apmem.tools.layouts.FlowLayout;
@@ -341,7 +338,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     for (final Uri uri : mSelected) {
                         updateGallery(imageFlowLayout, uri);
                         //save to local
-                        final File file = ImageUtils.getFile(this, anniversaryId);
+                        final File file = ImageUtils.getFile(this, anniversaryId, "picture");
                         if (!file.exists()) {
                             try {
                                 file.createNewFile();
@@ -407,10 +404,28 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                         list.add(photo.bitmap);
                     }
                 }
-                for (Bitmap bitmap : list) {
-                    Log.e("TAG", "update place");
-                    updateGallery(placeFlowLayout, bitmap);
+
+                for (final Bitmap bitmap : list) {
+                    final File file = ImageUtils.getFile(DetailsActivity.this, anniversaryId, "place");
+                    if (!file.exists()) {
+                        file.exists();
+                    }
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                ImageUtils.saveBitmap(DetailsActivity.this, bitmap, file);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    }).start();
                 }
+//                for (Bitmap bitmap : list) {
+//                    Log.e("TAG", "update place");
+//                    updateGallery(placeFlowLayout, bitmap);
+//                }
 //                setBannerImageLoader(placePhotoBanner, list);
 
             }
