@@ -207,6 +207,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 for (File place : places) {
                     updateGallery(placeFlowLayout, place);
                 }
+            } else {
+                //do network request to get relative place image and save it into local storage
+                GoogleLocation googleLocation = anniversary.getGoogleLocation();
+                doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
             }
 
         }
@@ -232,12 +236,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
 
 
-        GoogleLocation googleLocation = anniversary.getGoogleLocation();
         //get place photo
         // TODO: 2017/12/1 change into button click event
         //doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
 
         //set location information about location
+        GoogleLocation googleLocation = anniversary.getGoogleLocation();
         mLocationNameTV.setText(googleLocation.getLocationName());
         mLocationAddressTV.setText(googleLocation.getLocationAddress());
         mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber());
@@ -395,7 +399,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         } else {
             Glide.with(this).load(image).into(imageView);
         }
-        imageFlowLayout.addView(imageView);
+
+        layout.addView(imageView);
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -408,33 +413,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
-                List<Bitmap> list = new ArrayList<>();
-
-                if (!attributedPhotos.isEmpty()) {
-                    for (AttributedPhoto photo : attributedPhotos) {
-                        list.add(photo.bitmap);
-                    }
-                }
-
-                for (final Bitmap bitmap : list) {
-                    final File file = ImageUtils.getFile(DetailsActivity.this, anniversaryId, "place");
-                    if (!file.exists()) {
-                        file.exists();
-                    }
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                ImageUtils.saveBitmap(DetailsActivity.this, bitmap, file);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
-
-                        }
-                    }).start();
-                }
+//                List<Bitmap> list = new ArrayList<>();
+//
+//                if (!attributedPhotos.isEmpty()) {
+//                    for (AttributedPhoto photo : attributedPhotos) {
+//                        list.add(photo.bitmap);
+//                    }
+//                }
             }
-        }.execute(placeId);
+        }.execute(placeId, String.valueOf(anniversaryId));
     }
 
     public void setBannerImageLoader(Banner banner, List<Bitmap> images) {
@@ -475,6 +462,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
             //get place id
             final String placeId = strings[0];
+            final String anniversaryId = strings[1];
 
             AttributedPhoto attributedPhoto = null;
 
@@ -491,11 +479,20 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                         Bitmap bitmap = placePhotoMetadata.getPhoto(mGoogleApiClient).await().getBitmap();
                         attributedPhoto = new AttributedPhoto(attributions, bitmap);
                         list.add(attributedPhoto);
+                        final File file = ImageUtils.getFile(mTarget.get().getApplicationContext(), Long.valueOf(anniversaryId), "place");
+                        if (!file.exists()) {
+                            file.exists();
+                        }
+                        try {
+                            ImageUtils.saveBitmap(mTarget.get().getApplicationContext(), bitmap, file);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+
                     }
                 }
                 photoMetadata.release();
             }
-
             return list;
         }
 
