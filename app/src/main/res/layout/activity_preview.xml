@@ -6,11 +6,11 @@
     <com.youth.banner.Banner
         android:id="@+id/anni_preview_banner"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"></com.youth.banner.Banner>
+        android:layout_height="match_parent" />
 
-    <com.zhihu.matisse.internal.ui.widget.CheckView
-        android:id="@+id/anni_preview_check_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+    <!--<com.zhihu.matisse.internal.ui.widget.CheckView-->
+        <!--android:id="@+id/anni_preview_check_view"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content" />-->
 
 </RelativeLayout>

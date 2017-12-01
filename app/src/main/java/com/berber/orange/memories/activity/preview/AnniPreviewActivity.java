@@ -2,6 +2,7 @@ package com.berber.orange.memories.activity.preview;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.GlideImageLoader;
@@ -9,8 +10,10 @@ import com.berber.orange.memories.activity.ImageUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
-import com.zhihu.matisse.internal.ui.widget.CheckView;
+import com.youth.banner.view.BannerViewPager;
+
 import java.io.File;
+import java.lang.reflect.Field;
 import java.util.List;
 
 public class AnniPreviewActivity extends BaseActivity {
@@ -31,10 +34,11 @@ public class AnniPreviewActivity extends BaseActivity {
     @Override
     protected void initView() {
         super.initView();
-        CheckView checkView = findViewById(R.id.anni_preview_check_view);
+        // CheckView checkView = findViewById(R.id.anni_preview_check_view);
         //checkView.setClickable(true);
 
         Banner banner = findViewById(R.id.anni_preview_banner);
+
 
         Intent intent = getIntent();
         if (intent != null) {
@@ -44,7 +48,19 @@ public class AnniPreviewActivity extends BaseActivity {
             if (!images.isEmpty()) {
                 setBannerImageLoader(banner, images);
             }
+            try {
+                Field declaredField = Banner.class.getDeclaredField("viewPager");
+                declaredField.setAccessible(true);
+                BannerViewPager viewPager = (BannerViewPager) declaredField.get(banner);
+                viewPager.setCurrentItem(currentId+1);
+            } catch (NoSuchFieldException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+
         }
+
 
         banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
