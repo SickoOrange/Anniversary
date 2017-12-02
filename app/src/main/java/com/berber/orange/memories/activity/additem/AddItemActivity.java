@@ -343,65 +343,69 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void writeInfo() {
-        //save all information into entity
-        Anniversary anniversary = new Anniversary();
+        ModelAnniversaryTypeDTO currentImageResource = getCurrentTypeResource();
+        if (currentImageResource == null) {
+            alertWarningDialog("请选择事件类型");
+            return;
+        }
 
-        // handle anniversary title
+        // ensure anniversary title not empty
         String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
         if (TextUtils.isEmpty(anniversaryTitle)) {
             alertWarningDialog("标题不能为空");
             return;
         }
-        anniversary.setTitle(anniversaryTitle);
-
-        //handle location
-        //anniversary.setLocation("China");
-
         //handle date
-        if (currentPickDate != null) {
-            anniversary.setDate(currentPickDate);
-        } else {
-            alertWarningDialog("你必须选择一个日期");
+        if (currentPickDate == null) {
+            alertWarningDialog("请选择一个日期");
             return;
         }
+            if (googleLocation == null) {
+                alertWarningDialog("请选择一个地点");
+                return;
+            }
 
-        //handle create Date
-        DateTime dateTime = DateTime.now(DateTimeZone.UTC);
-        anniversary.setCreateDate(dateTime.toDate());
+            //save all information into entity
+            Anniversary anniversary = new Anniversary();
 
-        //handle description
-        String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
-        anniversary.setDescription(anniversaryDescription);
+            //handle anniversary title
+            anniversary.setTitle(anniversaryTitle);
 
-        long anniversaryId = anniversaryDao.insert(anniversary);
+            //handle pick date
+            anniversary.setDate(currentPickDate);
 
-        //handle remind date
-        if (isNotificationEnable) {
-            //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
-            Date notificationDate = notificationTimeInCalendar.getTime();
-            Log.e("TAG", notificationDate.toString());
-            //setting a alarm
-            //setupAlarm(notificationDate);
-            NotificationSending notificationSending = new NotificationSending();
-            notificationSending.setSendingDate(notificationDate);
-            notificationSending.setRecipient("heylbly@gmail.com");
-            notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
+            //handle create Date
+            DateTime dateTime = DateTime.now(DateTimeZone.UTC);
+            anniversary.setCreateDate(dateTime.toDate());
 
-            notificationSending.setAnniversaryId(anniversaryId);
-            notificationSending.setAnniversary(anniversary);
-            long notificationSendingId = notificationSendingDao.insert(notificationSending);
-            anniversary.setNotificationSending(notificationSending);
-            anniversary.setNotificationSendingId(notificationSendingId);
-            anniversaryDao.update(anniversary);
-            isNotificationEnable = false;
-        }
+            //handle description
+            String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+            anniversary.setDescription(anniversaryDescription);
+
+            long anniversaryId = anniversaryDao.insert(anniversary);
+
+            //handle remind date
+            if (isNotificationEnable) {
+                //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
+                Date notificationDate = notificationTimeInCalendar.getTime();
+                Log.e("TAG", notificationDate.toString());
+                //setting a alarm
+                //setupAlarm(notificationDate);
+                NotificationSending notificationSending = new NotificationSending();
+                notificationSending.setSendingDate(notificationDate);
+                notificationSending.setRecipient("heylbly@gmail.com");
+                notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
+
+                notificationSending.setAnniversaryId(anniversaryId);
+                notificationSending.setAnniversary(anniversary);
+                long notificationSendingId = notificationSendingDao.insert(notificationSending);
+                anniversary.setNotificationSending(notificationSending);
+                anniversary.setNotificationSendingId(notificationSendingId);
+                anniversaryDao.update(anniversary);
+                isNotificationEnable = false;
+            }
 
 
-        RecyclerView currentChild = (RecyclerView) viewPager.getChildAt(viewPager.getCurrentItem());
-        AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) currentChild.getAdapter();
-        ModelAnniversaryTypeDTO currentImageResource = adapter.getCurrentImageResource();
-
-        if (currentImageResource != null) {
             //handle anniversaryType
             ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
             modelAnniversaryType.setName(currentImageResource.getName());
@@ -411,11 +415,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversary.setModelAnniversaryType(modelAnniversaryType);
             anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
             anniversaryDao.update(anniversary);
-        }
 
 
-        //handle location information
-        if (googleLocation != null) {
+            //handle location information
+
             googleLocation.setAnniversary(anniversary);
             googleLocation.setAnniversaryId(anniversaryId);
             long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
@@ -423,18 +426,23 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             anniversary.setGoogleLocationId(insertGoogleLocationId);
             anniversaryDao.update(anniversary);
             googleLocation = null;
-        }
 
-        //create folder to cache files
-        File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
-        if (!file.exists()) {
-           file.mkdirs();
-        }
+            //create folder to cache files
+            File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
+            if (!file.exists()) {
+                file.mkdirs();
+            }
 
-        Intent intent = new Intent();
-        intent.putExtra("obj", anniversary);
-        setResult(REQUEST_NEW_ITEM, intent);
-        finish();
+            Intent intent = new Intent();
+            intent.putExtra("obj", anniversary);
+            setResult(REQUEST_NEW_ITEM, intent);
+            finish();
+    }
+
+    private ModelAnniversaryTypeDTO getCurrentTypeResource() {
+        RecyclerView currentChild = (RecyclerView) viewPager.getChildAt(viewPager.getCurrentItem());
+        AnniversaryTypeRecyclerViewAdapter adapter = (AnniversaryTypeRecyclerViewAdapter) currentChild.getAdapter();
+        return adapter.getCurrentImageResource();
     }
 
 //    private void setupAlarm(Date notificationDate) {

@@ -128,7 +128,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 Intent intent = new Intent(mContext, DetailsActivity.class);
                 intent.putExtra("anniversaryId", selectedTarget.getId());
                 intent.putExtra("progressValue", holder.mCurrentAnniversaryProgress.getProgress());
-                intent.putExtra("dateInformation", holder.mLeftDayLabel.getText().toString());
+                //intent.putExtra("dateInformation", holder.mLeftDayLabel.getText().toString());
                 mContext.startActivity(intent);
             }
         });
@@ -242,7 +242,6 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     }
 
     public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
-        //mDateSets.add(anniversary);
         List<Anniversary> list = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversary.getId())).list();
         if (list.size() == 1) {
             mDateSets.add(list.get(0));

@@ -46,6 +46,9 @@ import com.zhihu.matisse.Matisse;
 
 
 import org.apmem.tools.layouts.FlowLayout;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -54,6 +57,7 @@ import java.lang.ref.WeakReference;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -90,9 +94,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
-    private FlowLayout placeFlowLayout;
-    //private TagFlowLayout imagesFlowLayout;
-    //private FadingTextView fadingTextView;
 
     @Override
     protected int setLayoutId() {
@@ -130,10 +131,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         int progressValue = intent.getIntExtra("progressValue", 0);
 
-        String dateInformation = intent.getStringExtra("dateInformation");
+        //String dateInformation = intent.getStringExtra("dateInformation");
 
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
-        // fadingTextView = findViewById(R.id.fadingTextView);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         detailsAnniProgressbar.setProgress(progressValue);
@@ -144,11 +144,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
 
         imageFlowLayout = findViewById(R.id.image_gallery);
-//        imageFlowLayout.setAdapter(new GridViewAdapter(this, null));
 
-        // placeFlowLayout = findViewById(R.id.place_gallery);
-
-        updateDateInformationUI(dateInformation);
 
         mNotificationHint = findViewById(R.id.details_notification_hint);
         mNotificationDateTV = findViewById(R.id.details_notification_date);
@@ -233,17 +229,35 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
 
+        Date anniversaryDate = anniversary.getDate();
+        DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
 
-        //get place photo
+        Date createDate = anniversary.getCreateDate();
+        DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
+
+        DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
+
+        int totalDays = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+        mTimeProgressLabel1.setText(String.valueOf(totalDays));
+
+        int restDays = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+
+        mTimeProgressLabel3.setText(restDays > 0 ? String.valueOf(restDays) : String.valueOf(0));
+
+        int pastDays = Days.daysBetween(anniversaryCreateDateWithJoda, currentDate).getDays();
+        mTimeProgressLabel2.setText(String.valueOf(pastDays));
+
+
         // TODO: 2017/12/1 change into button click event
         //doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
 
         //set location information about location
         GoogleLocation googleLocation = anniversary.getGoogleLocation();
-        mLocationNameTV.setText(googleLocation.getLocationName());
-        mLocationAddressTV.setText(googleLocation.getLocationAddress());
-        mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber());
-
+        if (googleLocation != null) {
+            mLocationNameTV.setText(googleLocation.getLocationName() == null ? "" : googleLocation.getLocationName());
+            mLocationAddressTV.setText(googleLocation.getLocationAddress() == null ? "" : googleLocation.getLocationAddress());
+            mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber() == null ? "" : googleLocation.getLocationPhoneNumber());
+        }
         // update notification ui
         NotificationSending notificationSending = anniversary.getNotificationSending();
         notificationButton.setChecked(notificationSending != null);
