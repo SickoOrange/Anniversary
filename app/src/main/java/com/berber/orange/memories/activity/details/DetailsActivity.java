@@ -94,6 +94,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
+    private TextView imageFlowHint;
 
     @Override
     protected int setLayoutId() {
@@ -137,6 +138,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         detailsAnniProgressbar.setProgress(progressValue);
+        imageFlowHint = findViewById(R.id.details_anni_image_flow_hint);
 
         mTimeProgressLabel1 = findViewById(R.id.time_progress_label1);
         mTimeProgressLabel2 = findViewById(R.id.time_progress_label2);
@@ -191,9 +193,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             //update image flow layout
             List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
             if (!images.isEmpty()) {
+                imageFlowHint.setText("你在过去为此事件添加了如下照片:");
                 for (File image : images) {
                     updateGallery(imageFlowLayout, image);
                 }
+            }else {
+                imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
             }
 
             //update place flow layout
@@ -238,14 +243,18 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
         int totalDays = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
-        mTimeProgressLabel1.setText(String.valueOf(totalDays));
+
+        String label1 = "距离时间创建总共的天数: " + String.valueOf(totalDays);
+        mTimeProgressLabel1.setText(label1);
 
         int restDays = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
-
-        mTimeProgressLabel3.setText(restDays > 0 ? String.valueOf(restDays) : String.valueOf(0));
+        String restDaysString = restDays > 0 ? String.valueOf(restDays) : String.valueOf(0);
+        String label3 = "距离时间开始还剩下天数: " + restDaysString;
+        mTimeProgressLabel3.setText(label3);
 
         int pastDays = Days.daysBetween(anniversaryCreateDateWithJoda, currentDate).getDays();
-        mTimeProgressLabel2.setText(String.valueOf(pastDays));
+        String label2 = "距离时间创建已过去天数: " + String.valueOf(pastDays);
+        mTimeProgressLabel2.setText(label2);
 
 
         // TODO: 2017/12/1 change into button click event

@@ -161,7 +161,7 @@
                     android:layout_height="wrap_content">
 
                     <TextView
-                        android:id="@+id/details_anni_mimi"
+                        android:id="@+id/details_anni_image_flow_hint"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="2dp"
@@ -170,7 +170,7 @@
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
-                        android:text="我们发现你并没有添加照片，是否尝试添加照片来记录你的回忆...."
+                        android:text="是否尝试添加照片来记录你的回忆...."
                         android:textColor="#a1a1a1"
                         android:textSize="12dp" />
 
@@ -179,7 +179,7 @@
                         android:id="@+id/image_gallery"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/details_anni_mimi"
+                        android:layout_below="@id/details_anni_image_flow_hint"
                         android:orientation="horizontal"
                         android:paddingBottom="2dp"
                         android:paddingLeft="5dp"
@@ -227,7 +227,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="当前进度"
-                        android:textColor="@color/black"
+                        android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
                     <com.daimajia.numberprogressbar.NumberProgressBar
