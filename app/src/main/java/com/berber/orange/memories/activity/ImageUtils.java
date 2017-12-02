@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
+import org.joda.time.DateTime;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -18,8 +20,9 @@ import java.util.List;
 /**
  * ya yin
  * Created by orange on 2017/11/30.
- *
+ * <p>
  * 图片处理类
+ *
  * @author Ricko
  */
 public class ImageUtils {
@@ -91,29 +94,6 @@ public class ImageUtils {
             opts.inJustDecodeBounds = false;
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
 
-//            int picWidth = opts.outWidth;// 得到图片宽度
-//            int picHeight = opts.outHeight;// 得到图片高度
-//            Log.e("原图片高度：", picHeight + "");
-//            Log.e("原图片宽度：", picWidth + "");
-//
-//
-//            bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
-//
-//            int picWidth2 = opts.outWidth;// 得到图片宽度
-//            int picHeight2 = opts.outHeight;// 得到图片高度
-//
-//            Log.e("压缩后的图片宽度：", picWidth2 + "");
-//            Log.e("压缩后的图片高度：", picHeight2 + "");
-//            Log.e("压缩后的图占用内存：", bm.getByteCount() + "");
-//
-//            // 开始质量压缩
-//            baos = new ByteArrayOutputStream();
-//            bm.compress(Bitmap.CompressFormat.PNG, quality, baos);
-//
-//            byte[] b = baos.toByteArray();
-//            bm = BitmapFactory.decodeByteArray(b, 0, b.length, opts);
-//
-//            Log.e("质量压缩后的占用内存：", bm.getByteCount() + "");
             return bm;
         } catch (Exception e) {
             e.printStackTrace();
@@ -142,6 +122,7 @@ public class ImageUtils {
         }
         outStream.close();
         inStream.close();
+
         return outStream.toByteArray();
     }
 

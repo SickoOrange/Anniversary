@@ -47,6 +47,9 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.gyf.barlibrary.ImmersionBar;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -352,7 +355,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversary.setTitle(anniversaryTitle);
 
         //handle location
-        anniversary.setLocation("China");
+        //anniversary.setLocation("China");
 
         //handle date
         if (currentPickDate != null) {
@@ -363,7 +366,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //handle create Date
-        anniversary.setCreateDate(new Date());
+        DateTime dateTime = DateTime.now(DateTimeZone.UTC);
+        anniversary.setCreateDate(dateTime.toDate());
 
         //handle description
         String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
@@ -424,8 +428,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         //create folder to cache files
         File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
         if (!file.exists()) {
-            if (file.mkdirs()) {
-            }
+           file.mkdirs();
         }
 
         Intent intent = new Intent();
@@ -540,19 +543,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                         int currentYear = datePicker.getYear();
                         int currentMonth = datePicker.getMonth();
                         int currentDay = datePicker.getDayOfMonth();
-                        Date mSelectedDate = new Date(currentYear - 1900, currentMonth, currentDay);
-
-//                        if (mSelectedDate.getTime() <= System.currentTimeMillis()) {
-//                            //Utils.showToast(AddItemActivity.this, "选择的日期不能小于当前的日期", 0);
-//                            //disable notification function
-//
-//                            anniversaryNotificationTextView.setText("当前日期不支持通知设置");
-//                            anniversaryNotificationTextView.setEnabled(false);
-//                        } else {
-//                            anniversaryNotificationTextView.setText("请设定通知频率以及通知类型");
-//                            anniversaryNotificationTextView.setEnabled(true);
-//                        }
-                        currentPickDate = mSelectedDate;
+                        DateTime dateTime = new DateTime(currentYear, currentMonth + 1, currentDay, 0, 0);
+                        currentPickDate = dateTime.withZone(DateTimeZone.UTC).toDate();
                         anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                     }
                 })

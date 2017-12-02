@@ -23,6 +23,12 @@ import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.Days;
+import org.joda.time.Hours;
+import org.joda.time.Minutes;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -69,15 +75,10 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         //set object date
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
-            //holder.mDate.setText(date.split(",")[0]);
-            // holder.mAnniversaryDate.setText(date + ", Germany Nurnberg");
             //set location
             GoogleLocation googleLocation = anniversary.getGoogleLocation();
-            if (googleLocation != null) {
-                holder.mAnniversaryDate.setText(date + ", " + googleLocation.getLocationName());
-            } else {
-                holder.mAnniversaryDate.setText(date);
-            }
+            if (googleLocation != null) date = date + " " + googleLocation.getLocationName();
+            holder.mAnniversaryDate.setText(date);
         }
 
         //set image type
@@ -95,7 +96,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
 
-        calculateDate(holder, anniversary);
+        //calculateDate(holder, anniversary);
+        calculateDateWithJoda(holder, anniversary);
 
 
         if (position == 0)
@@ -131,6 +133,41 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             }
         });
     }
+
+    private void calculateDateWithJoda(TimeLineViewHolder holder, Anniversary anniversary) {
+        Date anniversaryDate = anniversary.getDate();
+        DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
+
+        Date createDate = anniversary.getCreateDate();
+        DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
+
+        DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
+
+        int totalDays = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+
+        int restDays = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+
+        String restLabel;
+        if (restDays < 0) {
+            restLabel = "0/" + totalDays;
+        } else {
+            restLabel = restDays + "/" + totalDays;
+        }
+        holder.mLeftDayLabel.setText(restLabel);
+
+        //calculate progress
+
+        int totalMinutes = Minutes.minutesBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getMinutes();
+        int restMinutes = Minutes.minutesBetween(currentDate, anniversaryDateWithJoda).getMinutes();
+
+        if (restMinutes <= 0) {
+            holder.mCurrentAnniversaryProgress.setProgress(100);
+        } else {
+            int progress = (int) ((totalMinutes - restMinutes) * 100.0 / totalMinutes);
+            holder.mCurrentAnniversaryProgress.setProgress(progress);
+        }
+    }
+
 
     private void calculateDate(TimeLineViewHolder holder, Anniversary anniversary) {
         //calculate left date progress

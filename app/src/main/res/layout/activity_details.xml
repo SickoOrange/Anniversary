@@ -79,7 +79,7 @@
                         android:layout_toRightOf="@id/details_anni_type"
                         android:padding="2dp"
                         android:text="今天不吃鸡"
-                        android:textColor="@color/black"
+                        android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
                     <TextView
@@ -109,7 +109,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="以前我是这么认为的,作为一个宅鸡送的快递员,你成功地干掉了所有的顾客 独享了外卖的鸡肉晚餐 岂不是美滋滋"
-                        android:textColor="@color/black"
+                        android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
                     <RelativeLayout
@@ -357,7 +357,8 @@
                 android:id="@+id/details_cardview_4"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp">
+                android:layout_margin="5dp"
+                android:visibility="gone">
 
 
                 <LinearLayout
@@ -367,7 +368,8 @@
 
                     <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:visibility="gone">
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -534,7 +536,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="我们正在努力为你在这个地点寻找一些有趣的图片..."
-                        android:textColor="@color/black"
+                        android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
 
@@ -544,14 +546,14 @@
                         android:layout_height="250dp" />
 
                     <!--<org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-                        <!--android:id="@+id/place_gallery"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="wrap_content"-->
-                        <!--android:orientation="horizontal"-->
-                        <!--android:paddingBottom="2dp"-->
-                        <!--android:paddingLeft="5dp"-->
-                        <!--android:paddingRight="5dp"-->
-                        <!--android:paddingTop="2dp">-->
+                    <!--android:id="@+id/place_gallery"-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="horizontal"-->
+                    <!--android:paddingBottom="2dp"-->
+                    <!--android:paddingLeft="5dp"-->
+                    <!--android:paddingRight="5dp"-->
+                    <!--android:paddingTop="2dp">-->
                     <!--</org.apmem.tools.layouts.FlowLayout>-->
 
 

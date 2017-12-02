@@ -226,7 +226,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         String description = anniversary.getDescription();
         if (TextUtils.isEmpty(description)) {
-            mAnniversaryDescriptionTV.setText("你暂时还没有对此次事件添加对应的描述");
+            mAnniversaryDescriptionTV.setText("暂无描述...");
         } else {
             mAnniversaryDescriptionTV.setText(description);
         }
