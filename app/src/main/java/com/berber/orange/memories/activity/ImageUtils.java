@@ -33,10 +33,12 @@ public class ImageUtils {
         Bitmap decodeSampledBitmap = null;
         if (resource instanceof Uri) {
             Uri uri = (Uri) resource;
-            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file);
+            File bitmapFile = new File(uri.toString());
+            // decodeSampledBitmap = BitmapUtils.getSmallBitmap(bitmapFile.getAbsolutePath(), 300, 300);
+            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file,300,300);
         } else if (resource instanceof Bitmap) {
             Bitmap sourceBitmap = (Bitmap) resource;
-            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file);
+            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file,300,300);
         }
         try {
             out = new FileOutputStream(file);
@@ -55,7 +57,7 @@ public class ImageUtils {
     }
 
 
-    private static Bitmap decodeSampledBitmap(Object resource, int quality, File file) {
+    private static Bitmap decodeSampledBitmap(Object resource, int quality, File file, int reqHeight, int reqWidth) {
 
         BitmapFactory.Options opts = new BitmapFactory.Options();
         Bitmap bm = null;
@@ -64,7 +66,7 @@ public class ImageUtils {
             byte[] bytes = new byte[1024];
             if (resource instanceof InputStream) {
                 bytes = readStream((InputStream) resource);
-                opts.inSampleSize = 2;//设置缩放比例
+                opts.inSampleSize = 1;//设置缩放比例
             } else if (resource instanceof Bitmap) {
                 Bitmap bitmap = (Bitmap) resource;
                 ByteArrayOutputStream baosTmp = new ByteArrayOutputStream();
@@ -77,32 +79,39 @@ public class ImageUtils {
 
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
 
+            int height = opts.outHeight;
+            int width = opts.outWidth;
+            if (height > reqHeight || width > reqWidth) {
+                final int heightRatio = Math.round((float) height / (float) reqHeight);
+                final int widthRatio = Math.round((float) width / (float) reqWidth);
+                opts.inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+            }
             opts.inJustDecodeBounds = false;
-
-            int picWidth = opts.outWidth;// 得到图片宽度
-            int picHeight = opts.outHeight;// 得到图片高度
-            Log.e("原图片高度：", picHeight + "");
-            Log.e("原图片宽度：", picWidth + "");
-
-
-
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
 
-            int picWidth2 = opts.outWidth;// 得到图片宽度
-            int picHeight2 = opts.outHeight;// 得到图片高度
-
-            Log.e("压缩后的图片宽度：", picWidth2 + "");
-            Log.e("压缩后的图片高度：", picHeight2 + "");
-            Log.e("压缩后的图占用内存：", bm.getByteCount() + "");
-
-            // 开始质量压缩
-            baos = new ByteArrayOutputStream();
-            bm.compress(Bitmap.CompressFormat.PNG, quality, baos);
-
-            byte[] b = baos.toByteArray();
-            bm = BitmapFactory.decodeByteArray(b, 0, b.length, opts);
-
-            Log.e("质量压缩后的占用内存：", bm.getByteCount() + "");
+//            int picWidth = opts.outWidth;// 得到图片宽度
+//            int picHeight = opts.outHeight;// 得到图片高度
+//            Log.e("原图片高度：", picHeight + "");
+//            Log.e("原图片宽度：", picWidth + "");
+//
+//
+//            bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);
+//
+//            int picWidth2 = opts.outWidth;// 得到图片宽度
+//            int picHeight2 = opts.outHeight;// 得到图片高度
+//
+//            Log.e("压缩后的图片宽度：", picWidth2 + "");
+//            Log.e("压缩后的图片高度：", picHeight2 + "");
+//            Log.e("压缩后的图占用内存：", bm.getByteCount() + "");
+//
+//            // 开始质量压缩
+//            baos = new ByteArrayOutputStream();
+//            bm.compress(Bitmap.CompressFormat.PNG, quality, baos);
+//
+//            byte[] b = baos.toByteArray();
+//            bm = BitmapFactory.decodeByteArray(b, 0, b.length, opts);
+//
+//            Log.e("质量压缩后的占用内存：", bm.getByteCount() + "");
             return bm;
         } catch (Exception e) {
             e.printStackTrace();
