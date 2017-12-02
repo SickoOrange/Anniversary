@@ -18,8 +18,10 @@ import java.util.List;
 /**
  * ya yin
  * Created by orange on 2017/11/30.
+ *
+ * 图片处理类
+ * @author Ricko
  */
-
 public class ImageUtils {
 
     private static InputStream getBitmapStream(Context context, Uri uri) throws FileNotFoundException {
@@ -35,10 +37,10 @@ public class ImageUtils {
             Uri uri = (Uri) resource;
             File bitmapFile = new File(uri.toString());
             // decodeSampledBitmap = BitmapUtils.getSmallBitmap(bitmapFile.getAbsolutePath(), 300, 300);
-            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file,300,300);
+            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file, 400, 400);
         } else if (resource instanceof Bitmap) {
             Bitmap sourceBitmap = (Bitmap) resource;
-            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file,300,300);
+            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file, 400, 400);
         }
         try {
             out = new FileOutputStream(file);
