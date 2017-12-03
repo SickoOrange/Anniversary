@@ -6,6 +6,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -166,7 +167,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
         String totalDayString;
-        String restDayString;
+        String restDayString = null;
         String pastDayString;
 
         int progress = 0;
@@ -183,7 +184,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
             totalDayString = String.valueOf(totalDay);
             int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
-            restDayString = String.valueOf(restDay);
+
 
             if (restDay > 0) {
                 pastDayString = String.valueOf(totalDay - restDay);
@@ -193,10 +194,19 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 } else {
                     holder.mAnniversaryStatusLabel.setText(" ");
                 }
+                restDayString = String.valueOf(restDay);
+            } else if (restDay == 0) {
+                int restHour = Hours.hoursBetween(currentDate, anniversaryDateWithJoda).getHours();
+                Log.e("TAG", "REST HOUR " + restHour);
+                if (restHour > 0 && restHour < 24) {
+                    //less than on day
+                    restDayString = "less than 1 day ";
+                }
             } else {
                 pastDayString = String.valueOf(restDay * -1);
                 progress = 100;
                 holder.mAnniversaryStatusLabel.setText("End");
+                restDayString = "0";
             }
         }
 

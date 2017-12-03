@@ -262,9 +262,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             pastDayString = String.valueOf(days);
             progress = 100;
         } else {
-            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays()+1;
             totalDayString = "距离事件总共的天数: " + String.valueOf(totalDay);
-            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays()+1;
             restDayString = String.valueOf(restDay);
 
             if (restDay > 0) {
