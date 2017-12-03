@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="1"
+            android:maxLines="2"
             android:padding="3dp"
             android:text="暂无描述..."
             android:textColor="#a1a1a1"

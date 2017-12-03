@@ -174,16 +174,27 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
         if (anniversaryDateWithJoda.isBeforeNow()) {
             //纪念日时间比当前时间要早
-            totalDayString = "0";
-            restDayString = "0";
+            totalDayString = "0 day";
+            restDayString = "0 day";
             int days = Days.daysBetween(anniversaryDateWithJoda, currentDate).getDays();
             pastDayString = String.valueOf(days);
             progress = 100;
             holder.mAnniversaryStatusLabel.setText("End");
         } else {
+            int totalHour = Hours.hoursBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getHours();
+            int restHour = Hours.hoursBetween(currentDate, anniversaryDateWithJoda).getHours();
+
             int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
-            totalDayString = String.valueOf(totalDay);
             int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+
+
+            if (totalDay > 1) {
+                totalDayString = String.valueOf(totalDay + 1) + " days";
+            } else if (totalDay == 1) {
+                totalDayString = String.valueOf(totalDay + 1) + " day";
+            } else if (totalDay == 0) {
+                totalDayString = String.valueOf(totalDay + 1) + " day";
+            }
 
 
             if (restDay > 0) {
@@ -194,19 +205,23 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 } else {
                     holder.mAnniversaryStatusLabel.setText(" ");
                 }
-                restDayString = String.valueOf(restDay);
+                restDayString = String.valueOf(restDay) + " day";
             } else if (restDay == 0) {
-                int restHour = Hours.hoursBetween(currentDate, anniversaryDateWithJoda).getHours();
+
                 Log.e("TAG", "REST HOUR " + restHour);
                 if (restHour > 0 && restHour < 24) {
                     //less than on day
                     restDayString = "less than 1 day ";
+                    progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
+                } else if (restHour == 0) {
+                    restDayString = "0 day";
+
                 }
             } else {
                 pastDayString = String.valueOf(restDay * -1);
                 progress = 100;
                 holder.mAnniversaryStatusLabel.setText("End");
-                restDayString = "0";
+                restDayString = "0 day";
             }
         }
 
