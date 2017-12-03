@@ -10,6 +10,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.TextureView;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -19,8 +20,8 @@ import android.widget.TextView;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.GlideImageLoader;
 import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
@@ -178,8 +179,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         alphaAnimationIcon.setDuration(500);
 
         ImageView detailsImageContent = findViewById(R.id.details_image_content);
-        Glide.with(this).load(R.drawable.baby2).into(detailsImageContent);
-
+//        String uriString = (String) SharedPreferencesHelper.getInstance().getData("preview_picture", "");
+//        if (!TextUtils.isEmpty(uriString)) {
+//            Glide.with(this).load(Uri.parse(uriString)).into(detailsImageContent);
+//        } else {
+//            Glide.with(this).load("http://2.bp.blogspot.com/-SUUnHOeFZO4/ULaBZT2tCVI/AAAAAAAAAgA/khtFfcumLJE/s1600/%E8%87%BA%E5%8C%97%E6%84%9B%E6%83%85%E7%B6%B2+%E6%88%91%E7%9F%A5%E9%81%93%E4%BD%A0%E5%9C%A8%E7%AD%89%E6%88%91.jpg").into(detailsImageContent);
+//        }
+        Glide.with(this).load("https://m.diyijuzi.com/uploadfile/2017/1020/1508500490761.jpg").into(detailsImageContent);
 
         if (anniversaryList.size() == 1) {
             anniversary = anniversaryList.get(0);
@@ -296,9 +302,26 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         //set location information about location
         GoogleLocation googleLocation = anniversary.getGoogleLocation();
         if (googleLocation != null) {
-            mLocationNameTV.setText(googleLocation.getLocationName() == null ? "" : googleLocation.getLocationName());
-            mLocationAddressTV.setText(googleLocation.getLocationAddress() == null ? "" : googleLocation.getLocationAddress());
-            mLocationNumberTV.setText(googleLocation.getLocationPhoneNumber() == null ? "" : googleLocation.getLocationPhoneNumber());
+            String locationName = googleLocation.getLocationName();
+            if (locationName == null || TextUtils.isEmpty(locationName)) {
+                mLocationNameTV.setVisibility(View.GONE);
+            } else {
+                mLocationNameTV.setText(locationName);
+            }
+
+            String locationAddress = googleLocation.getLocationAddress();
+            if (locationAddress == null || TextUtils.isEmpty(locationAddress)) {
+                mLocationAddressTV.setVisibility(View.GONE);
+            } else {
+                mLocationAddressTV.setText(locationAddress);
+            }
+
+            String locationPhoneNumber = googleLocation.getLocationPhoneNumber();
+            if (locationPhoneNumber == null || TextUtils.isEmpty(locationPhoneNumber)) {
+                mLocationNumberTV.setVisibility(View.GONE);
+            } else {
+                mLocationNumberTV.setText(locationPhoneNumber);
+            }
         }
         // update notification ui
         NotificationSending notificationSending = anniversary.getNotificationSending();
@@ -468,10 +491,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
                 //download finish update place
                 List<File> places = ImageUtils.readImages(DetailsActivity.this.getFilesDir() + "/place/anniversary_" + anniversaryId);
-                if (!places.isEmpty()) {
-                    // updateGallery(placeFlowLayout, place);
-                    setBannerImageLoader(placePhotoBanner, places);
-                }
+                //if (!places.isEmpty()) {
+                // updateGallery(placeFlowLayout, place);
+                setBannerImageLoader(placePhotoBanner, places);
+                //}
             }
         }.execute(placeId, String.valueOf(anniversaryId));
     }
@@ -487,7 +510,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
 
         //设置图片加载器
-        banner.setImageLoader(new GlideImageLoader());
+        banner.setImageLoader(new DetailsGlideImageLoader());
         //设置图片集合
         banner.setImages(images);
         //banner设置方法全部调用完毕时最后调用

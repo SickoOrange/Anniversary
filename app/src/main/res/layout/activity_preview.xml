@@ -9,8 +9,19 @@
         android:layout_height="match_parent" />
 
     <!--<com.zhihu.matisse.internal.ui.widget.CheckView-->
-        <!--android:id="@+id/anni_preview_check_view"-->
+    <!--android:id="@+id/anni_preview_check_view"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content" />-->
+
+    <!--<Button-->
+        <!--android:id="@+id/preview_btn"-->
         <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content" />-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_alignParentBottom="true"-->
+        <!--android:layout_marginLeft="20dp"-->
+        <!--android:background="@null"-->
+        <!--android:text="设为封面"-->
+        <!--android:textColor="#a1a1a1" />-->
+
 
 </RelativeLayout>

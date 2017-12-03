@@ -17,6 +17,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -28,6 +29,7 @@ import android.widget.Toast;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.NotificationService;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.GifSizeFilter;
 import com.berber.orange.memories.activity.MatisseImagePicker;
@@ -46,6 +48,7 @@ import com.zhihu.matisse.MimeType;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -145,10 +148,17 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         user_name.setText("Hello, dear " + displayName);
 
 
-
         mLandingPageImageView = findViewById(R.id.image_content);
-        //"https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg"
-        Glide.with(this).load(R.drawable.baby1).into(mLandingPageImageView);
+
+        String main_picture = (String) SharedPreferencesHelper.getInstance().getData("main_picture", "");
+        if (TextUtils.isEmpty(main_picture)) {
+            Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
+        } else {
+            Glide.with(this).load(Uri.parse(main_picture)).into(mLandingPageImageView);
+
+        }
+
+        //save uri into shared preference
         initRecycler();
 
         // TODO: 2017/12/1 service disable
@@ -254,17 +264,9 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_anniversary) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_cover) {
 
         }
 
@@ -293,25 +295,13 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     Glide.with(this).load(mSelected.get(0)).into(mLandingPageImageView);
+                    //save uri into shared preference
+                    SharedPreferencesHelper.getInstance().saveData("main_picture", mSelected.get(0).toString());
                 }
                 Log.d("Matisse", "mSelected: " + mSelected);
                 break;
 
         }
-    }
-
-
-    private void openMatisseDialog() {
-        Matisse.from(CoordinatorActivity.this)
-                .choose(MimeType.of(MimeType.JPEG, MimeType.PNG))
-                .countable(true)
-                .maxSelectable(9)
-                .addFilter(new GifSizeFilter(320, 320, 5 * Filter.K * Filter.K))
-                .gridExpectedSize(getResources().getDimensionPixelSize(R.dimen.grid_expected_size))
-                .restrictOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-                .thumbnailScale(0.85f)
-                .imageEngine(new GlideEngine())
-                .forResult(COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
     }
 
 

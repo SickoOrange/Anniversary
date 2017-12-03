@@ -2,10 +2,13 @@ package com.berber.orange.memories.activity.preview;
 
 import android.content.Intent;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.GlideImageLoader;
 import com.berber.orange.memories.activity.ImageUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -18,6 +21,10 @@ import java.util.List;
 
 public class AnniPreviewActivity extends BaseActivity {
 
+
+    private BannerViewPager viewPager;
+    private List<File> images;
+    private int selectedIndex = -1;
 
     @Override
     protected int setLayoutId() {
@@ -44,15 +51,15 @@ public class AnniPreviewActivity extends BaseActivity {
         if (intent != null) {
             long anniversaryId = intent.getLongExtra("anniversaryId", -1);
             int currentId = intent.getIntExtra("currentId", -1);
-            List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversaryId);
+            images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversaryId);
             if (!images.isEmpty()) {
                 setBannerImageLoader(banner, images);
             }
             try {
                 Field declaredField = Banner.class.getDeclaredField("viewPager");
                 declaredField.setAccessible(true);
-                BannerViewPager viewPager = (BannerViewPager) declaredField.get(banner);
-                viewPager.setCurrentItem(currentId+1);
+                viewPager = (BannerViewPager) declaredField.get(banner);
+                viewPager.setCurrentItem(currentId + 1);
             } catch (NoSuchFieldException e) {
                 e.printStackTrace();
             } catch (IllegalAccessException e) {
@@ -61,23 +68,34 @@ public class AnniPreviewActivity extends BaseActivity {
 
         }
 
-
-        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
             }
 
             @Override
             public void onPageSelected(int position) {
-                System.out.println("onPageSelected");
+                selectedIndex = position;
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                System.out.println(state);
-                System.out.println("onPageScrollStateChanged");
+
             }
         });
+
+//        Button btn = findViewById(R.id.preview_btn);
+//        btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if (selectedIndex != -1) {
+//                    File file = images.get(selectedIndex);
+//                    SharedPreferencesHelper.getInstance().saveData("details_picture", file.toURI().toString());
+//                }
+//                Toast.makeText(AnniPreviewActivity.this, "设置成功", Toast.LENGTH_SHORT).show();
+//            }
+//        });
 
     }
 

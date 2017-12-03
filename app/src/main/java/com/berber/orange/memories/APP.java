@@ -21,6 +21,8 @@ public class APP extends Application {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(this, "anniversary-db", null);
         Database db = helper.getWritableDb();
         daoSession = new DaoMaster(db).newSession();
+
+        SharedPreferencesHelper.init(this);
     }
 
     public DaoSession getDaoSession() {

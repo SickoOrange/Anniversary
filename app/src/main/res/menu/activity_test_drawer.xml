@@ -3,21 +3,22 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_anniversary"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Annivesary" />
+            android:checked="true"
+            android:title="Special Day" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_cover"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Todo List" />
-        <item
-            android:id="@+id/nav_slideshow"
-            android:icon="@drawable/ic_menu_slideshow"
-            android:title="Favorite" />
-        <item
-            android:id="@+id/nav_manage"
-            android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Set Cover " />
+        <!--<item-->
+            <!--android:id="@+id/nav_slideshow"-->
+            <!--android:icon="@drawable/ic_menu_slideshow"-->
+            <!--android:title="Favorite" />-->
+        <!--<item-->
+            <!--android:id="@+id/nav_manage"-->
+            <!--android:icon="@drawable/ic_menu_manage"-->
+            <!--android:title="Tools" />-->
     </group>
 
     <item android:title="Communicate">

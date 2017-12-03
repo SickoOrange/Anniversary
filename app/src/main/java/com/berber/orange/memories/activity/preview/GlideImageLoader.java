@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.preview;
 
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -18,9 +18,6 @@ import java.io.ByteArrayOutputStream;
 public class GlideImageLoader extends ImageLoader {
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Log.e("TAG", "display image in banner");
-
-
        imageView.setScaleType(ImageView.ScaleType.FIT_CENTER);
         if (path instanceof Bitmap) {
             Bitmap bitmap = (Bitmap) path;
