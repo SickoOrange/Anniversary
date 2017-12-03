@@ -49,6 +49,7 @@ import org.apmem.tools.layouts.FlowLayout;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
+import org.joda.time.Hours;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -97,6 +98,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private TextView imageFlowHint;
     private Anniversary anniversary;
     private AnniversaryDao anniversaryDao;
+    private Intent intent;
 
     @Override
     protected int setLayoutId() {
@@ -118,7 +120,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-        Intent intent = getIntent();
+        intent = getIntent();
         if (intent == null) {
             return;
         }
@@ -251,8 +253,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         String totalDayString;
         String restDayString;
-        String pastDayString;
-        int progress = 0;
+        String pastDayString = "0";
 
         if (anniversaryDateWithJoda.isBeforeNow()) {
             //纪念日时间比当前时间要早
@@ -260,21 +261,22 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             restDayString = "0";
             int days = Days.daysBetween(anniversaryDateWithJoda, currentDate).getDays();
             pastDayString = String.valueOf(days);
-            progress = 100;
         } else {
-            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays()+1;
+            int totalHour = Hours.hoursBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getHours();
+            int restHour = Hours.hoursBetween(currentDate, anniversaryDateWithJoda).getHours();
+
+            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
             totalDayString = "距离事件总共的天数: " + String.valueOf(totalDay);
-            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays()+1;
-            restDayString = String.valueOf(restDay);
+            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
 
-            if (restDay > 0) {
-                pastDayString = String.valueOf(totalDay - restDay);
-                progress = (int) ((totalDay - restDay) * 100.0 / totalDay);
+
+            if (restDay >= 1) {
+                restDayString = String.valueOf(restDay);
+            } else if (restDay == 0 && restHour > 0 && restHour < 24) {
+                restDayString = "less than 1 day ";
             } else {
-                pastDayString = String.valueOf(restDay * -1);
-                progress = 100;
+                restDayString = "0 day";
             }
-
         }
 
         mTimeProgressLabel1.setText(totalDayString);
@@ -285,7 +287,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         String label2 = "距离事件开始已过去天数: " + pastDayString;
         mTimeProgressLabel2.setText(label2);
 
-        detailsAnniProgressbar.setProgress(progress);
+        detailsAnniProgressbar.setProgress(intent.getIntExtra("progressValue", 0));
 
 
         // TODO: 2017/12/1 change into button click event

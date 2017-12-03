@@ -189,34 +189,30 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
 
             if (totalDay > 1) {
-                totalDayString = String.valueOf(totalDay + 1) + " days";
-            } else if (totalDay == 1) {
-                totalDayString = String.valueOf(totalDay + 1) + " day";
-            } else if (totalDay == 0) {
-                totalDayString = String.valueOf(totalDay + 1) + " day";
+                totalDayString = String.valueOf(totalDay) + " days";
+            } else {
+                totalDayString = String.valueOf(totalDay) + " day";
             }
 
 
-            if (restDay > 0) {
+            if (restDay >= 1) {
                 pastDayString = String.valueOf(totalDay - restDay);
-                progress = (int) ((totalDay - restDay) * 100.0 / totalDay);
+                progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
                 if (restDay < 3) {
                     holder.mAnniversaryStatusLabel.setText("Up Coming");
                 } else {
                     holder.mAnniversaryStatusLabel.setText(" ");
                 }
-                restDayString = String.valueOf(restDay) + " day";
-            } else if (restDay == 0) {
-
-                Log.e("TAG", "REST HOUR " + restHour);
-                if (restHour > 0 && restHour < 24) {
-                    //less than on day
-                    restDayString = "less than 1 day ";
-                    progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
-                } else if (restHour == 0) {
-                    restDayString = "0 day";
-
+                if (restDay == 1) {
+                    restDayString = String.valueOf(restDay) + " day";
+                } else {
+                    restDayString = String.valueOf(restDay) + " days";
                 }
+
+            } else if (restDay == 0 && restHour > 0 && restHour < 24) {
+                progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
+                restDayString = "less than 1 day ";
+
             } else {
                 pastDayString = String.valueOf(restDay * -1);
                 progress = 100;
@@ -226,7 +222,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
 
-        String label = restDayString + "/" + totalDayString;
+        String label = restDayString + " /" + totalDayString;
         holder.mLeftDayLabel.setText(label);
         holder.mCurrentAnniversaryProgress.setProgress(progress);
     }
