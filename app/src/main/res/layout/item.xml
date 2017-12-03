@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="90dp"
+    android:layout_height="130dp"
     android:background="@drawable/item_ripple"
     tools:ignore="MissingPrefix">
 
@@ -27,7 +27,6 @@
         android:layout_alignLeft="@+id/anniversary_type_image_view"
         android:layout_alignStart="@+id/anniversary_type_image_view"
         android:layout_below="@+id/anniversary_type_image_view"
-        android:background="@drawable/dot_text_view"
         android:gravity="center"
         android:padding="2dp"
         android:text="up coming"
@@ -51,23 +50,18 @@
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:paddingTop="37dp"
+        android:paddingTop="60dp"
         app:beginLine="#E0E0E0"
         app:endLine="#E0E0E0"
         app:lineSize="2dp"
         app:marker="@drawable/ic_timeline_marker"
         app:markerSize="15dp" />
 
-
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_toEndOf="@+id/item_time_line_view"
         android:layout_toRightOf="@+id/item_time_line_view"
-        android:background="@null"
-        android:padding="5dp">
-
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/anniversary_title_label"
@@ -81,29 +75,76 @@
             android:textColor="@color/black"
             android:textSize="14sp" />
 
+        <TextView
+            android:id="@+id/anniversary_description_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:padding="3dp"
+            android:text="暂无描述..."
+            android:textColor="#a1a1a1"
+            android:textSize="10sp" />
+
         <RelativeLayout
-            android:id="@+id/item_ll"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/anniversary_title_label"
             android:layout_marginTop="3dp"
-            android:orientation="horizontal"
             android:padding="1dp">
 
             <TextView
                 android:id="@+id/anniversary_date_label"
                 android:layout_width="250dp"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
                 android:drawablePadding="5dp"
                 android:ellipsize="end"
-                android:layout_centerVertical="true"
+                android:gravity="center_vertical"
                 android:maxLines="1"
-                android:padding="2dp"
-                android:text="11.11.2017, Germany Nurnberg"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="11.11.2017"
                 android:textColor="#A1A1A1"
                 android:textSize="10dp" />
 
+            <TextView
+                android:id="@+id/anniversary_left_day"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginTop="5dp"
+                android:padding="3dp"
+                android:text="10/20"
+                android:textColor="@color/greenlight"
+                android:textSize="10sp" />
+
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:padding="1dp">
+
+            <TextView
+                android:id="@+id/anniversary_place_label"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@drawable/ic_place_black_18dp"
+                android:drawablePadding="5dp"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLines="1"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
+                android:text="Germany Nurnberg"
+                android:textColor="#A1A1A1"
+                android:textSize="10dp" />
 
             <ImageView
                 android:id="@+id/anniversary_notification_icon"
@@ -112,43 +153,24 @@
                 android:layout_alignParentRight="true"
                 android:drawablePadding="5dp"
                 android:padding="3dp"
-
                 android:src="@drawable/ic_notifications_off_black_18px" />
-
         </RelativeLayout>
 
-
-        <TextView
-            android:id="@+id/anniversary_left_day"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/item_ll"
-            android:layout_marginTop="5dp"
-            android:text="1100/8501"
-            android:textColor="@color/greenlight"
-            android:textSize="10sp" />
-
-        <LinearLayout
-            android:id="@+id/ll_progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/item_ll"
-            android:layout_toLeftOf="@+id/anniversary_left_day"
-            android:orientation="horizontal">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
             <com.daimajia.numberprogressbar.NumberProgressBar
                 android:id="@+id/anniversary_progress_bar"
                 style="@style/NumberProgressBar_Default"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/item_ll"
                 android:layout_marginTop="5dp"
-                android:padding="3dp" />
-        </LinearLayout>
+                android:padding="3dp"
+                app:progress_current="100" />
+        </RelativeLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
 
 </RelativeLayout>

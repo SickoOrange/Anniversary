@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.util.Log;
 
-import org.joda.time.DateTime;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -38,17 +37,17 @@ public class ImageUtils {
         Bitmap decodeSampledBitmap = null;
         if (resource instanceof Uri) {
             Uri uri = (Uri) resource;
-            File bitmapFile = new File(uri.toString());
+            // File bitmapFile = new File(uri.toString());
             // decodeSampledBitmap = BitmapUtils.getSmallBitmap(bitmapFile.getAbsolutePath(), 300, 300);
-            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file, 400, 400);
+            decodeSampledBitmap = decodeSampledBitmap(getBitmapStream(context, uri), 100, file, 1080, 720);
         } else if (resource instanceof Bitmap) {
             Bitmap sourceBitmap = (Bitmap) resource;
-            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file, 400, 400);
+            decodeSampledBitmap = decodeSampledBitmap(sourceBitmap, 100, file, 1080, 720);
         }
         try {
             out = new FileOutputStream(file);
             if (decodeSampledBitmap != null) {
-                if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 90, out)) {
+                if (decodeSampledBitmap.compress(Bitmap.CompressFormat.PNG, 100, out)) {
                     out.flush();
                     out.close();
                 }
@@ -89,7 +88,8 @@ public class ImageUtils {
             if (height > reqHeight || width > reqWidth) {
                 final int heightRatio = Math.round((float) height / (float) reqHeight);
                 final int widthRatio = Math.round((float) width / (float) reqWidth);
-                opts.inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+                 opts.inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+                //opts.inSampleSize = 1;
             }
             opts.inJustDecodeBounds = false;
             bm = BitmapFactory.decodeByteArray(bytes, 0, bytes.length, opts);

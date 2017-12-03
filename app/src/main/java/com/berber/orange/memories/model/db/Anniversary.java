@@ -1,7 +1,6 @@
 package com.berber.orange.memories.model.db;
 
 
-
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;
 
@@ -33,6 +32,8 @@ public class Anniversary implements Serializable {
 
     private Long modelAnniversaryTypeId;
 
+    private boolean favorite;
+
     @ToOne(joinProperty = "modelAnniversaryTypeId")
     private ModelAnniversaryType modelAnniversaryType;
 
@@ -46,16 +47,20 @@ public class Anniversary implements Serializable {
 
     @ToOne(joinProperty = "googleLocationId")
     private GoogleLocation googleLocation;
-    /** Used to resolve relations */
+    /**
+     * Used to resolve relations
+     */
     @Generated(hash = 2040040024)
     private transient DaoSession daoSession;
-    /** Used for active entity operations. */
+    /**
+     * Used for active entity operations.
+     */
     @Generated(hash = 1172854706)
     private transient AnniversaryDao myDao;
 
-    @Generated(hash = 454954546)
-    public Anniversary(Long id, String Title, String Description, String Location,
-            Date date, Date createDate, Long modelAnniversaryTypeId,
+    @Generated(hash = 1320558046)
+    public Anniversary(Long id, String Title, String Description, String Location, Date date,
+            Date createDate, Long modelAnniversaryTypeId, boolean favorite,
             Long notificationSendingId, Long googleLocationId) {
         this.id = id;
         this.Title = Title;
@@ -64,6 +69,7 @@ public class Anniversary implements Serializable {
         this.date = date;
         this.createDate = createDate;
         this.modelAnniversaryTypeId = modelAnniversaryTypeId;
+        this.favorite = favorite;
         this.notificationSendingId = notificationSendingId;
         this.googleLocationId = googleLocationId;
     }
@@ -147,7 +153,9 @@ public class Anniversary implements Serializable {
     @Generated(hash = 684027712)
     private transient Long modelAnniversaryType__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 1637771025)
     public ModelAnniversaryType getModelAnniversaryType() {
         Long __key = this.modelAnniversaryTypeId;
@@ -168,7 +176,9 @@ public class Anniversary implements Serializable {
         return modelAnniversaryType;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1722141903)
     public void setModelAnniversaryType(ModelAnniversaryType modelAnniversaryType) {
         synchronized (this) {
@@ -182,7 +192,9 @@ public class Anniversary implements Serializable {
     @Generated(hash = 1392270529)
     private transient Long notificationSending__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 829092209)
     public NotificationSending getNotificationSending() {
         Long __key = this.notificationSendingId;
@@ -203,7 +215,9 @@ public class Anniversary implements Serializable {
         return notificationSending;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1016003634)
     public void setNotificationSending(NotificationSending notificationSending) {
         synchronized (this) {
@@ -217,7 +231,9 @@ public class Anniversary implements Serializable {
     @Generated(hash = 427662291)
     private transient Long googleLocation__resolvedKey;
 
-    /** To-one relationship, resolved on first access. */
+    /**
+     * To-one relationship, resolved on first access.
+     */
     @Generated(hash = 1314426589)
     public GoogleLocation getGoogleLocation() {
         Long __key = this.googleLocationId;
@@ -237,7 +253,9 @@ public class Anniversary implements Serializable {
         return googleLocation;
     }
 
-    /** called by internal mechanisms, do not call yourself. */
+    /**
+     * called by internal mechanisms, do not call yourself.
+     */
     @Generated(hash = 1669804237)
     public void setGoogleLocation(GoogleLocation googleLocation) {
         synchronized (this) {
@@ -282,6 +300,14 @@ public class Anniversary implements Serializable {
             throw new DaoException("Entity is detached from DAO context");
         }
         myDao.update(this);
+    }
+
+    public boolean getFavorite() {
+        return this.favorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.favorite = favorite;
     }
 
     /** called by internal mechanisms, do not call yourself. */

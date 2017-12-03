@@ -5,7 +5,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +33,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -72,14 +74,33 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle());
 
+        String description = anniversary.getDescription();
+        if (!TextUtils.isEmpty(description)) {
+            holder.mDescriptionLabel.setText(description);
+        }
+
         //set object date
         if (anniversary.getDate() != null) {
             String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
-            //set location
-            GoogleLocation googleLocation = anniversary.getGoogleLocation();
-            if (googleLocation != null) date = date + " " + googleLocation.getLocationName();
             holder.mAnniversaryDate.setText(date);
         }
+
+        GoogleLocation googleLocation = anniversary.getGoogleLocation();
+        //set location
+        String location = null;
+        if (googleLocation != null) {
+            String locationName = googleLocation.getLocationName();
+            String reg = "\\d{1,3}°[0-6]\\d.\\d{3}′";
+            Pattern p = Pattern.compile(reg);
+            Matcher m = p.matcher(locationName);
+            if (m.find()) {
+                location = googleLocation.getLocationAddress();
+            } else {
+                location = googleLocation.getLocationName() + ", " + googleLocation.getLocationAddress();
+            }
+        }
+        holder.mPlaceLabel.setText(location == null ? "暂无地点信息" : location);
+
 
         //set image type
         ModelAnniversaryType modelAnniversaryType = anniversary.getModelAnniversaryType();
@@ -135,101 +156,54 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     }
 
     private void calculateDateWithJoda(TimeLineViewHolder holder, Anniversary anniversary) {
+        //纪念日时间
         Date anniversaryDate = anniversary.getDate();
         DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
-
+        //纪念日创建时间
         Date createDate = anniversary.getCreateDate();
         DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
-
+        //当前时间
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
-        int totalDays = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+        String totalDayString;
+        String restDayString;
+        String pastDayString;
 
-        int restDays = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+        int progress = 0;
 
-        String restLabel;
-        if (restDays < 0) {
-            restLabel = "0/" + totalDays;
+        if (anniversaryDateWithJoda.isBeforeNow()) {
+            //纪念日时间比当前时间要早
+            totalDayString = "0";
+            restDayString = "0";
+            int days = Days.daysBetween(anniversaryDateWithJoda, currentDate).getDays();
+            pastDayString = String.valueOf(days);
+            progress = 100;
+            holder.mAnniversaryStatusLabel.setText("End");
         } else {
-            restLabel = restDays + "/" + totalDays;
-        }
-        holder.mLeftDayLabel.setText(restLabel);
+            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+            totalDayString = String.valueOf(totalDay);
+            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+            restDayString = String.valueOf(restDay);
 
-        //calculate progress
-
-        int totalMinutes = Minutes.minutesBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getMinutes();
-        int restMinutes = Minutes.minutesBetween(currentDate, anniversaryDateWithJoda).getMinutes();
-
-        if (restMinutes <= 0) {
-            holder.mCurrentAnniversaryProgress.setProgress(100);
-        } else {
-            int progress = (int) ((totalMinutes - restMinutes) * 100.0 / totalMinutes);
-            holder.mCurrentAnniversaryProgress.setProgress(progress);
-        }
-    }
-
-
-    private void calculateDate(TimeLineViewHolder holder, Anniversary anniversary) {
-        //calculate left date progress
-        Date createDate = anniversary.getCreateDate();
-        Date anniversaryShowDate = anniversary.getDate();
-        Log.d("TAG", "Anniversary show date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(anniversaryShowDate));
-        Log.d("TAG", "Anniversary created date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(createDate));
-        Log.d("TAG", "Anniversary current date " + new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date(System.currentTimeMillis())));
-        // Log.e("TAG", "Anniversary notification date " + new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(sendingDate));
-
-        long currentTimeMillis = System.currentTimeMillis();
-        long currentRestMillis = anniversaryShowDate.getTime() - currentTimeMillis;
-        long totalRestMillis = anniversaryShowDate.getTime() - createDate.getTime();
-
-
-        if (totalRestMillis < 0 && totalRestMillis > (-1 * 24 * 60 * 60 * 1000)) {
-            //当天的情况下 (纪念日时间默认当天00:00)
-            holder.mLeftDayLabel.setText("0/0");
-            holder.mCurrentAnniversaryProgress.setProgress(100);
-            holder.mAnniversaryStatusLabel.setText("In Progress");
-            holder.mAnniversaryStatusLabel.setBackground(null);
-
-        } else if (totalRestMillis <= (-1 * 24 * 60 * 60 * 1000)) {
-            //已经结束了
-            double totalDay = totalRestMillis * 1.0 / (24 * 60 * 60 * 1000);
-            if (totalDay < 0) {
-                totalDay = totalDay - 1;
-                holder.mLeftDayLabel.setText("0/" + (long) totalDay);
-            }
-            holder.mCurrentAnniversaryProgress.setProgress(100);
-            holder.mAnniversaryStatusLabel.setText("Finish");
-            holder.mAnniversaryStatusLabel.setBackground(null);
-
-        } else {
-            //没有结束的
-            double restDays = currentRestMillis * 1.0 / (24 * 60 * 60 * 1000);
-            double totalDay = totalRestMillis * 1.0 / (24 * 60 * 60 * 1000);
-
-            if (restDays > 0) {
-                restDays = restDays + 1;
-            }
-
-            if (totalDay > 0) {
-                totalDay = totalDay + 1;
-            }
-
-            holder.mLeftDayLabel.setText((long) restDays + "/" + (long) totalDay);
-            int progress = (int) (currentRestMillis * 100.0 / totalRestMillis);
-
-            if (progress < 0) {
-                holder.mCurrentAnniversaryProgress.setProgress(100);
+            if (restDay > 0) {
+                pastDayString = String.valueOf(totalDay - restDay);
+                progress = (int) ((totalDay - restDay) * 100.0 / totalDay);
+                if (restDay < 3) {
+                    holder.mAnniversaryStatusLabel.setText("Up Coming");
+                } else {
+                    holder.mAnniversaryStatusLabel.setText(" ");
+                }
             } else {
-                holder.mCurrentAnniversaryProgress.setProgress(100 - progress);
-            }
-            if ((long) restDays < 7) {
-                holder.mAnniversaryStatusLabel.setText("Up Coming");
-                holder.mAnniversaryStatusLabel.setBackground(null);
-            } else {
-                holder.mAnniversaryStatusLabel.setText("");
-                holder.mAnniversaryStatusLabel.setBackground(null);
+                pastDayString = String.valueOf(restDay * -1);
+                progress = 100;
+                holder.mAnniversaryStatusLabel.setText("End");
             }
         }
+
+
+        String label = restDayString + "/" + totalDayString;
+        holder.mLeftDayLabel.setText(label);
+        holder.mCurrentAnniversaryProgress.setProgress(progress);
     }
 
 
@@ -265,6 +239,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TextView mAnniversaryDate;
         NumberProgressBar mCurrentAnniversaryProgress;
         ImageView mNotificationIcon;
+        TextView mDescriptionLabel;
+        TextView mPlaceLabel;
 
         TimeLineViewHolder(View itemView, final int type) {
             super(itemView);
@@ -277,6 +253,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
             mAnniversaryStatusLabel = itemView.findViewById(R.id.anniversary_status_label);
             mNotificationIcon = itemView.findViewById(R.id.anniversary_notification_icon);
+            mDescriptionLabel = itemView.findViewById(R.id.anniversary_description_label);
+            mPlaceLabel = itemView.findViewById(R.id.anniversary_place_label);
 
         }
     }

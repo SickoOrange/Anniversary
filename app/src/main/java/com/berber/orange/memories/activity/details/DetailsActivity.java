@@ -95,6 +95,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
     private TextView imageFlowHint;
+    private Anniversary anniversary;
+    private AnniversaryDao anniversaryDao;
 
     @Override
     protected int setLayoutId() {
@@ -121,8 +123,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
+
         DaoSession daoSession = ((APP) getApplication()).getDaoSession();
-        AnniversaryDao anniversaryDao = daoSession.getAnniversaryDao();
+        anniversaryDao = daoSession.getAnniversaryDao();
         NotificationSendingDao notificationSendingDao = daoSession.getNotificationSendingDao();
         GoogleLocationDao googleLocationDao = daoSession.getGoogleLocationDao();
 
@@ -130,14 +133,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         anniversaryId = intent.getLongExtra("anniversaryId", 0);
         List<Anniversary> anniversaryList = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversaryId)).list();
 
-        int progressValue = intent.getIntExtra("progressValue", 0);
-
-        //String dateInformation = intent.getStringExtra("dateInformation");
 
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
 
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
-        detailsAnniProgressbar.setProgress(progressValue);
         imageFlowHint = findViewById(R.id.details_anni_image_flow_hint);
 
         mTimeProgressLabel1 = findViewById(R.id.time_progress_label1);
@@ -181,7 +180,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
 
         if (anniversaryList.size() == 1) {
-            Anniversary anniversary = anniversaryList.get(0);
+            anniversary = anniversaryList.get(0);
             googleApiClient = new GoogleApiClient
                     .Builder(this)
                     .addApi(Places.GEO_DATA_API)
@@ -197,7 +196,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 for (File image : images) {
                     updateGallery(imageFlowLayout, image);
                 }
-            }else {
+            } else {
                 imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
             }
 
@@ -222,6 +221,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         String title = anniversary.getTitle();
         mAnniversaryTitleTV.setText(title);
 
+        //set favorite or not
+        if (anniversary.getFavorite()) {
+            favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
+            isFavoriteClick = true;
+        }
+
         DateFormat instance = SimpleDateFormat.getDateInstance();
         mAnniversaryDateTV.setText(instance.format(anniversary.getDate()));
 
@@ -234,27 +239,53 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
 
+
+        //纪念日时间
         Date anniversaryDate = anniversary.getDate();
         DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
-
+        //纪念日创建时间
         Date createDate = anniversary.getCreateDate();
         DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
-
+        //当前时间
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
-        int totalDays = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+        String totalDayString;
+        String restDayString;
+        String pastDayString;
+        int progress = 0;
 
-        String label1 = "距离时间创建总共的天数: " + String.valueOf(totalDays);
-        mTimeProgressLabel1.setText(label1);
+        if (anniversaryDateWithJoda.isBeforeNow()) {
+            //纪念日时间比当前时间要早
+            totalDayString = "该事件创建于: " + SimpleDateFormat.getDateInstance().format(anniversaryCreateDateWithJoda.toDate());
+            restDayString = "0";
+            int days = Days.daysBetween(anniversaryDateWithJoda, currentDate).getDays();
+            pastDayString = String.valueOf(days);
+            progress = 100;
+        } else {
+            int totalDay = Days.daysBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getDays();
+            totalDayString = "距离事件总共的天数: " + String.valueOf(totalDay);
+            int restDay = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
+            restDayString = String.valueOf(restDay);
 
-        int restDays = Days.daysBetween(currentDate, anniversaryDateWithJoda).getDays();
-        String restDaysString = restDays > 0 ? String.valueOf(restDays) : String.valueOf(0);
-        String label3 = "距离时间开始还剩下天数: " + restDaysString;
+            if (restDay > 0) {
+                pastDayString = String.valueOf(totalDay - restDay);
+                progress = (int) ((totalDay - restDay) * 100.0 / totalDay);
+            } else {
+                pastDayString = String.valueOf(restDay * -1);
+                progress = 100;
+            }
+
+        }
+
+        mTimeProgressLabel1.setText(totalDayString);
+
+        String label3 = "距离事件开始还剩下天数: " + restDayString;
         mTimeProgressLabel3.setText(label3);
 
-        int pastDays = Days.daysBetween(anniversaryCreateDateWithJoda, currentDate).getDays();
-        String label2 = "距离时间创建已过去天数: " + String.valueOf(pastDays);
+        String label2 = "距离事件开始已过去天数: " + pastDayString;
         mTimeProgressLabel2.setText(label2);
+
+        detailsAnniProgressbar.setProgress(progress);
 
 
         // TODO: 2017/12/1 change into button click event
@@ -296,25 +327,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void updateDateInformationUI(String dateInformation) {
-        if (!TextUtils.isEmpty(dateInformation) && dateInformation.contains("/")) {
-            String[] split = dateInformation.split("/");
-            String total = split[1];
-            String rest = split[0];
-            int past = Integer.valueOf(total) - Integer.valueOf(rest);
-            mTimeProgressLabel1.setText(String.format("距离事件开始还有%s天", total));
-
-            if (past < 0) {
-                mTimeProgressLabel2.setText(String.format("距离事件已经过去了%s天", String.valueOf(past * -1)));
-                mTimeProgressLabel3.setText(String.format("距离事件开始还剩下%s天", "0"));
-            } else {
-                mTimeProgressLabel2.setText(String.format("距离事件已经过去了%s天", String.valueOf(past)));
-                mTimeProgressLabel3.setText(String.format("距离事件开始还剩下%s天", rest));
-            }
-        }
-    }
-
-
     @Override
     protected void initImmersionBar() {
         super.initImmersionBar();
@@ -335,14 +347,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 System.out.println("click");
                 if (!isFavoriteClick) {
                     favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
-                    //  favoriteButton.setAnimation(alphaAnimationIcon);
+                    anniversary.setFavorite(true);
+
                     isFavoriteClick = true;
                 } else {
                     favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24px);
-                    //favoriteButton.setAnimation(alphaAnimationIcon);
+                    anniversary.setFavorite(false);
                     isFavoriteClick = false;
                 }
-
+                anniversaryDao.update(anniversary);
                 break;
             case R.id.details_add_image_btn:
                 if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {

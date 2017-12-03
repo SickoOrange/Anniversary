@@ -79,7 +79,7 @@
                         android:layout_toRightOf="@id/details_anni_type"
                         android:padding="2dp"
                         android:text="今天不吃鸡"
-                        android:textColor="#a1a1a1"
+                        android:textColor="@color/black"
                         android:textSize="14dp" />
 
                     <TextView
