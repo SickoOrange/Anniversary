@@ -70,7 +70,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, final int position) {
-
+            Log.e("TAG","onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle());
@@ -222,7 +222,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
 
-        String label = restDayString + " /" + totalDayString;
+        String label = restDayString + " / " + totalDayString;
         holder.mLeftDayLabel.setText(label);
         holder.mCurrentAnniversaryProgress.setProgress(progress);
     }

@@ -152,7 +152,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         String main_picture = (String) SharedPreferencesHelper.getInstance().getData("main_picture", "");
         if (TextUtils.isEmpty(main_picture)) {
-            Glide.with(this).load("https://i.ytimg.com/vi/ktlQrO2Sifg/maxresdefault.jpg").into(mLandingPageImageView);
+            Glide.with(this).load(R.drawable.backgroud4).into(mLandingPageImageView);
         } else {
             Glide.with(this).load(Uri.parse(main_picture)).into(mLandingPageImageView);
 
@@ -273,6 +273,12 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        adapter.notifyDataSetChanged();
     }
 
     @Override

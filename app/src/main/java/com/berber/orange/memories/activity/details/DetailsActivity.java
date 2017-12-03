@@ -185,7 +185,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 //        } else {
 //            Glide.with(this).load("http://2.bp.blogspot.com/-SUUnHOeFZO4/ULaBZT2tCVI/AAAAAAAAAgA/khtFfcumLJE/s1600/%E8%87%BA%E5%8C%97%E6%84%9B%E6%83%85%E7%B6%B2+%E6%88%91%E7%9F%A5%E9%81%93%E4%BD%A0%E5%9C%A8%E7%AD%89%E6%88%91.jpg").into(detailsImageContent);
 //        }
-        Glide.with(this).load("https://m.diyijuzi.com/uploadfile/2017/1020/1508500490761.jpg").into(detailsImageContent);
+        Glide.with(this).load(R.drawable.backgroud4).into(detailsImageContent);
 
         if (anniversaryList.size() == 1) {
             anniversary = anniversaryList.get(0);
