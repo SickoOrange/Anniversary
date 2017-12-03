@@ -74,15 +74,17 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/my_indicator_container"
                 android:layout_marginTop="5dp"
+                android:padding="5dp"
                 android:background="@color/white">
 
-                <TextView
+                <ImageView
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:padding="5dp"
-                    android:text="Title" />
+                    android:background="@color/white"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_label_black_18px" />
 
                 <EditText
                     android:id="@+id/anniversary_add_anni_title"
@@ -179,6 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/location_layout"
                 android:layout_marginTop="5dp"
+                android:visibility="gone"
                 android:padding="5dp">
 
                 <ImageView

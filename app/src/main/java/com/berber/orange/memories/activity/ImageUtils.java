@@ -88,7 +88,7 @@ public class ImageUtils {
             if (height > reqHeight || width > reqWidth) {
                 final int heightRatio = Math.round((float) height / (float) reqHeight);
                 final int widthRatio = Math.round((float) width / (float) reqWidth);
-                 opts.inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+                opts.inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
                 //opts.inSampleSize = 1;
             }
             opts.inJustDecodeBounds = false;
@@ -162,5 +162,25 @@ public class ImageUtils {
         String fileName = "anni_" + length + ".png";
         File targetFile = new File(fileParent, fileName);
         return targetFile;
+    }
+
+    public static boolean deleteFile(Context context, Long anniversaryId, String flag, int index) {
+        String fileParent = null;
+
+        switch (flag) {
+            case "picture":
+                fileParent = context.getFilesDir() + "/picture/anniversary_" + anniversaryId;
+                break;
+        }
+
+        File obj = new File(fileParent);
+
+        if (obj.exists()) {
+            String fileName = "anni_" + index + ".png";
+            File targetFile = new File(fileParent, fileName);
+            return targetFile.delete();
+        }
+
+        return false;
     }
 }

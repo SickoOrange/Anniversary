@@ -75,7 +75,9 @@
             android:exported="true" />
 
         <activity android:name=".activity.details.DetailsActivity" />
-        <activity android:name=".activity.preview.AnniPreviewActivity"></activity>
+        <activity android:name=".activity.preview.AnniPreviewActivity" />
+        <activity android:name=".activity.AboutActivity" />
+        <activity android:name=".activity.donate.DonateActivity"></activity>
     </application>
 
 </manifest>

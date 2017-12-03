@@ -147,6 +147,8 @@
     <string name="action_change_image">更换封面</string>
     <string name="yes">YES</string>
     <string name="no">No</string>
+    <string name="nav_about">关于</string>
+    <string name="nav_donate">捐赠</string>
 
     <string-array name="loadingPlacePhotoRequest">
         <item>在这个地点我们为你找到了一些有趣的图片</item>

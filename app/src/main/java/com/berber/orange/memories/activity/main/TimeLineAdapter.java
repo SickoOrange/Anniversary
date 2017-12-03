@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -32,6 +33,7 @@ import org.joda.time.Minutes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -44,7 +46,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * on 27.09.2017.
  */
 
-public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> {
+public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> implements onMoveAndSwipedListener {
     private List<Anniversary> mDateSets = new ArrayList<>();
     private CoordinatorActivity mContext;
 
@@ -70,7 +72,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, final int position) {
-            Log.e("TAG","onBindViewHolder");
+        Log.e("TAG", "onBindViewHolder");
         //get target object
         final Anniversary anniversary = mDateSets.get(position);
         holder.mAnniversaryTitle.setText(anniversary.getTitle());
@@ -246,6 +248,22 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     public List<Anniversary> getDatas() {
         return mDateSets;
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        Log.e("TAG", "onItemMove");
+        Collections.swap(mDateSets, fromPosition, toPosition);
+        notifyItemMoved(fromPosition, toPosition);
+        return true;
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+      //  mDateSets.remove(position);
+       // notifyItemRemoved(position);
+notifyDataSetChanged();
+        Log.e("TAG", "onItemDismiss");
     }
 
 

@@ -6,11 +6,11 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.TextureView;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -18,9 +18,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
@@ -201,8 +202,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
             if (!images.isEmpty()) {
                 imageFlowHint.setText("你在过去为此事件添加了如下照片:");
-                for (File image : images) {
-                    updateGallery(imageFlowLayout, image);
+
+                for (int i = 0; i < images.size(); i++) {
+                    updateGallery(imageFlowLayout, images.get(i), i);
                 }
             } else {
                 imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
@@ -409,7 +411,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 final List<Uri> mSelected = Matisse.obtainResult(data);
                 if (!mSelected.isEmpty()) {
                     for (final Uri uri : mSelected) {
-                        updateGallery(imageFlowLayout, uri);
+                        updateGallery(imageFlowLayout, uri, -1);
                         //save to local
                         final File file = ImageUtils.getFile(this, anniversaryId, "picture");
                         if (!file.exists()) {
@@ -439,8 +441,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void updateGallery(FlowLayout layout, final Object image) {
+    private void updateGallery(FlowLayout layout, final Object image, final int i) {
         CircleImageView imageView = new CircleImageView(this);
+
+
         imageView.setLayoutParams(new FlowLayout.LayoutParams(150, 150));
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         FlowLayout.LayoutParams layoutParams = (FlowLayout.LayoutParams) imageView.getLayoutParams();
@@ -476,6 +480,39 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
             }
         });
+//        imageView.setOnLongClickListener(new View.OnLongClickListener() {
+//            @Override
+//            public boolean onLongClick(final View v) {
+//                Log.e("TAG", "long click");
+//
+//                new MaterialDialog.Builder(DetailsActivity.this)
+//                        .title("是否删除")
+//                        .content("是否删除当前选中的图片")
+//                        .positiveText("ok")
+//                        .onPositive(new MaterialDialog.SingleButtonCallback() {
+//                            @Override
+//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+//                                int childCount = imageFlowLayout.getChildCount();
+//                                CircleImageView obj = null;
+//                                int index = -1;
+//                                for (int i = 0; i < childCount; i++) {
+//                                    CircleImageView currentImage = (CircleImageView) imageFlowLayout.getChildAt(i);
+//                                    if (v == currentImage) {
+//                                        obj = currentImage;
+//                                        index = i;
+//                                    }
+//                                }
+//                                imageFlowLayout.removeView(obj);
+//
+//                                //delete image from disk
+//                                ImageUtils.deleteFile(DetailsActivity.this, anniversaryId, "picture", index);
+//                            }
+//                        })
+//                        .negativeText("cancel")
+//                        .show();
+//                return true;
+//            }
+//        });
         layout.addView(imageView);
     }
 
@@ -504,7 +541,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         if (images.isEmpty()) {
             detailsLocationRequestPhotoHint.setText("很遗憾,我们并没有找到有关次地点的相关图片.");
         } else {
-            detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片.");
+            detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片:");
         }
 
         // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);

@@ -543,7 +543,9 @@
                     <com.youth.banner.Banner
                         android:id="@+id/details_place_photo_banner"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp" />
+                        android:layout_height="250dp"
+                        android:layout_margin="3dp"
+                        android:elevation="5dp"/>
 
                     <!--<org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
                     <!--android:id="@+id/place_gallery"-->
