@@ -34,6 +34,7 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
+import com.berber.orange.memories.activity.setting.SettingsActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
@@ -229,8 +230,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
             case R.id.action_add:
                 // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
                 startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
@@ -269,7 +268,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         if (id == R.id.nav_anniversary) {
             // Handle the camera action
-        } else if (id == R.id.nav_cover) {
+        } else if (id == R.id.nav_setting) {
+            startActivity(new Intent(this, SettingsActivity.class));
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {

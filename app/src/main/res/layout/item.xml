@@ -81,7 +81,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="2"
+            android:maxLines="4"
             android:padding="3dp"
             android:text="暂无描述..."
             android:textColor="#a1a1a1"
@@ -91,11 +91,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
+            android:layout_gravity="center"
+            android:gravity="center"
             android:padding="1dp">
 
             <TextView
                 android:id="@+id/anniversary_date_label"
-                android:layout_width="250dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
@@ -115,8 +117,10 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_marginTop="5dp"
-                android:padding="3dp"
+                android:gravity="center"
+                android:layout_marginTop="3dp"
+                android:paddingBottom="2dp"
+                android:paddingTop="2dp"
                 android:text="10/20"
                 android:textColor="@color/greenlight"
                 android:textSize="10sp" />

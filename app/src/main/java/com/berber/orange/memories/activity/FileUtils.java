@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * ya yin
@@ -14,7 +16,7 @@ import java.nio.channels.FileChannel;
  * Created by orange on 2017/12/4.
  */
 
-public class NIOUtils {
+public class FileUtils {
 
     public static void nioCopy(String sourcePath, String destPathParent) throws Exception {
 
@@ -50,7 +52,20 @@ public class NIOUtils {
         sourceCh.close();
         destCh.close();
         Log.e("TAG", "write file finish: " + destName);
+    }
 
+
+    public static List<File> readImages(String path) {
+        List<File> list = new ArrayList<>();
+        File file = new File(path);
+        if (file.exists()) {
+            File[] files = file.listFiles();
+            for (File child : files) {
+                list.add(child);
+
+            }
+        }
+        return list;
     }
 
 }

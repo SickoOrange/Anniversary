@@ -214,7 +214,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryNotificationTextView.setOnClickListener(this);
 
         //anniversary description
-        anniversaryDescriptionEditText = findViewById(R.id.anniversary_add_anni_description);
+        anniversaryDescriptionEditText = findViewById(R.id.anniversary_edit_anni_description);
 
         // save into database button
         Button btnSave = findViewById(R.id.anniversary_add_btn_save);
@@ -309,7 +309,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 //get current title
                 //currentAnniversaryTitle = mAnniversaryTitleEditText.getText().toString();
                 break;
-            case R.id.anniversary_add_anni_description:
+            case R.id.anniversary_edit_anni_description:
                 //get current description
                 //currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
                 break;

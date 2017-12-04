@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
@@ -23,7 +25,7 @@ import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
-import com.berber.orange.memories.activity.NIOUtils;
+import com.berber.orange.memories.activity.FileUtils;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
@@ -98,6 +100,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private Anniversary anniversary;
     private AnniversaryDao anniversaryDao;
     private Intent intent;
+    private ImageView mAnniversaryDecriptionEditBtn;
+    private boolean isEditButtonClick;
+    private EditText editAnniversaryDescription;
+    private ImageView mAnniversaryCancelEdit;
 
     @Override
     protected int setLayoutId() {
@@ -147,7 +153,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         imageFlowLayout = findViewById(R.id.image_gallery);
 
-
+        editAnniversaryDescription = findViewById(R.id.anniversary_edit_anni_description);
         mNotificationHint = findViewById(R.id.details_notification_hint);
         mNotificationDateTV = findViewById(R.id.details_notification_date);
         mNotificationTypeTV = findViewById(R.id.details_notification_type);
@@ -161,13 +167,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mAnniversaryDescriptionTV = findViewById(R.id.details_anni_description);
         mAnniversaryTypeIV = findViewById(R.id.details_anni_type);
 
+        mAnniversaryDecriptionEditBtn = findViewById(R.id.details_edit_content);
+        mAnniversaryDecriptionEditBtn.setOnClickListener(this);
+
+        mAnniversaryCancelEdit = findViewById(R.id.details_cancel_content);
+        mAnniversaryCancelEdit.setOnClickListener(this);
 
         mLocationNameTV = findViewById(R.id.details_location_name);
         mLocationAddressTV = findViewById(R.id.details_location_address);
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
-        // imagesFlowLayout = findViewById(R.id.details_images_flow);
 
         Button detailsAddImageButton = findViewById(R.id.details_add_image_btn);
         detailsAddImageButton.setOnClickListener(this);
@@ -196,7 +206,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             updateUI(anniversary);
 
             //update image flow layout
-            List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anni_" + anniversary.getId());
+            List<File> images = FileUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
             if (!images.isEmpty()) {
                 imageFlowHint.setText("你在过去为此事件添加了如下照片:");
 
@@ -367,6 +377,31 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.details_cancel_content:
+                editAnniversaryDescription.setVisibility(View.GONE);
+                mAnniversaryCancelEdit.setVisibility(View.GONE);
+                break;
+            case R.id.details_edit_content:
+                if (!isEditButtonClick) {
+                    mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_save_24px);
+                    isEditButtonClick = true;
+                    editAnniversaryDescription.setText(anniversary.getDescription());
+                    editAnniversaryDescription.setVisibility(View.VISIBLE);
+                    mAnniversaryCancelEdit.setVisibility(View.VISIBLE);
+
+                } else {
+                    //update database
+                    String newDescription = editAnniversaryDescription.getText().toString();
+                    Log.e("TAG", newDescription);
+                    anniversary.setDescription(newDescription);
+                    anniversaryDao.update(anniversary);
+                    mAnniversaryDescriptionTV.setText(newDescription);
+                    Toast.makeText(this, "编辑成功", Toast.LENGTH_SHORT).show();
+                    mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
+                    isEditButtonClick = false;
+                    editAnniversaryDescription.setVisibility(View.GONE);
+                }
+                break;
             case R.id.details_icon_favorite:
                 System.out.println("click");
                 if (!isFavoriteClick) {
@@ -413,10 +448,10 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
-                            String destPathParent = DetailsActivity.this.getFilesDir() + "/picture/anni_" + anniversaryId;
+                            String destPathParent = DetailsActivity.this.getFilesDir() + "/picture/anniversary_" + anniversaryId;
                             for (String filePath : mSelectedFile) {
                                 try {
-                                    NIOUtils.nioCopy(filePath, destPathParent);
+                                    FileUtils.nioCopy(filePath, destPathParent);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }

@@ -58,66 +58,111 @@
                 android:layout_margin="5dp"
                 android:elevation="5dp">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="3dp">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                    <de.hdodenhof.circleimageview.CircleImageView
-                        android:id="@+id/details_anni_type"
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_margin="2dp"
-                        android:padding="2dp"
-                        android:src="@mipmap/ic_category_1" />
-
-                    <TextView
-                        android:id="@+id/details_anni_title"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/details_anni_type"
-                        android:padding="2dp"
-                        android:text="今天不吃鸡"
-                        android:textColor="@color/black"
-                        android:textSize="14dp" />
-
-                    <TextView
-                        android:id="@+id/details_anni_date"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/details_anni_title"
-                        android:layout_marginLeft="5dp"
-                        android:layout_toRightOf="@id/details_anni_type"
-                        android:gravity="center"
-                        android:padding="2dp"
-                        android:text="2017-11-11"
-                        android:textColor="#a1a1a1"
-                        android:textSize="12dp" />
-
-                    <TextView
-                        android:id="@+id/details_anni_description"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/details_anni_type"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="15dp"
-                        android:ellipsize="none"
+                        android:padding="3dp">
+
+                        <de.hdodenhof.circleimageview.CircleImageView
+                            android:id="@+id/details_anni_type"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_margin="2dp"
+                            android:padding="2dp"
+                            android:src="@mipmap/ic_category_1" />
+
+                        <TextView
+                            android:id="@+id/details_anni_title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/details_anni_type"
+                            android:padding="2dp"
+                            android:text="今天不吃鸡"
+                            android:textColor="@color/black"
+                            android:textSize="14dp" />
+
+                        <TextView
+                            android:id="@+id/details_anni_date"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_anni_title"
+                            android:layout_marginLeft="5dp"
+                            android:layout_toRightOf="@id/details_anni_type"
+                            android:gravity="center"
+                            android:padding="2dp"
+                            android:text="2017-11-11"
+                            android:textColor="#a1a1a1"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:id="@+id/details_anni_description"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/details_anni_type"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="15dp"
+                            android:ellipsize="none"
+                            android:inputType="textMultiLine"
+                            android:minLines="1"
+                            android:paddingLeft="5dp"
+                            android:singleLine="false"
+                            android:text="以前我是这么认为的,作为一个宅鸡送的快递员,你成功地干掉了所有的顾客 独享了外卖的鸡肉晚餐 岂不是美滋滋"
+                            android:textColor="#a1a1a1"
+                            android:textSize="14dp" />
+                    </RelativeLayout>
+
+                    <EditText
+                        android:id="@+id/anniversary_edit_anni_description"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="2dp"
+                        android:background="@drawable/edit_bg"
+                        android:enabled="true"
+                        android:gravity="top"
+                        android:hint="请输入详细的描述...."
                         android:inputType="textMultiLine"
-                        android:minLines="1"
-                        android:paddingLeft="5dp"
-                        android:singleLine="false"
-                        android:text="以前我是这么认为的,作为一个宅鸡送的快递员,你成功地干掉了所有的顾客 独享了外卖的鸡肉晚餐 岂不是美滋滋"
-                        android:textColor="#a1a1a1"
-                        android:textSize="14dp" />
+                        android:maxLines="10"
+                        android:minLines="4"
+                        android:padding="5dp"
+                        android:scrollbars="vertical"
+                        android:visibility="gone" />
 
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="30dp"
-                        android:layout_below="@id/details_anni_description"
-                        android:layout_marginTop="5dp"
-                        android:orientation="horizontal">
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:id="@+id/details_cancel_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:layout_toLeftOf="@+id/details_edit_content"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_cancel_24px"
+                            android:visibility="gone" />
+
+                        <ImageView
+                            android:id="@+id/details_edit_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="15dp"
+                            android:layout_toLeftOf="@+id/details_icon_favorite"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/ic_create_black_24px" />
 
                         <ImageView
                             android:id="@+id/details_icon_favorite"
@@ -144,7 +189,9 @@
                             android:src="@drawable/ic_menu_share" />
 
                     </RelativeLayout>
-                </RelativeLayout>
+
+
+                </LinearLayout>
 
 
             </android.support.v7.widget.CardView>
@@ -239,11 +286,6 @@
                         android:layout_marginTop="5dp"
                         android:padding="3dp" />
 
-
-                    <!--<android.support.v7.widget.RecyclerView-->
-                    <!--android:id="@+id/time_progress_recycler_view"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content" />-->
                     <RelativeLayout
                         android:layout_width="wrap_content"
                         android:layout_height="50dp"
@@ -545,20 +587,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
                         android:layout_margin="3dp"
-                        android:elevation="5dp"/>
-
-                    <!--<org.apmem.tools.layouts.FlowLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-                    <!--android:id="@+id/place_gallery"-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:orientation="horizontal"-->
-                    <!--android:paddingBottom="2dp"-->
-                    <!--android:paddingLeft="5dp"-->
-                    <!--android:paddingRight="5dp"-->
-                    <!--android:paddingTop="2dp">-->
-                    <!--</org.apmem.tools.layouts.FlowLayout>-->
-
-
+                        android:elevation="5dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

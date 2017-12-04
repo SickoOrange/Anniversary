@@ -77,7 +77,10 @@
         <activity android:name=".activity.details.DetailsActivity" />
         <activity android:name=".activity.preview.AnniPreviewActivity" />
         <activity android:name=".activity.about.AboutActivity" />
-        <activity android:name=".activity.donate.DonateActivity"></activity>
+        <activity android:name=".activity.donate.DonateActivity" />
+        <activity
+            android:name=".activity.setting.SettingsActivity"
+            android:label="@string/title_activity_settings"></activity>
     </application>
 
 </manifest>

@@ -4,12 +4,12 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_anniversary"
-            android:icon="@drawable/ic_menu_camera"
+            android:icon="@drawable/ic_today_24px"
             android:checked="true"
             android:title="Special Day" />
         <item
-            android:id="@+id/nav_cover"
-            android:icon="@drawable/ic_menu_gallery"
+            android:id="@+id/nav_setting"
+            android:icon="@drawable/ic_settings_24px"
             android:title="Set Cover " />
     </group>
 
