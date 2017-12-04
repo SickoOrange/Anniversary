@@ -23,8 +23,11 @@ public class NIOUtils {
             return;
         }
         String destName = source.getName();
-
-        File dest = new File(destPathParent, destName);
+        File destPathParentFolder = new File(destPathParent);
+        if (!destPathParentFolder.exists()) {
+            destPathParentFolder.mkdirs();
+        }
+        File dest = new File(destPathParentFolder, destName);
 
         if (!dest.exists()) {
 
@@ -45,9 +48,8 @@ public class NIOUtils {
         destCh.write(mbb);
 
         sourceCh.close();
-
         destCh.close();
-        Log.e("TAG", "write file start");
+        Log.e("TAG", "write file finish: " + destName);
 
     }
 

@@ -196,12 +196,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             updateUI(anniversary);
 
             //update image flow layout
-            List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
+            List<File> images = ImageUtils.readImages(this.getFilesDir() + "/picture/anni_" + anniversary.getId());
             if (!images.isEmpty()) {
                 imageFlowHint.setText("你在过去为此事件添加了如下照片:");
 
                 for (int i = 0; i < images.size(); i++) {
-                    updateGallery(imageFlowLayout, images.get(i), i);
+                    updateGallery(imageFlowLayout, images.get(i));
                 }
             } else {
                 imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
@@ -407,6 +407,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 final List<String> mSelectedFile = Matisse.obtainPathResult(data);
                 if (!mSelectedFile.isEmpty()) {
+                    for (String file : mSelectedFile) {
+                        updateGallery(imageFlowLayout, file);
+                    }
                     new Thread(new Runnable() {
                         @Override
                         public void run() {
@@ -427,7 +430,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 //                final List<Uri> mSelected = Matisse.obtainResult(data);
 //                if (!mSelected.isEmpty()) {
 //                    for (final Uri uri : mSelected) {
-//                        updateGallery(imageFlowLayout, uri, -1);
+
 //                        //save to local
 //                        final File file = ImageUtils.getFile(this, anniversaryId, "picture");
 //                        if (!file.exists()) {
@@ -457,7 +460,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
     }
 
-    private void updateGallery(FlowLayout layout, final Object image, final int i) {
+    private void updateGallery(FlowLayout layout, final Object image) {
         CircleImageView imageView = new CircleImageView(this);
 
 
