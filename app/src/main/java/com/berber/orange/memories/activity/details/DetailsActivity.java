@@ -380,6 +380,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             case R.id.details_cancel_content:
                 editAnniversaryDescription.setVisibility(View.GONE);
                 mAnniversaryCancelEdit.setVisibility(View.GONE);
+                mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
+                isEditButtonClick = false;
                 break;
             case R.id.details_edit_content:
                 if (!isEditButtonClick) {
