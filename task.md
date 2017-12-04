@@ -24,3 +24,17 @@
 
  banner 跳转到指定页面，
  banner点击 当viewpager跳转到指定页面的时候，能够有外部监听
+ 
+ 
+ 
+* masterial aboiut
+* material donate 
+* set cover 
+* bitmap save 
+* photo gallery
+
+* code refactory
+* find bugs
+
+
+ 
