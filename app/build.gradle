@@ -49,6 +49,7 @@ dependencies {
     compile 'com.tomer:fadingtextview:2.5'
     compile 'joda-time:joda-time:2.9.9'
     compile 'org.apmem.tools:layouts:1.10@aar'
+    compile 'com.github.jrvansuita:MaterialAbout:+'
     testCompile 'junit:junit:4.12'
 }
 
