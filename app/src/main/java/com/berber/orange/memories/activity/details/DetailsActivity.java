@@ -3,10 +3,8 @@ package com.berber.orange.memories.activity.details;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -18,8 +16,6 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
@@ -27,6 +23,7 @@ import com.berber.orange.memories.activity.ImageUtils;
 import com.berber.orange.memories.activity.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
+import com.berber.orange.memories.activity.NIOUtils;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
@@ -408,33 +405,52 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 if (data == null) {
                     return;
                 }
-                final List<Uri> mSelected = Matisse.obtainResult(data);
-                if (!mSelected.isEmpty()) {
-                    for (final Uri uri : mSelected) {
-                        updateGallery(imageFlowLayout, uri, -1);
-                        //save to local
-                        final File file = ImageUtils.getFile(this, anniversaryId, "picture");
-                        if (!file.exists()) {
-                            try {
-                                file.createNewFile();
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        try {
-                                            ImageUtils.saveBitmap(DetailsActivity.this, uri, file);
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
-
-                                    }
-                                }).start();
-                            } catch (IOException e) {
-                                e.printStackTrace();
+                final List<String> mSelectedFile = Matisse.obtainPathResult(data);
+                if (!mSelectedFile.isEmpty()) {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            String destPathParent = DetailsActivity.this.getFilesDir() + "/picture/anni_" + anniversaryId;
+                            for (String filePath : mSelectedFile) {
+                                try {
+                                    NIOUtils.nioCopy(filePath, destPathParent);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
                             }
-                        }
 
-                    }
+                        }
+                    }).start();
                 }
+
+
+//                final List<Uri> mSelected = Matisse.obtainResult(data);
+//                if (!mSelected.isEmpty()) {
+//                    for (final Uri uri : mSelected) {
+//                        updateGallery(imageFlowLayout, uri, -1);
+//                        //save to local
+//                        final File file = ImageUtils.getFile(this, anniversaryId, "picture");
+//                        if (!file.exists()) {
+//                            try {
+//                                file.createNewFile();
+//                                new Thread(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//                                        try {
+//                                            ImageUtils.saveBitmap(DetailsActivity.this, uri, file);
+//                                        } catch (IOException e) {
+//                                            e.printStackTrace();
+//                                        }
+//
+//                                    }
+//                                }).start();
+//                            } catch (IOException e) {
+//                                e.printStackTrace();
+//                            }
+//                        }
+//
+//                    }
+//                }
                 break;
 
 
@@ -480,39 +496,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 startActivity(intent);
             }
         });
-//        imageView.setOnLongClickListener(new View.OnLongClickListener() {
-//            @Override
-//            public boolean onLongClick(final View v) {
-//                Log.e("TAG", "long click");
-//
-//                new MaterialDialog.Builder(DetailsActivity.this)
-//                        .title("是否删除")
-//                        .content("是否删除当前选中的图片")
-//                        .positiveText("ok")
-//                        .onPositive(new MaterialDialog.SingleButtonCallback() {
-//                            @Override
-//                            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-//                                int childCount = imageFlowLayout.getChildCount();
-//                                CircleImageView obj = null;
-//                                int index = -1;
-//                                for (int i = 0; i < childCount; i++) {
-//                                    CircleImageView currentImage = (CircleImageView) imageFlowLayout.getChildAt(i);
-//                                    if (v == currentImage) {
-//                                        obj = currentImage;
-//                                        index = i;
-//                                    }
-//                                }
-//                                imageFlowLayout.removeView(obj);
-//
-//                                //delete image from disk
-//                                ImageUtils.deleteFile(DetailsActivity.this, anniversaryId, "picture", index);
-//                            }
-//                        })
-//                        .negativeText("cancel")
-//                        .show();
-//                return true;
-//            }
-//        });
         layout.addView(imageView);
     }
 
