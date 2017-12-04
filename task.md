@@ -27,10 +27,14 @@
  
  
  
- -- masterial aboiut
- -- material donate 
+* masterial aboiut
+* material donate 
+* set cover 
+* bitmap save 
+* photo gallery
+
+* code refactory
+* find bugs
+
+
  
- -- set cover 
- 
- -- bitmap save 
- -- photo gallery
