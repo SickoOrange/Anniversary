@@ -33,13 +33,6 @@
         android:textColor="@android:color/black"
         android:textSize="7sp" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-
-    </LinearLayout>
 
 
     <com.berber.orange.memories.widget.TimeLineMarker
@@ -81,7 +74,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="2dp"
             android:ellipsize="end"
-            android:maxLines="4"
+            android:maxLines="2"
             android:padding="3dp"
             android:text="暂无描述..."
             android:textColor="#a1a1a1"
@@ -121,6 +114,7 @@
                 android:layout_marginTop="3dp"
                 android:paddingBottom="2dp"
                 android:paddingTop="2dp"
+                android:layout_marginRight="5dp"
                 android:text="10/20"
                 android:textColor="@color/greenlight"
                 android:textSize="10sp" />
