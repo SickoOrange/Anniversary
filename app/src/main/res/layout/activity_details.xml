@@ -149,8 +149,8 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_cancel_24px"
-                            android:visibility="gone" />
+                            android:visibility="gone"
+                            app:srcCompat="@drawable/ic_cancel_24px" />
 
                         <ImageView
                             android:id="@+id/details_edit_content"
@@ -162,7 +162,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:scaleType="centerCrop"
-                            android:src="@drawable/ic_create_black_24px" />
+                            app:srcCompat="@drawable/ic_create_black_24px" />
 
                         <ImageView
                             android:id="@+id/details_icon_favorite"
@@ -174,7 +174,7 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:src="@drawable/ic_favorite_border_black_24px" />
+                            app:srcCompat="@drawable/ic_favorite_border_black_24px" />
 
                         <ImageView
                             android:id="@+id/details_icon_share"
@@ -510,20 +510,39 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/details_position"
+                    <RelativeLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="2dp"
-                        android:layout_marginLeft="2dp"
-                        android:layout_marginTop="5dp"
-                        android:gravity="center"
-                        android:minLines="1"
-                        android:paddingLeft="5dp"
-                        android:singleLine="false"
-                        android:text="地点有关信息"
-                        android:textColor="#a1a1a1"
-                        android:textSize="14dp" />
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:id="@+id/details_position"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="2dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginTop="5dp"
+                            android:gravity="center"
+                            android:minLines="1"
+                            android:paddingLeft="5dp"
+                            android:singleLine="false"
+                            android:text="地点有关信息"
+                            android:textColor="#a1a1a1"
+                            android:textSize="14dp" />
+
+                        <ImageView
+                            android:id="@+id/details_edit_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:background="?attr/selectableItemBackgroundBorderless"
+                            android:clickable="true"
+                            android:focusable="true"
+                            android:src="@drawable/ic_edit_location_24px" />
+
+                    </RelativeLayout>
+
 
                     <TextView
                         android:id="@+id/details_location_name"
@@ -549,7 +568,7 @@
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
-                        android:text="location_name"
+                        android:text="location_address"
                         android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 
@@ -563,7 +582,7 @@
                         android:minLines="1"
                         android:paddingLeft="5dp"
                         android:singleLine="false"
-                        android:text="location_name"
+                        android:text="location_number"
                         android:textColor="#a1a1a1"
                         android:textSize="14dp" />
 

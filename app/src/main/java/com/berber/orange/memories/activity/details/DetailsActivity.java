@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AlphaAnimation;
 import android.widget.Button;
@@ -390,15 +391,14 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     editAnniversaryDescription.setText(anniversary.getDescription());
                     editAnniversaryDescription.setVisibility(View.VISIBLE);
                     mAnniversaryCancelEdit.setVisibility(View.VISIBLE);
-
                 } else {
                     //update database
                     String newDescription = editAnniversaryDescription.getText().toString();
-                    Log.e("TAG", newDescription);
                     anniversary.setDescription(newDescription);
                     anniversaryDao.update(anniversary);
                     mAnniversaryDescriptionTV.setText(newDescription);
                     Toast.makeText(this, "编辑成功", Toast.LENGTH_SHORT).show();
+                    mAnniversaryCancelEdit.setVisibility(View.GONE);
                     mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
                     isEditButtonClick = false;
                     editAnniversaryDescription.setVisibility(View.GONE);
@@ -435,6 +435,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -462,35 +471,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                         }
                     }).start();
                 }
-
-
-//                final List<Uri> mSelected = Matisse.obtainResult(data);
-//                if (!mSelected.isEmpty()) {
-//                    for (final Uri uri : mSelected) {
-
-//                        //save to local
-//                        final File file = ImageUtils.getFile(this, anniversaryId, "picture");
-//                        if (!file.exists()) {
-//                            try {
-//                                file.createNewFile();
-//                                new Thread(new Runnable() {
-//                                    @Override
-//                                    public void run() {
-//                                        try {
-//                                            ImageUtils.saveBitmap(DetailsActivity.this, uri, file);
-//                                        } catch (IOException e) {
-//                                            e.printStackTrace();
-//                                        }
-//
-//                                    }
-//                                }).start();
-//                            } catch (IOException e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//
-//                    }
-//                }
                 break;
 
 
@@ -529,7 +509,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                         index = i;
                     }
                 }
-                Log.e("TAG", String.valueOf(index));
                 Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
                 intent.putExtra("anniversaryId", anniversaryId);
                 intent.putExtra("currentId", index);
