@@ -134,6 +134,7 @@ public class ImageUtils {
             File[] files = file.listFiles();
             for (File child : files) {
                 list.add(child);
+
             }
         }
         return list;
