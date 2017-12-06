@@ -150,7 +150,8 @@
                             android:focusable="true"
                             android:scaleType="centerCrop"
                             android:visibility="gone"
-                            app:srcCompat="@drawable/ic_cancel_24px" />
+                            app:srcCompat="@drawable/ic_cancel_24px"
+                            android:tint="#a1a1a1"/>
 
                         <ImageView
                             android:id="@+id/details_edit_content"
@@ -162,7 +163,8 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/ic_create_black_24px" />
+                            app:srcCompat="@drawable/ic_create_black_24px"
+                            android:tint="#a1a1a1"/>
 
                         <ImageView
                             android:id="@+id/details_icon_favorite"
@@ -174,7 +176,8 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            app:srcCompat="@drawable/ic_favorite_border_black_24px" />
+                            app:srcCompat="@drawable/ic_favorite_border_black_24px"
+                            android:tint="#a1a1a1"/>
 
                         <ImageView
                             android:id="@+id/details_icon_share"
@@ -186,7 +189,8 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            android:src="@drawable/ic_menu_share" />
+                            android:src="@drawable/ic_menu_share"
+                            android:tint="#a1a1a1"/>
 
                     </RelativeLayout>
 
@@ -541,6 +545,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             app:srcCompat="@drawable/ic_edit_location_24px"
+                            android:tint="#a1a1a1"
                             />
 
                     </RelativeLayout>

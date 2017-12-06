@@ -375,7 +375,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
         //handle remind date
         if (isNotificationEnable) {
-            //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
             Date notificationDate = notificationTimeInCalendar.getTime();
             Log.e("TAG", notificationDate.toString());
             //setting a alarm

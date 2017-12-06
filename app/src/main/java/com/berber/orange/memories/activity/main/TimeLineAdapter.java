@@ -3,6 +3,7 @@ package com.berber.orange.memories.activity.main;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
@@ -15,6 +16,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
 import com.berber.orange.memories.model.db.Anniversary;
@@ -252,17 +255,27 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
-        Log.e("TAG", "onItemMove");
         Collections.swap(mDateSets, fromPosition, toPosition);
         notifyItemMoved(fromPosition, toPosition);
         return true;
     }
 
     @Override
-    public void onItemDismiss(int position) {
-      //  mDateSets.remove(position);
-       // notifyItemRemoved(position);
-notifyDataSetChanged();
+    public void onItemDismiss(final int position) {
+        new MaterialDialog.Builder(mContext)
+                .title("警告")
+                .content("此次行为将会删除这条纪念日，请在删除前做好备份工作. 是否确定删除")
+                .positiveText("OK")
+                .negativeText("Cancel")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        mDateSets.remove(position);
+                        notifyItemRemoved(position);
+                    }
+                })
+                .show();
+        notifyDataSetChanged();
         Log.e("TAG", "onItemDismiss");
     }
 
