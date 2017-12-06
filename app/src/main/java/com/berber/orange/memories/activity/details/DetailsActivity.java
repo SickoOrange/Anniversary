@@ -388,9 +388,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 if (!isEditButtonClick) {
                     mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_save_24px);
                     isEditButtonClick = true;
+                    mAnniversaryCancelEdit.setVisibility(View.VISIBLE);
                     editAnniversaryDescription.setText(anniversary.getDescription());
                     editAnniversaryDescription.setVisibility(View.VISIBLE);
-                    mAnniversaryCancelEdit.setVisibility(View.VISIBLE);
+                    //光标设置在末尾
+                    editAnniversaryDescription.setSelection(anniversary.getDescription().length());
+                    editAnniversaryDescription.requestFocus();
                 } else {
                     //update database
                     String newDescription = editAnniversaryDescription.getText().toString();
