@@ -108,16 +108,12 @@ public class GooglePlaceRequestHandler {
                         Bitmap bitmap = placePhotoMetadata.getPhoto(mGoogleApiClient).await().getBitmap();
                         attributedPhoto = new AttributedPhoto(attributions, bitmap);
                         list.add(attributedPhoto);
-                        final File file = ImageUtils.getFile(mTarget.get().getApplicationContext(), Long.valueOf(anniversaryId), "place");
-                        if (!file.exists()) {
-                            file.exists();
-                        }
+                        final File file = FileUtils.prepareFileForStorage(mTarget.get().getFilesDir() + "/place/anniversary_" + anniversaryId);
                         try {
                             ImageUtils.saveBitmap(mTarget.get().getApplicationContext(), bitmap, file);
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-
                     }
                 }
                 photoMetadata.release();

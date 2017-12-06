@@ -9,6 +9,7 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * ya yin
@@ -81,6 +82,19 @@ public class FileUtils {
                 }
             }
         }
+    }
+
+    public static File prepareFileForStorage(String path) {
+        File file = new File(path);
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        if (file.isDirectory()) {
+            String fileName = "anni_" + UUID.randomUUID() + ".png";
+            return new File(path, fileName);
+        }
+        return null;
     }
 
 }

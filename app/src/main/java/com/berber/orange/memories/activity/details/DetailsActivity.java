@@ -49,6 +49,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.function.ToDoubleBiFunction;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -136,17 +137,26 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
         if (!places.isEmpty()) {
             // updateGallery(placeFlowLayout, place);
-            setBannerResource(placePhotoBanner, places);
+            //setBannerResource(placePhotoBanner, places);
+            //banner设置方法全部调用完毕时最后调用
+            placePhotoBanner.update(places);
+            placePhotoBanner.start();
         } else {
             //do network request to get relative place image and save it into local storage
             mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), String.valueOf(anniversaryId));
         }
+
+
 
     }
 
 
     private void initAllWidget() {
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
+        //设置图片加载器
+        placePhotoBanner.setImageLoader(new DetailsGlideImageLoader());
+        placePhotoBanner.setDelayTime(2500);
+
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         imageFlowHint = findViewById(R.id.details_anni_image_flow_hint);
 
@@ -460,7 +470,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
                     //download new place photo, if already has old photos, then delete all old
                     FileUtils.deleteAllFile(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
-                    //mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), String.valueOf(anniversaryId));
+                    // TODO: 2017/12/6  update location, banner image update problem
+                    mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), String.valueOf(anniversaryId));
                 }
                 break;
 
@@ -510,25 +521,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     }
 
     public void setBannerResource(Banner banner, List<File> images) {
-        banner.stopAutoPlay();
-
+        // banner.stopAutoPlay();
         if (images.isEmpty()) {
             detailsLocationRequestPhotoHint.setText("很遗憾,我们并没有找到有关次地点的相关图片.");
         } else {
             detailsLocationRequestPhotoHint.setText("我们为你找到了一些关于此地点的有趣图片:");
         }
 
-        // banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
-
-        //设置图片加载器
-        banner.setImageLoader(new DetailsGlideImageLoader());
-
         //设置图片集合
-        // banner.setImages(images);
         banner.update(images);
-        //banner设置方法全部调用完毕时最后调用
-        banner.setDelayTime(2500);
-        banner.start();
     }
 
 

@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * ya yin
@@ -160,7 +161,7 @@ public class ImageUtils {
             File[] listFiles = obj.listFiles();
             length = listFiles.length;
         }
-        String fileName = "anni_" + length + ".png";
+        String fileName = "anni_" + UUID.randomUUID() + ".png";
         File targetFile = new File(fileParent, fileName);
         return targetFile;
     }
