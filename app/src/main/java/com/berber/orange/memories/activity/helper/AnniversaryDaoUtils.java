@@ -18,7 +18,6 @@ import java.util.List;
 
 public class AnniversaryDaoUtils {
 
-    private Anniversary anniversary;
     private AnniversaryDao anniversaryDao;
     private final NotificationSendingDao notificationSendingDao;
     private final GoogleLocationDao googleLocationDao;
@@ -30,7 +29,7 @@ public class AnniversaryDaoUtils {
         googleLocationDao = daoSession.getGoogleLocationDao();
     }
 
-    private Anniversary getAnniversary(Long id) {
+    public Anniversary getAnniversary(Long id) {
         List<Anniversary> list = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(id)).list();
         if (list.size() != 1) {
             throw new IllegalArgumentException("getAnnivesary() list count must equal 1");
@@ -57,10 +56,6 @@ public class AnniversaryDaoUtils {
         googleLocationDao.update(googleLocation);
     }
 
-
-    public Anniversary getAnniversary() {
-        return anniversary;
-    }
 
     public AnniversaryDao getAnniversaryDao() {
         return anniversaryDao;
