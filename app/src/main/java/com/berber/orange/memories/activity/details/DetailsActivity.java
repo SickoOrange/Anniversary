@@ -198,12 +198,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
         if (anniversaryList.size() == 1) {
             anniversary = anniversaryList.get(0);
-            googleApiClient = new GoogleApiClient
-                    .Builder(this)
-                    .addApi(Places.GEO_DATA_API)
-                    .addApi(Places.PLACE_DETECTION_API)
-                    .enableAutoManage(this, this)
-                    .build();
+
             updateUI(anniversary);
 
             //update image flow layout
@@ -226,7 +221,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             } else {
                 //do network request to get relative place image and save it into local storage
                 GoogleLocation googleLocation = anniversary.getGoogleLocation();
-                doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
+                // doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
+                mGooglePlaceRequestHandler.doPlacePhotoRequest(this, googleLocation.getPlaceId(), String.valueOf(anniversaryId));
             }
 
         }
@@ -521,25 +517,25 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         layout.addView(imageView);
     }
 
-    @SuppressLint("StaticFieldLeak")
-    private void doPlacePhotoRequest(String placeId, GoogleApiClient googleApiClient) {
-        new PlacePhotoTask(DetailsActivity.this, googleApiClient) {
-            @Override
-            protected void onPreExecute() {
-                // TODO: 2017/11/25  do some loading prepare work
-            }
-
-            @Override
-            protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
-                //download finish update place
-                List<File> places = ImageUtils.readImages(DetailsActivity.this.getFilesDir() + "/place/anniversary_" + anniversaryId);
-                //if (!places.isEmpty()) {
-                // updateGallery(placeFlowLayout, place);
-                setBannerImageLoader(placePhotoBanner, places);
-                //}
-            }
-        }.execute(placeId, String.valueOf(anniversaryId));
-    }
+//    @SuppressLint("StaticFieldLeak")
+//    private void doPlacePhotoRequest(String placeId, GoogleApiClient googleApiClient) {
+//        new PlacePhotoTask(DetailsActivity.this, googleApiClient) {
+//            @Override
+//            protected void onPreExecute() {
+//                // TODO: 2017/11/25  do some loading prepare work
+//            }
+//
+//            @Override
+//            protected void onPostExecute(List<AttributedPhoto> attributedPhotos) {
+//                //download finish update place
+//                List<File> places = ImageUtils.readImages(DetailsActivity.this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+//                //if (!places.isEmpty()) {
+//                // updateGallery(placeFlowLayout, place);
+//                setBannerImageLoader(placePhotoBanner, places);
+//                //}
+//            }
+//        }.execute(placeId, String.valueOf(anniversaryId));
+//    }
 
     public void setBannerImageLoader(Banner banner, List<File> images) {
 
@@ -560,69 +556,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         banner.start();
     }
 
-    static class PlacePhotoTask extends AsyncTask<String, Void, List<PlacePhotoTask.AttributedPhoto>> {
 
-        private final WeakReference<DetailsActivity> mTarget;
-
-        private GoogleApiClient mGoogleApiClient;
-
-        public PlacePhotoTask(DetailsActivity activity, GoogleApiClient GoogleApiClient) {
-            mTarget = new WeakReference<>(activity);
-            this.mGoogleApiClient = GoogleApiClient;
-        }
-
-        @Override
-        protected List<PlacePhotoTask.AttributedPhoto> doInBackground(String... strings) {
-            if (strings.length != 2) {
-                return null;
-            }
-
-            //get place id
-            final String placeId = strings[0];
-            final String anniversaryId = strings[1];
-            Log.e("TAG", placeId);
-
-            AttributedPhoto attributedPhoto = null;
-
-            PlacePhotoMetadataResult result = Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, placeId).await();
-            List<AttributedPhoto> list = new ArrayList<>();
-            if (result.getStatus().isSuccess()) {
-                PlacePhotoMetadataBuffer photoMetadata = result.getPhotoMetadata();
-                if (photoMetadata.getCount() > 0 && !isCancelled()) {
-
-                    int count = photoMetadata.getCount();
-                    for (int i = 0; i < count; i++) {
-                        PlacePhotoMetadata placePhotoMetadata = photoMetadata.get(i);
-                        CharSequence attributions = placePhotoMetadata.getAttributions();
-                        Bitmap bitmap = placePhotoMetadata.getPhoto(mGoogleApiClient).await().getBitmap();
-                        attributedPhoto = new AttributedPhoto(attributions, bitmap);
-                        list.add(attributedPhoto);
-                        final File file = ImageUtils.getFile(mTarget.get().getApplicationContext(), Long.valueOf(anniversaryId), "place");
-                        if (!file.exists()) {
-                            file.exists();
-                        }
-                        try {
-                            ImageUtils.saveBitmap(mTarget.get().getApplicationContext(), bitmap, file);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-
-                    }
-                }
-                photoMetadata.release();
-            }
-            return list;
-        }
-
-        class AttributedPhoto {
-            final CharSequence attribution;
-            final Bitmap bitmap;
-
-            AttributedPhoto(CharSequence attribution, Bitmap bitmap) {
-                this.attribution = attribution;
-                this.bitmap = bitmap;
-            }
-        }
+    public void setPlacePhotoBanner() {
+        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+        setBannerImageLoader(placePhotoBanner, places);
     }
-
 }

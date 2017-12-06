@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.GooglePlaceRequestHandler;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.model.db.Anniversary;
@@ -64,8 +65,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
     private static final int HOME_ITEM_SIZE = 10;
 
-    private static final int REQUEST_PLACE_CODE = 9002;
-    private static final int PLACE_PICKER_REQUEST = 1;
+    private static final int PLACE_PICKER_REQUEST = 2000;
 
 
     private ViewPager viewPager;
@@ -92,6 +92,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private GoogleLocationDao googleLocationDao;
     public static final String INTENT_ALARM_LOG = "intent_alarm_log";
     private AlarmManager alarmManager;
+    private GooglePlaceRequestHandler googlePlaceRequestHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -118,6 +119,8 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 .addApi(Places.PLACE_DETECTION_API)
                 .enableAutoManage(this, this)
                 .build();
+
+        googlePlaceRequestHandler = new GooglePlaceRequestHandler(mGoogleApiClient);
 
         initAnniversaryTypeData();
         initView();
@@ -324,24 +327,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
             case R.id.anniversary_add_anni_location:
                 //open new activity for pick a place
-                openPickerPlaceDialog();
+                //openPickerPlaceDialog();
+                googlePlaceRequestHandler.openPickerPlaceDialog(this, PLACE_PICKER_REQUEST);
                 break;
 
         }
     }
-
-    private void openPickerPlaceDialog() {
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-        try {
-            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-    }
-
     private void writeInfo() {
         ModelAnniversaryTypeDTO currentImageResource = getCurrentTypeResource();
         if (currentImageResource == null) {
@@ -360,83 +351,83 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             alertWarningDialog("请选择一个日期");
             return;
         }
-            if (googleLocation == null) {
-                alertWarningDialog("请选择一个地点");
-                return;
-            }
+        if (googleLocation == null) {
+            alertWarningDialog("请选择一个地点");
+            return;
+        }
 
-            //save all information into entity
-            Anniversary anniversary = new Anniversary();
+        //save all information into entity
+        Anniversary anniversary = new Anniversary();
 
-            //handle anniversary title
-            anniversary.setTitle(anniversaryTitle);
+        //handle anniversary title
+        anniversary.setTitle(anniversaryTitle);
 
-            //handle pick date
-            anniversary.setDate(currentPickDate);
+        //handle pick date
+        anniversary.setDate(currentPickDate);
 
-            //handle create Date
-            DateTime dateTime = DateTime.now(DateTimeZone.UTC);
-            anniversary.setCreateDate(dateTime.toDate());
+        //handle create Date
+        DateTime dateTime = DateTime.now(DateTimeZone.UTC);
+        anniversary.setCreateDate(dateTime.toDate());
 
-            //handle description
-            String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
-            anniversary.setDescription(anniversaryDescription);
+        //handle description
+        String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
+        anniversary.setDescription(anniversaryDescription);
 
-            long anniversaryId = anniversaryDao.insert(anniversary);
+        long anniversaryId = anniversaryDao.insert(anniversary);
 
-            //handle remind date
-            if (isNotificationEnable) {
-                //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
-                Date notificationDate = notificationTimeInCalendar.getTime();
-                Log.e("TAG", notificationDate.toString());
-                //setting a alarm
-                //setupAlarm(notificationDate);
-                NotificationSending notificationSending = new NotificationSending();
-                notificationSending.setSendingDate(notificationDate);
-                notificationSending.setRecipient("heylbly@gmail.com");
-                notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
+        //handle remind date
+        if (isNotificationEnable) {
+            //Date notificationDate = calculateAnniversaryNotificationDate(currentPickDate, notificationTimeInCalendar);
+            Date notificationDate = notificationTimeInCalendar.getTime();
+            Log.e("TAG", notificationDate.toString());
+            //setting a alarm
+            //setupAlarm(notificationDate);
+            NotificationSending notificationSending = new NotificationSending();
+            notificationSending.setSendingDate(notificationDate);
+            notificationSending.setRecipient("heylbly@gmail.com");
+            notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
 
-                notificationSending.setAnniversaryId(anniversaryId);
-                notificationSending.setAnniversary(anniversary);
-                long notificationSendingId = notificationSendingDao.insert(notificationSending);
-                anniversary.setNotificationSending(notificationSending);
-                anniversary.setNotificationSendingId(notificationSendingId);
-                anniversaryDao.update(anniversary);
-                isNotificationEnable = false;
-            }
-
-
-            //handle anniversaryType
-            ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
-            modelAnniversaryType.setName(currentImageResource.getName());
-            modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
-            long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
-
-            anniversary.setModelAnniversaryType(modelAnniversaryType);
-            anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
+            notificationSending.setAnniversaryId(anniversaryId);
+            notificationSending.setAnniversary(anniversary);
+            long notificationSendingId = notificationSendingDao.insert(notificationSending);
+            anniversary.setNotificationSending(notificationSending);
+            anniversary.setNotificationSendingId(notificationSendingId);
             anniversaryDao.update(anniversary);
+            isNotificationEnable = false;
+        }
 
 
-            //handle location information
+        //handle anniversaryType
+        ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
+        modelAnniversaryType.setName(currentImageResource.getName());
+        modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
+        long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
 
-            googleLocation.setAnniversary(anniversary);
-            googleLocation.setAnniversaryId(anniversaryId);
-            long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
-            anniversary.setGoogleLocation(googleLocation);
-            anniversary.setGoogleLocationId(insertGoogleLocationId);
-            anniversaryDao.update(anniversary);
-            googleLocation = null;
+        anniversary.setModelAnniversaryType(modelAnniversaryType);
+        anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
+        anniversaryDao.update(anniversary);
 
-            //create folder to cache files
-            File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
-            if (!file.exists()) {
-                file.mkdirs();
-            }
 
-            Intent intent = new Intent();
-            intent.putExtra("obj", anniversary);
-            setResult(REQUEST_NEW_ITEM, intent);
-            finish();
+        //handle location information
+
+        googleLocation.setAnniversary(anniversary);
+        googleLocation.setAnniversaryId(anniversaryId);
+        long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
+        anniversary.setGoogleLocation(googleLocation);
+        anniversary.setGoogleLocationId(insertGoogleLocationId);
+        anniversaryDao.update(anniversary);
+        googleLocation = null;
+
+        //create folder to cache files
+        File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
+        if (!file.exists()) {
+            file.mkdirs();
+        }
+
+        Intent intent = new Intent();
+        intent.putExtra("obj", anniversary);
+        setResult(REQUEST_NEW_ITEM, intent);
+        finish();
     }
 
     private ModelAnniversaryTypeDTO getCurrentTypeResource() {
@@ -596,7 +587,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 googleLocation.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
                 googleLocation.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
                 googleLocation.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
-                //set location label
             }
         }
     }

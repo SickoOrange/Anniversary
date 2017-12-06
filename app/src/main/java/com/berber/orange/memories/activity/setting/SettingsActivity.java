@@ -20,7 +20,6 @@ import android.text.TextUtils;
 import android.view.MenuItem;
 
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.AppCompatPreferenceActivity;
 
 import java.util.List;
 

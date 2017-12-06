@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.setting;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
