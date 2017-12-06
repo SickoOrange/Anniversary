@@ -50,7 +50,7 @@ public class GooglePlaceRequestHandler {
 
     }
 
-    private static class PlacePhotoRequest extends AsyncTask<String, Void, List<PlacePhotoRequest.AttributedPhoto>> {
+    private static class PlacePhotoRequest extends AsyncTask<String, Integer, List<PlacePhotoRequest.AttributedPhoto>> {
 
         private final WeakReference<AppCompatActivity> mTarget;
 
@@ -65,7 +65,11 @@ public class GooglePlaceRequestHandler {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            Log.e("TAG", "onPreExecute");
+            if (mTarget.get() instanceof DetailsActivity) {
+                DetailsActivity detailsActivity = (DetailsActivity) mTarget.get();
+                detailsActivity.startLoading();
+            }
         }
 
         @Override
@@ -75,12 +79,13 @@ public class GooglePlaceRequestHandler {
             if (mTarget.get() instanceof DetailsActivity) {
                 DetailsActivity detailsActivity = (DetailsActivity) mTarget.get();
                 detailsActivity.setPlacePhotoBanner();
+                detailsActivity.finishLoading();
             }
             Log.e("TAG", "download google location task finish");
         }
 
         @Override
-        protected void onProgressUpdate(Void... values) {
+        protected void onProgressUpdate(Integer... values) {
             super.onProgressUpdate(values);
         }
 

@@ -149,9 +149,9 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:scaleType="centerCrop"
+                            android:tint="#a1a1a1"
                             android:visibility="gone"
-                            app:srcCompat="@drawable/ic_cancel_24px"
-                            android:tint="#a1a1a1"/>
+                            app:srcCompat="@drawable/ic_cancel_24px" />
 
                         <ImageView
                             android:id="@+id/details_edit_content"
@@ -163,8 +163,8 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:scaleType="centerCrop"
-                            app:srcCompat="@drawable/ic_create_black_24px"
-                            android:tint="#a1a1a1"/>
+                            android:tint="#a1a1a1"
+                            app:srcCompat="@drawable/ic_create_black_24px" />
 
                         <ImageView
                             android:id="@+id/details_icon_favorite"
@@ -176,8 +176,8 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            app:srcCompat="@drawable/ic_favorite_border_black_24px"
-                            android:tint="#a1a1a1"/>
+                            android:tint="#a1a1a1"
+                            app:srcCompat="@drawable/ic_favorite_border_black_24px" />
 
                         <ImageView
                             android:id="@+id/details_icon_share"
@@ -190,7 +190,7 @@
                             android:clickable="true"
                             android:focusable="true"
                             android:src="@drawable/ic_menu_share"
-                            android:tint="#a1a1a1"/>
+                            android:tint="#a1a1a1" />
 
                     </RelativeLayout>
 
@@ -515,9 +515,9 @@
                     android:orientation="vertical">
 
                     <RelativeLayout
-                        android:layout_marginTop="5dp"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5dp">
 
                         <TextView
                             android:id="@+id/details_position"
@@ -544,9 +544,8 @@
                             android:background="?attr/selectableItemBackgroundBorderless"
                             android:clickable="true"
                             android:focusable="true"
-                            app:srcCompat="@drawable/ic_edit_location_24px"
                             android:tint="#a1a1a1"
-                            />
+                            app:srcCompat="@drawable/ic_edit_location_24px" />
 
                     </RelativeLayout>
 
@@ -608,12 +607,21 @@
                         android:textSize="14dp" />
 
 
+                    <com.victor.loading.book.BookLoading
+                        android:id="@+id/details_place_loading"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_centerInParent="true"
+                        android:layout_gravity="center"
+                        android:visibility="gone" />
+
                     <com.youth.banner.Banner
                         android:id="@+id/details_place_photo_banner"
                         android:layout_width="match_parent"
                         android:layout_height="250dp"
                         android:layout_margin="3dp"
                         android:elevation="5dp" />
+
                 </LinearLayout>
             </android.support.v7.widget.CardView>
         </LinearLayout>

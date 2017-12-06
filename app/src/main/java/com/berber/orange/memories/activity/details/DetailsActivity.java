@@ -33,6 +33,7 @@ import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.victor.loading.book.BookLoading;
 import com.youth.banner.Banner;
 import com.zhihu.matisse.Matisse;
 
@@ -89,6 +90,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private EditText editAnniversaryDescription;
     private ImageView mAnniversaryCancelEdit;
     private Anniversary anniversary;
+    private BookLoading bookLoading;
 
     @Override
     protected int setLayoutId() {
@@ -147,11 +149,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
 
 
-
     }
 
 
     private void initAllWidget() {
+
+        bookLoading = findViewById(R.id.details_place_loading);
+        bookLoading.start();
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
         //设置图片加载器
         placePhotoBanner.setImageLoader(new DetailsGlideImageLoader());
@@ -538,4 +542,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         setBannerResource(placePhotoBanner, places);
     }
 
+    public void startLoading() {
+        bookLoading.start();
+        bookLoading.setVisibility(View.VISIBLE);
+    }
+
+    public void finishLoading() {
+        bookLoading.stop();
+        bookLoading.setVisibility(View.GONE);
+    }
 }

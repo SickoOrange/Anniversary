@@ -59,6 +59,7 @@ public class ImageUtils {
             file.delete();
         }
         Log.e("TAG", "Finish");
+
     }
 
 
