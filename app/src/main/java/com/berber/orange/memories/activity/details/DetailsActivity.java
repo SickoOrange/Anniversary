@@ -2,6 +2,7 @@ package com.berber.orange.memories.activity.details;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -49,6 +50,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -62,7 +64,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private boolean isFavoriteClick;
 
     private Banner placePhotoBanner;
-    private GoogleApiClient googleApiClient;
     private TextView mLocationNameTV;
     private TextView mLocationAddressTV;
     private TextView mLocationNumberTV;
@@ -82,8 +83,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private ImageView favoriteButton;
     private AlphaAnimation alphaAnimationIcon;
 
-    private static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 45;
-    private int DETAILS_REQUEST_PICK_IMAGE_PERM = 109;
+
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
     private TextView imageFlowHint;
@@ -389,7 +389,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.details_icon_favorite:
-                System.out.println("click");
                 if (!isFavoriteClick) {
                     favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
                     anniversary.setFavorite(true);
@@ -404,17 +403,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 break;
             case R.id.details_add_image_btn:
                 if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    MatisseImagePicker.open(DetailsActivity.this, DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE);
+                    MatisseImagePicker.open(DetailsActivity.this, Constant.DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE);
                 } else {
                     EasyPermissions.requestPermissions(
                             this,
                             "Pick Image",
-                            DETAILS_REQUEST_PICK_IMAGE_PERM,
+                            Constant.DETAILS_REQUEST_PICK_IMAGE_PERM,
                             android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                             android.Manifest.permission.READ_EXTERNAL_STORAGE
                     );
-                    break;
                 }
+                break;
 
             case R.id.details_edit_location:
                 mGooglePlaceRequestHandler.openPickerPlaceDialog(this, Constant.PLACE_PICKER_REQUEST);
@@ -435,7 +434,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
-            case DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE:
+            case Constant.DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE:
                 if (data == null) {
                     return;
                 }
@@ -467,16 +466,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     String toastMsg = String.format("Place: %s", place.getName() + "/n" + place.getAddress() + "/n" + place.getPhoneNumber());
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
 
-                    //update googlelocation into database
+                    //update google location into database
                     anniversaryDaoUtils.updateGoogleLocationTable(place, anniversaryId);
 
                     // TODO: 2017/12/6 update location label
 
-                    //download new place photo
-                    //if already has old photos, then delete all old
-                    FileUtils.deleteAllFile(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
-                    //   mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), String.valueOf(anniversaryId));
 
+                    //download new place photo, if already has old photos, then delete all old
+                    FileUtils.deleteAllFile(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+                    //mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), String.valueOf(anniversaryId));
                 }
                 break;
 

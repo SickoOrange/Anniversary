@@ -65,7 +65,6 @@ public class GooglePlaceRequestHandler {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-            //to some progress work when ready get place image
 
         }
 
