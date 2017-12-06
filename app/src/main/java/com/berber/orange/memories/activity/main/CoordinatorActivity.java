@@ -31,7 +31,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.MatisseImagePicker;
+import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
 import com.berber.orange.memories.activity.setting.SettingsActivity;

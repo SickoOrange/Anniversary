@@ -10,6 +10,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.berber.orange.memories.APP;
+import com.berber.orange.memories.activity.helper.AnniversaryDaoUtils;
+import com.berber.orange.memories.activity.helper.GooglePlaceRequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
@@ -29,8 +32,9 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
     protected String parentPath;
-    public GoogleApiClient mGoogleApiClient;
-    public GooglePlaceRequestHandler mGooglePlaceRequestHandler;
+    protected GoogleApiClient mGoogleApiClient;
+    protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
+    protected AnniversaryDaoUtils anniversaryDaoUtils;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -43,6 +47,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
                 .enableAutoManage(this, this)
                 .build();
         mGooglePlaceRequestHandler = new GooglePlaceRequestHandler(mGoogleApiClient);
+
+        anniversaryDaoUtils = new AnniversaryDaoUtils((APP) getApplication());
         initView();
         // init immersion bar
         if (isImmersionBarEnabled()) {

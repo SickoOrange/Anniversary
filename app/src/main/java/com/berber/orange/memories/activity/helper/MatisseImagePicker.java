@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.helper;
 
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;

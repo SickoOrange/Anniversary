@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.helper;
 
 import android.util.Log;
 
@@ -58,7 +58,7 @@ public class FileUtils {
     public static List<File> readImages(String path) {
         List<File> list = new ArrayList<>();
         File file = new File(path);
-        if (file.exists()) {
+        if (file.exists() && file.isDirectory()) {
             File[] files = file.listFiles();
             for (File child : files) {
                 list.add(child);
@@ -66,6 +66,21 @@ public class FileUtils {
             }
         }
         return list;
+    }
+
+    public static void deleteAllFile(String path) {
+        File file = new File(path);
+        if (file.exists() && file.isDirectory()) {
+            File[] files = file.listFiles();
+            if (files.length == 0) {
+                return;
+            }
+            for (File child : files) {
+                if (child.delete()) {
+                    Log.e("TAG", "delete file " + child.getAbsolutePath());
+                }
+            }
+        }
     }
 
 }

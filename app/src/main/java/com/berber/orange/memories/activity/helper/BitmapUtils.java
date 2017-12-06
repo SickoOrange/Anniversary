@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.helper;
 
 import android.content.Context;
 import android.graphics.Bitmap;

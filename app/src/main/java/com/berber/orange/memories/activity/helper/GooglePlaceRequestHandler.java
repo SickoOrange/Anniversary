@@ -1,8 +1,9 @@
-package com.berber.orange.memories.activity;
+package com.berber.orange.memories.activity.helper;
 
 import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 
 import com.berber.orange.memories.activity.details.DetailsActivity;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -76,6 +77,7 @@ public class GooglePlaceRequestHandler {
                 DetailsActivity detailsActivity = (DetailsActivity) mTarget.get();
                 detailsActivity.setPlacePhotoBanner();
             }
+            Log.e("TAG", "download google location task finish");
         }
 
         @Override

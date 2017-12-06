@@ -27,7 +27,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.GooglePlaceRequestHandler;
+import com.berber.orange.memories.activity.helper.Constant;
+import com.berber.orange.memories.activity.helper.GooglePlaceRequestHandler;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.model.db.Anniversary;
@@ -40,8 +41,6 @@ import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
@@ -64,8 +63,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class AddItemActivity extends AppCompatActivity implements View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     private static final int HOME_ITEM_SIZE = 10;
-
-    private static final int PLACE_PICKER_REQUEST = 2000;
 
 
     private ViewPager viewPager;
@@ -328,11 +325,12 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             case R.id.anniversary_add_anni_location:
                 //open new activity for pick a place
                 //openPickerPlaceDialog();
-                googlePlaceRequestHandler.openPickerPlaceDialog(this, PLACE_PICKER_REQUEST);
+                googlePlaceRequestHandler.openPickerPlaceDialog(this, Constant.PLACE_PICKER_REQUEST);
                 break;
 
         }
     }
+
     private void writeInfo() {
         ModelAnniversaryTypeDTO currentImageResource = getCurrentTypeResource();
         if (currentImageResource == null) {
@@ -571,7 +569,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == PLACE_PICKER_REQUEST) {
+        if (requestCode == Constant.PLACE_PICKER_REQUEST) {
             if (resultCode == RESULT_OK) {
                 Place place = PlacePicker.getPlace(data, this);
                 Log.e("TAG", place.getId());
