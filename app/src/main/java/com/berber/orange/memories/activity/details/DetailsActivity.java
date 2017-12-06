@@ -2,7 +2,6 @@ package com.berber.orange.memories.activity.details;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
@@ -26,13 +25,11 @@ import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
 import com.berber.orange.memories.activity.helper.FileUtils;
 import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.GoogleLocation;
 import com.berber.orange.memories.model.db.NotificationSending;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.numberprogressbar.NumberProgressBar;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
@@ -50,7 +47,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -81,20 +77,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
     private TextView mNotificationHint;
     private TextView detailsLocationRequestPhotoHint;
     private ImageView favoriteButton;
-    private AlphaAnimation alphaAnimationIcon;
 
 
     private FlowLayout imageFlowLayout;
     private Long anniversaryId;
     private TextView imageFlowHint;
-    private Anniversary anniversary;
     private Intent intent;
-    private ImageView mAnniversaryDecriptionEditBtn;
+    private ImageView mAnniversaryDescriptionEditBtn;
     private boolean isEditButtonClick;
     private EditText editAnniversaryDescription;
     private ImageView mAnniversaryCancelEdit;
-    private ImageView mUpdateCurrentLocation;
-    private GoogleLocation googleLocation;
+    private Anniversary anniversary;
 
     @Override
     protected int setLayoutId() {
@@ -121,14 +114,39 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-
         anniversaryId = intent.getLongExtra("anniversaryId", 0);
-        AnniversaryDao anniversaryDao = anniversaryDaoUtils.getAnniversaryDao();
-        List<Anniversary> anniversaryList = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversaryId)).list();
+        //AnniversaryDao anniversaryDao = anniversaryDaoUtils.getAnniversaryDao();
+        anniversary = anniversaryDaoUtils.getAnniversary(anniversaryId);
+
+        initAllWidget();
+        updateUI(anniversary);
+
+        //update image flow layout
+        List<File> images = FileUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversaryId);
+        if (!images.isEmpty()) {
+            imageFlowHint.setText("你在过去为此事件添加了如下照片:");
+            for (int i = 0; i < images.size(); i++) {
+                updateGallery(imageFlowLayout, images.get(i));
+            }
+        } else {
+            imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
+        }
+
+        //update place banner
+        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+        if (!places.isEmpty()) {
+            // updateGallery(placeFlowLayout, place);
+            setBannerResource(placePhotoBanner, places);
+        } else {
+            //do network request to get relative place image and save it into local storage
+            mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), String.valueOf(anniversaryId));
+        }
+
+    }
 
 
+    private void initAllWidget() {
         placePhotoBanner = findViewById(R.id.details_place_photo_banner);
-
         detailsAnniProgressbar = findViewById(R.id.details_anni_progressbar);
         imageFlowHint = findViewById(R.id.details_anni_image_flow_hint);
 
@@ -153,8 +171,8 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mAnniversaryDescriptionTV = findViewById(R.id.details_anni_description);
         mAnniversaryTypeIV = findViewById(R.id.details_anni_type);
 
-        mAnniversaryDecriptionEditBtn = findViewById(R.id.details_edit_content);
-        mAnniversaryDecriptionEditBtn.setOnClickListener(this);
+        mAnniversaryDescriptionEditBtn = findViewById(R.id.details_edit_content);
+        mAnniversaryDescriptionEditBtn.setOnClickListener(this);
 
         mAnniversaryCancelEdit = findViewById(R.id.details_cancel_content);
         mAnniversaryCancelEdit.setOnClickListener(this);
@@ -163,7 +181,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         mLocationAddressTV = findViewById(R.id.details_location_address);
         mLocationNumberTV = findViewById(R.id.details_location_number);
 
-        mUpdateCurrentLocation = findViewById(R.id.details_edit_location);
+        ImageView mUpdateCurrentLocation = findViewById(R.id.details_edit_location);
         mUpdateCurrentLocation.setOnClickListener(this);
 
         detailsLocationRequestPhotoHint = findViewById(R.id.details_location_request_photo_hint);
@@ -172,46 +190,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         detailsAddImageButton.setOnClickListener(this);
         favoriteButton = findViewById(R.id.details_icon_favorite);
         favoriteButton.setOnClickListener(this);
-        alphaAnimationIcon = new AlphaAnimation(0.2f, 1.0f);
+        AlphaAnimation alphaAnimationIcon = new AlphaAnimation(0.2f, 1.0f);
         alphaAnimationIcon.setDuration(500);
 
         ImageView detailsImageContent = findViewById(R.id.details_image_content);
 
         Glide.with(this).load(R.drawable.backgroud4).into(detailsImageContent);
-
-        if (anniversaryList.size() == 1) {
-            anniversary = anniversaryList.get(0);
-
-
-            updateUI(anniversary);
-
-            //update image flow layout
-            List<File> images = FileUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getId());
-            if (!images.isEmpty()) {
-                imageFlowHint.setText("你在过去为此事件添加了如下照片:");
-
-                for (int i = 0; i < images.size(); i++) {
-                    updateGallery(imageFlowLayout, images.get(i));
-                }
-            } else {
-                imageFlowHint.setText("是否尝试添加照片来记录你的回忆....");
-            }
-
-            //update place flow layout
-            List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversary.getId());
-            if (!places.isEmpty()) {
-                // updateGallery(placeFlowLayout, place);
-                setBannerResource(placePhotoBanner, places);
-            } else {
-                //do network request to get relative place image and save it into local storage
-
-                // doPlacePhotoRequest(googleLocation.getPlaceId(), googleApiClient);
-                mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), String.valueOf(anniversaryId));
-            }
-
-        }
-
-
     }
 
     private void updateUI(Anniversary anniversary) {
@@ -364,12 +348,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             case R.id.details_cancel_content:
                 editAnniversaryDescription.setVisibility(View.GONE);
                 mAnniversaryCancelEdit.setVisibility(View.GONE);
-                mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
+                mAnniversaryDescriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
                 isEditButtonClick = false;
                 break;
             case R.id.details_edit_content:
                 if (!isEditButtonClick) {
-                    mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_save_24px);
+                    mAnniversaryDescriptionEditBtn.setImageResource(R.drawable.ic_save_24px);
                     isEditButtonClick = true;
                     mAnniversaryCancelEdit.setVisibility(View.VISIBLE);
                     editAnniversaryDescription.setText(anniversary.getDescription());
@@ -385,7 +369,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     mAnniversaryDescriptionTV.setText(newDescription);
                     Toast.makeText(this, "编辑成功", Toast.LENGTH_SHORT).show();
                     mAnniversaryCancelEdit.setVisibility(View.GONE);
-                    mAnniversaryDecriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
+                    mAnniversaryDescriptionEditBtn.setImageResource(R.drawable.ic_create_black_24px);
                     isEditButtonClick = false;
                     editAnniversaryDescription.setVisibility(View.GONE);
                 }
