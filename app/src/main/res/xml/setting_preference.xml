@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <PreferenceCategory
+        android:title="封面设置">
+        <CheckBoxPreference
+            android:key="checkbox_preference"
+            android:title="来吃吃"
+            android:summary="今晚不吃鸡" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="dialog_based_preferences">
+
+        <EditTextPreference
+            android:key="edittext_preference1"
+            android:title="title_edittext_preference2"
+            android:summary="summary_edittext_preference3"
+            android:dialogTitle="/dialog_title_edittext_preference4" />
+
+
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

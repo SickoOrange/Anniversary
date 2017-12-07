@@ -64,7 +64,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:layout_below="@id/anniversary_add_type_vp"
-                android:background="@color/white"
+                android:background="#ffffff"
                 android:gravity="center"
                 android:orientation="horizontal" />
 
@@ -75,16 +75,16 @@
                 android:layout_below="@id/my_indicator_container"
                 android:layout_marginTop="5dp"
                 android:padding="5dp"
-                android:background="@color/white">
+                android:background="#ffffff">
 
                 <ImageView
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="#ffffff"
                     android:scaleType="center"
-                    android:src="@drawable/ic_label_black_18px" />
+                    app:srcCompat="@drawable/ic_label_black_18px" />
 
                 <EditText
                     android:id="@+id/anniversary_add_anni_title"
@@ -115,7 +115,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="#ffffff"
                     android:scaleType="center"
                     android:src="@drawable/ic_date_range_black_18dp" />
 
@@ -147,7 +147,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="#ffffff"
                     android:scaleType="center"
                     android:src="@drawable/ic_place_black_18dp" />
 
@@ -170,7 +170,7 @@
                     <!--android:layout_height="match_parent"-->
                     <!--android:layout_marginRight="10dp"-->
                     <!--android:layout_weight="1"-->
-                    <!--android:background="@color/white"-->
+                    <!--android:background="#ffffff"-->
                     <!--android:checked="false" />-->
 
             </LinearLayout>
@@ -189,7 +189,7 @@
                     android:layout_height="match_parent"
                     android:layout_gravity="center"
                     android:layout_weight="1"
-                    android:background="@color/white"
+                    android:background="#ffffff"
                     android:scaleType="center"
                     android:src="@drawable/ic_access_alarms_black_18dp" />
 
@@ -226,7 +226,7 @@
                     <!--android:layout_height="match_parent"-->
                     <!--android:layout_marginRight="10dp"-->
                     <!--android:layout_weight="1"-->
-                    <!--android:background="@color/white"-->
+                    <!--android:background="#ffffff"-->
                     <!--android:checked="false" />-->
 
             </LinearLayout>

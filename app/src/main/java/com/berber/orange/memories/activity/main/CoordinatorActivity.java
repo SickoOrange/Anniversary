@@ -34,7 +34,7 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
-import com.berber.orange.memories.activity.setting.SettingsActivity;
+import com.berber.orange.memories.activity.setting.SettingActivity;
 import com.berber.orange.memories.model.db.Anniversary;
 import com.berber.orange.memories.model.db.AnniversaryDao;
 import com.berber.orange.memories.model.db.DaoSession;
@@ -269,7 +269,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         if (id == R.id.nav_anniversary) {
             // Handle the camera action
         } else if (id == R.id.nav_setting) {
-            startActivity(new Intent(this, SettingsActivity.class));
+            startActivity(new Intent(this, SettingActivity.class));
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {

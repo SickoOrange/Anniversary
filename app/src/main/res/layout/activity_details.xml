@@ -250,7 +250,7 @@
                         android:background="@null"
                         android:padding="2dp"
                         android:text="好的，点我添加"
-                        android:textColor="@color/redSelect" />
+                        android:textColor="@color/holo_red_light" />
 
                 </RelativeLayout>
             </android.support.v7.widget.CardView>
@@ -451,7 +451,7 @@
                         android:paddingRight="5dp"
                         android:singleLine="false"
                         android:text="您已经为此次事件开启了通知提醒功能, 系统将会在下列时间准点给您发送通知:"
-                        android:textColor="@color/black"
+                        android:textColor="#000000"
                         android:textSize="14dp" />
 
 
@@ -467,7 +467,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="2017-15-11  00:00"
-                        android:textColor="@color/black"
+                        android:textColor="#000000"
                         android:textSize="14dp" />
 
                     <TextView
@@ -481,7 +481,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="通知类型：系统消息，电子邮件"
-                        android:textColor="@color/black"
+                        android:textColor="#000000"
                         android:textSize="14dp" />
 
                     <TextView
@@ -495,7 +495,7 @@
                         android:paddingLeft="5dp"
                         android:singleLine="false"
                         android:text="电子邮件:    heylbly@gmail.com"
-                        android:textColor="@color/black"
+                        android:textColor="#000000"
                         android:textSize="14dp" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>

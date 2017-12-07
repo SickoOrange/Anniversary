@@ -80,7 +80,8 @@
         <activity android:name=".activity.donate.DonateActivity" />
         <activity
             android:name=".activity.setting.SettingsActivity"
-            android:label="@string/title_activity_settings"></activity>
+            android:label="@string/title_activity_settings" />
+        <activity android:name=".activity.setting.SettingActivity"></activity>
     </application>
 
 </manifest>
