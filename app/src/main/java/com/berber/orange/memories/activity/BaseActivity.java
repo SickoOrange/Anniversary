@@ -12,10 +12,12 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.activity.helper.AnniversaryDaoUtils;
+import com.berber.orange.memories.activity.helper.FilebaseStorageHelper;
 import com.berber.orange.memories.activity.helper.GooglePlaceRequestHandler;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Places;
+import com.google.firebase.storage.FirebaseStorage;
 import com.gyf.barlibrary.ImmersionBar;
 
 import java.util.List;
@@ -31,10 +33,10 @@ import pub.devrel.easypermissions.EasyPermissions;
 public abstract class BaseActivity extends AppCompatActivity implements GoogleApiClient.OnConnectionFailedListener, EasyPermissions.PermissionCallbacks {
     protected ImmersionBar mImmersionBar;
     private InputMethodManager imm;
-    protected String parentPath;
     protected GoogleApiClient mGoogleApiClient;
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
     protected AnniversaryDaoUtils anniversaryDaoUtils;
+    private FilebaseStorageHelper filebaseStorageHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,6 +51,8 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         mGooglePlaceRequestHandler = new GooglePlaceRequestHandler(mGoogleApiClient);
 
         anniversaryDaoUtils = new AnniversaryDaoUtils((APP) getApplication());
+
+        filebaseStorageHelper = new FilebaseStorageHelper(this);
         initView();
         // init immersion bar
         if (isImmersionBarEnabled()) {
@@ -131,5 +135,16 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
     protected abstract void doTaskAfterPermissionsGranted(int requestCode);
 
+
+    /**
+     * get parent file
+     *
+     * @param anniversaryId anniversary id
+     * @param flag          place or picture
+     * @return parent file path string
+     */
+    protected String getParentPath(Long anniversaryId, String flag) {
+        return this.getFilesDir() + "/" + flag + "anniversary_" + String.valueOf(anniversaryId);
+    }
 
 }
