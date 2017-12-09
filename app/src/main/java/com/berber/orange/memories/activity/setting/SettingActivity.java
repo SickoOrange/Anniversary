@@ -33,7 +33,12 @@ public class SettingActivity extends BaseActivity {
         settingFragment = new SettingFragment();
         getFragmentManager().beginTransaction().replace(R.id.setting_frame_content, settingFragment).commit();
 
+        initSettingFragment(settingFragment);
 
+
+    }
+
+    private void initSettingFragment(SettingFragment settingFragment) {
 
     }
 

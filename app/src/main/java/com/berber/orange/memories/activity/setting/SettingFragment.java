@@ -2,6 +2,7 @@ package com.berber.orange.memories.activity.setting;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -9,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.helper.Constant;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 
@@ -31,8 +33,15 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
         mainCoverPreference = findPreference(SETTING_MAIN_COVER_PREFERENCE);
         mainCoverPreference.setOnPreferenceClickListener(this);
 
+        String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", "未定义");
+        mainCoverPreference.setSummary(Uri.parse(main_cover).getLastPathSegment());
+
         detailsCoverPreference = findPreference(SETTING_DETAILS_COVER_PREFERENCE);
         detailsCoverPreference.setOnPreferenceClickListener(this);
+
+        String details_cover = (String) SharedPreferencesHelper.getInstance().getData("details_cover", "未定义");
+        detailsCoverPreference.setSummary(Uri.parse(details_cover).getLastPathSegment());
+
 
     }
 

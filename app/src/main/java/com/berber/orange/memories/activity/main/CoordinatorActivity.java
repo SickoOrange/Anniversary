@@ -56,7 +56,6 @@ import pub.devrel.easypermissions.EasyPermissions;
 import static com.berber.orange.memories.activity.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
 
 public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
-    private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
     private DaoSession daoSession;
     private AnniversaryDao anniversaryDao;
@@ -151,9 +150,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         mLandingPageImageView = findViewById(R.id.image_content);
 
-        defaultRes = R.drawable.backgroud4;
-        String main_picture = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
-            Glide.with(this).load(Uri.parse(main_picture)).into(mLandingPageImageView);
+        int defaultRes = R.drawable.backgroud4;
+        String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
+        Log.e("TAG", "test: " + main_cover);
+        Glide.with(this).load(main_cover).into(mLandingPageImageView);
 
         //save uri into shared preference
         initRecycler();
@@ -233,29 +233,24 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             case R.id.action_add:
                 // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
                 startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
-                return true;
-            case R.id.action_change_image:
-                // TODO: 2017/11/16 pick image and change the background
-                if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                    MatisseImagePicker.open(CoordinatorActivity.this, COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
-                    return true;
-                } else {
-                    EasyPermissions.requestPermissions(
-                            this,
-                            "Pick Image",
-                            RC_PICK_IMAGE_PERM,
-                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                            android.Manifest.permission.READ_EXTERNAL_STORAGE
-                    );
-                    return true;
-                }
+//            case R.id.action_change_image:
+//                // TODO: 2017/11/16 pick image and change the background
+//                if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//                    MatisseImagePicker.open(CoordinatorActivity.this, COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
+//                    return true;
+//                } else {
+//                    EasyPermissions.requestPermissions(
+//                            this,
+//                            "Pick Image",
+//                            RC_PICK_IMAGE_PERM,
+//                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+//                    );
+//                    return true;
+//                }
+            break;
 
         }
-
-//        //noinspection SimplifiableIfStatement
-//        if (id == R.id.action_settings) {
-//            return true;
-//        }
 
 
         return super.onOptionsItemSelected(item);
@@ -318,6 +313,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 //loading new image
                 int defaultRes = R.drawable.backgroud4;
                 String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
+                Log.e("TAG", "test: " + main_cover);
                 Glide.with(this).load(main_cover).into(mLandingPageImageView);
                 break;
 
