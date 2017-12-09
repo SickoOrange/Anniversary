@@ -16,4 +16,8 @@ public class Constant {
     //details activity open matisse dialog and pick images
     public static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 2002;
 
+    //setting fragment main cover image picker
+    public static final int SETTING_FRAGMENT_MAIN_MATISSE_PICKER=2003;
+
+    public static final int SETTING_FRAGMENT_DETAILS_MATISSE_PICKER =2004 ;
 }
