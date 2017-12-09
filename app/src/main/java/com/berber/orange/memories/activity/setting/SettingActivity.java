@@ -2,12 +2,15 @@ package com.berber.orange.memories.activity.setting;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.helper.Constant;
+import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;
@@ -38,6 +41,7 @@ public class SettingActivity extends BaseActivity {
 
     }
 
+
     private void initSettingFragment(SettingFragment settingFragment) {
 
     }
@@ -52,6 +56,10 @@ public class SettingActivity extends BaseActivity {
 
     @Override
     protected void doTaskAfterPermissionsGranted(int requestCode) {
+        Log.e("TAG", "SETTING ACTIVITY: doTaskAfterPermissionsGranted: " + requestCode);
+        if (Constant.PERMISSION_PICK_IMAGE == requestCode) {
+            MatisseImagePicker.open(this, Constant.SETTING_FRAGMENT_MAIN_MATISSE_PICKER);
+        }
     }
 
     @Override

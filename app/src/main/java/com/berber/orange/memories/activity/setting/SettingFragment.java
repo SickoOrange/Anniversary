@@ -14,6 +14,10 @@ import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.helper.Constant;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 
+import pub.devrel.easypermissions.EasyPermissions;
+
+import static com.berber.orange.memories.activity.main.CoordinatorActivity.RC_PICK_IMAGE_PERM;
+
 /**
  * ya yin
  * Created by orange on 2017/12/8.
@@ -49,10 +53,30 @@ public class SettingFragment extends PreferenceFragment implements Preference.On
     public boolean onPreferenceClick(Preference preference) {
         switch (preference.getKey()) {
             case SETTING_MAIN_COVER_PREFERENCE:
-                MatisseImagePicker.open((AppCompatActivity) this.getActivity(), Constant.SETTING_FRAGMENT_MAIN_MATISSE_PICKER);
+                if (settingActivity.hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    MatisseImagePicker.open((AppCompatActivity) this.getActivity(), Constant.SETTING_FRAGMENT_MAIN_MATISSE_PICKER);
+                } else {
+                    EasyPermissions.requestPermissions(
+                            this,
+                            "Pick Image",
+                            Constant.PERMISSION_PICK_IMAGE,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    );
+                }
                 break;
             case SETTING_DETAILS_COVER_PREFERENCE:
-                MatisseImagePicker.open((AppCompatActivity) this.getActivity(), Constant.SETTING_FRAGMENT_DETAILS_MATISSE_PICKER);
+                if (settingActivity.hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                    MatisseImagePicker.open((AppCompatActivity) this.getActivity(), Constant.SETTING_FRAGMENT_MAIN_MATISSE_PICKER);
+                } else {
+                    EasyPermissions.requestPermissions(
+                            this,
+                            "Pick Image",
+                            Constant.PERMISSION_PICK_IMAGE,
+                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                            android.Manifest.permission.READ_EXTERNAL_STORAGE
+                    );
+                }
                 break;
         }
 

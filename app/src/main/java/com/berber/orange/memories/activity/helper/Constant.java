@@ -17,8 +17,10 @@ public class Constant {
     public static final int DETAILS_ACTIVITY_REQUEST_CHOOSE_IMAGE = 2002;
 
     //setting fragment main cover image picker
-    public static final int SETTING_FRAGMENT_MAIN_MATISSE_PICKER=2003;
+    public static final int SETTING_FRAGMENT_MAIN_MATISSE_PICKER = 2003;
 
-    public static final int SETTING_FRAGMENT_DETAILS_MATISSE_PICKER =2004 ;
+    public static final int SETTING_FRAGMENT_DETAILS_MATISSE_PICKER = 2004;
     public static final int COORDINATOR_OPEN_SETTING_ACTIVITY = 2005;
+
+    public static final int PERMISSION_PICK_IMAGE = 2006;
 }

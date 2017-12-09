@@ -248,7 +248,12 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 //                    );
 //                    return true;
 //                }
-            break;
+                break;
+
+            case R.id.action_sync_to_cloud:
+                break;
+            case R.id.action_sync_from_cloud:
+                break;
 
         }
 
