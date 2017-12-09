@@ -10,6 +10,7 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.helper.Constant;
 import com.zhihu.matisse.Matisse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SettingActivity extends BaseActivity {
@@ -33,6 +34,8 @@ public class SettingActivity extends BaseActivity {
 
         settingFragment = new SettingFragment();
         getFragmentManager().beginTransaction().replace(R.id.setting_frame_content, settingFragment).commit();
+
+
 
     }
 
@@ -77,15 +80,20 @@ public class SettingActivity extends BaseActivity {
         } else if ("details_cover".equals(positionKey)) {
             settingFragment.detailsCoverPreference.setSummary(lastPathSegment);
         }
-
-        //main cover, use glide load image
-
     }
 
     private List<String> getMatisseData(Intent intent) {
         if (intent != null) {
             return Matisse.obtainPathResult(intent);
         }
-        return null;
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void onBackPressed() {
+        //super.onBackPressed();
+        //main cover, use glide load image
+        setResult(Constant.COORDINATOR_OPEN_SETTING_ACTIVITY);
+        finish();
     }
 }

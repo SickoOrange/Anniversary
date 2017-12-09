@@ -31,6 +31,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.helper.Constant;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
@@ -52,6 +53,8 @@ import java.util.List;
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
 
+import static com.berber.orange.memories.activity.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
+
 public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "ScrollingActivity";
     private RecyclerView recycler;
@@ -68,6 +71,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     private ImageView mLandingPageImageView;
 
     public static final int RC_PICK_IMAGE_PERM = 123;
+    private int defaultRes;
 
     @Override
     protected void initView() {
@@ -147,13 +151,9 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         mLandingPageImageView = findViewById(R.id.image_content);
 
-        String main_picture = (String) SharedPreferencesHelper.getInstance().getData("main_picture", "");
-        if (TextUtils.isEmpty(main_picture)) {
-            Glide.with(this).load(R.drawable.backgroud4).into(mLandingPageImageView);
-        } else {
+        defaultRes = R.drawable.backgroud4;
+        String main_picture = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
             Glide.with(this).load(Uri.parse(main_picture)).into(mLandingPageImageView);
-
-        }
 
         //save uri into shared preference
         initRecycler();
@@ -269,7 +269,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         if (id == R.id.nav_anniversary) {
             // Handle the camera action
         } else if (id == R.id.nav_setting) {
-            startActivity(new Intent(this, SettingActivity.class));
+            startActivityForResult(new Intent(this, SettingActivity.class), COORDINATOR_OPEN_SETTING_ACTIVITY);
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.nav_donate) {
@@ -312,6 +312,13 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                     SharedPreferencesHelper.getInstance().saveData("main_cover", mSelected.get(0).toString());
                 }
                 Log.d("Matisse", "mSelected: " + mSelected);
+                break;
+
+            case Constant.COORDINATOR_OPEN_SETTING_ACTIVITY:
+                //loading new image
+                int defaultRes = R.drawable.backgroud4;
+                String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
+                Glide.with(this).load(main_cover).into(mLandingPageImageView);
                 break;
 
         }
