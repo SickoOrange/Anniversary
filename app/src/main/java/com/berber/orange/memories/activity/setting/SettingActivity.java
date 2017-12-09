@@ -17,8 +17,6 @@ public class SettingActivity extends BaseActivity {
     private Toolbar toolbar;
     private SettingFragment settingFragment;
 
-//https://stackoverflow.com/questions/26564400/creating-a-preference-screen-with-support-v21-toolbar
-
     @Override
     protected int setLayoutId() {
         return R.layout.activity_setting;
