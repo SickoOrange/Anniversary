@@ -309,7 +309,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 if (!mSelected.isEmpty()) {
                     Glide.with(this).load(mSelected.get(0)).into(mLandingPageImageView);
                     //save uri into shared preference
-                    SharedPreferencesHelper.getInstance().saveData("main_picture", mSelected.get(0).toString());
+                    SharedPreferencesHelper.getInstance().saveData("main_cover", mSelected.get(0).toString());
                 }
                 Log.d("Matisse", "mSelected: " + mSelected);
                 break;
