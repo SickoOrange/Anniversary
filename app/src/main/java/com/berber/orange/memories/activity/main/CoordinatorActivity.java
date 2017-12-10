@@ -17,7 +17,6 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -31,7 +30,6 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.details.DetailsActivity;
 import com.berber.orange.memories.activity.helper.Constant;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
@@ -52,7 +50,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
-import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.berber.orange.memories.activity.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
 
@@ -253,7 +250,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
             case R.id.action_sync_to_cloud:
                 //save the place, save the images save the database
-                filebaseStorageHelper.putFiles();
+                filebaseStorageHelper.SyncToCloud();
                 break;
             case R.id.action_sync_from_cloud:
                 break;

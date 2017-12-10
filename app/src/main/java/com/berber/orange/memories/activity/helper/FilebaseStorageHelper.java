@@ -11,6 +11,7 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
@@ -36,7 +37,7 @@ public class FilebaseStorageHelper {
         firebaseStorage = FirebaseStorage.getInstance();
     }
 
-    public void putFiles() {
+    public void SyncToCloud() {
 
         File imagesFolder = new File(baseActivity.getFilesDir(), "picture");
         File placeFolder = new File(baseActivity.getFilesDir(), "place");
@@ -49,35 +50,8 @@ public class FilebaseStorageHelper {
         Log.e("TAG", databasePath.getAbsolutePath());
         Log.e("TAG", "Ready upload file");
         uploadDatabase(databasePath);
-
-//        //upload database
-//        String[] list = parentFileFolder.list();
-//        for (
-//                String s : list)
-//
-//        {
-//            File file = new File(s);
-//            Uri fileUri = Uri.fromFile(file);
-//            StorageReference reference = firebaseStorage.getReference().child(placeFlag + "/" + fileUri.getLastPathSegment());
-//            // Create file metadata including the content type
-//            StorageMetadata metadata = new StorageMetadata.Builder()
-//                    .setContentType("image/png")
-//                    .build();
-//            UploadTask uploadTask = reference.putFile(fileUri, metadata);
-//            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Log.e("TAG", "upload addOnFailureListener");
-//
-//                }
-//            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    Log.e("TAG", "upload addOnSuccessListener");
-//                }
-//            });
-//
-//        }
+        uploadImages(imagesFolder, "picture");
+        uploadImages(placeFolder, "place");
     }
 
     private void uploadDatabase(File file) {
@@ -91,16 +65,46 @@ public class FilebaseStorageHelper {
         }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                Log.e("TAG", "upload addOnSuccessListener: "+taskSnapshot.getDownloadUrl());
+                Log.e("TAG", "upload addOnSuccessListener: " + taskSnapshot.getDownloadUrl());
             }
         }).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                 Log.e("TAG", "upload addOnCompleteListener");
             }
+        }).addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onProgress(UploadTask.TaskSnapshot taskSnapshot) {
+                long bytesTransferred = taskSnapshot.getBytesTransferred();
+                Log.e("TAG", "upload on progress:  " + String.valueOf(bytesTransferred));
+            }
         });
 
     }
 
+    private void uploadImages(File parentFolder, String position) {
+        StorageReference reference = firebaseStorage.getReference().child(position + "/");
+        String[] subFolders = parentFolder.list();
+        for (String subFolder : subFolders) {
+            String lastPathSegment = Uri.parse(subFolder).getLastPathSegment();
+            StorageReference storageReference = reference.child(lastPathSegment + "/");
+            File file = new File(parentFolder, subFolder);
+            if (file.isDirectory()) {
+                String[] strings = file.list();
+                for (String string : strings) {
+                    Uri parse = Uri.fromFile(new File(file, string));
+                    String lastPathSegment1 = parse.getLastPathSegment();
+                    StorageReference childReference = storageReference.child(lastPathSegment1);
+                    UploadTask uploadTask = childReference.putFile(parse);
+                    uploadTask.addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            Log.e("TAG", "on upload images complete " + task.getResult().getDownloadUrl());
+                        }
+                    });
+                }
+            }
+        }
+    }
 
 }
