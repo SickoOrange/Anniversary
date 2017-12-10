@@ -1,6 +1,7 @@
 package com.berber.orange.memories.activity.helper;
 
 /**
+ * ya yin
  * Created by orange on 2017/12/6.
  */
 
@@ -23,4 +24,6 @@ public class Constant {
     public static final int COORDINATOR_OPEN_SETTING_ACTIVITY = 2005;
 
     public static final int PERMISSION_PICK_IMAGE = 2006;
+
+
 }

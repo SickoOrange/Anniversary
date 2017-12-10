@@ -36,7 +36,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected GoogleApiClient mGoogleApiClient;
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
     protected AnniversaryDaoUtils anniversaryDaoUtils;
-    private FilebaseStorageHelper filebaseStorageHelper;
+    protected FilebaseStorageHelper filebaseStorageHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

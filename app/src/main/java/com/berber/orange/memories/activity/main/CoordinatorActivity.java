@@ -31,6 +31,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.details.DetailsActivity;
 import com.berber.orange.memories.activity.helper.Constant;
 import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
@@ -251,6 +252,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 break;
 
             case R.id.action_sync_to_cloud:
+                //save the place, save the images save the database
+                filebaseStorageHelper.putFiles();
                 break;
             case R.id.action_sync_from_cloud:
                 break;
