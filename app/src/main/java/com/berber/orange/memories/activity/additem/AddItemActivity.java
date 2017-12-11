@@ -406,7 +406,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
 
 
         //handle location information
-
         googleLocation.setAnniversary(anniversary);
         googleLocation.setAnniversaryId(anniversaryId);
         long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
