@@ -18,6 +18,11 @@
             android:title="更改详情页封面"
             android:summary="default" />
 
+        <Preference
+            android:key="setting_all_cover_default"
+            android:title="恢复默认"
+            android:summary="default" />
+
     </PreferenceCategory>
 
     <PreferenceCategory android:title="云端备份">

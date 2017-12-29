@@ -1,4 +1,4 @@
-package com.berber.orange.memories.model.db;
+package com.berber.orange.memories.dbmodel;
 
 import org.greenrobot.greendao.annotation.Entity;
 import org.greenrobot.greendao.annotation.Id;

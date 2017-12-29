@@ -76,20 +76,20 @@ public class SharedPreferencesHelper {
      * @return
      */
     public Object getData(String key, Object defValue) {
-
-        String type = defValue.getClass().getSimpleName();
-        if ("Integer".equals(type)) {
-            return mSharedPreferences.getInt(key, (Integer) defValue);
-        } else if ("Boolean".equals(type)) {
-            return mSharedPreferences.getBoolean(key, (Boolean) defValue);
-        } else if ("String".equals(type)) {
-            return mSharedPreferences.getString(key, (String) defValue);
-        } else if ("Float".equals(type)) {
-            return mSharedPreferences.getFloat(key, (Float) defValue);
-        } else if ("Long".equals(type)) {
-            return mSharedPreferences.getLong(key, (Long) defValue);
+        if (defValue != null) {
+            String type = defValue.getClass().getSimpleName();
+            if ("Integer".equals(type)) {
+                return mSharedPreferences.getInt(key, (Integer) defValue);
+            } else if ("Boolean".equals(type)) {
+                return mSharedPreferences.getBoolean(key, (Boolean) defValue);
+            } else if ("String".equals(type)) {
+                return mSharedPreferences.getString(key, (String) defValue);
+            } else if ("Float".equals(type)) {
+                return mSharedPreferences.getFloat(key, (Float) defValue);
+            } else if ("Long".equals(type)) {
+                return mSharedPreferences.getLong(key, (Long) defValue);
+            }
         }
-
         return null;
     }
 }

@@ -1,6 +1,7 @@
-package com.berber.orange.memories.model.db;
+package com.berber.orange.memories.dbmodel;
 
 import com.berber.orange.memories.activity.model.NotificationType;
+
 
 import org.greenrobot.greendao.annotation.Convert;
 import org.greenrobot.greendao.annotation.Entity;

@@ -24,9 +24,9 @@ import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
 import com.berber.orange.memories.activity.helper.FileUtils;
-import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.model.db.GoogleLocation;
-import com.berber.orange.memories.model.db.NotificationSending;
+import com.berber.orange.memories.dbmodel.Anniversary;
+import com.berber.orange.memories.dbmodel.GoogleLocation;
+import com.berber.orange.memories.dbmodel.NotificationSending;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -50,7 +50,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.function.ToDoubleBiFunction;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -147,8 +146,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             //do network request to get relative place image and save it into local storage
             mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), String.valueOf(anniversaryId));
         }
-
-
     }
 
 

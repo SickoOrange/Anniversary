@@ -17,13 +17,14 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
-import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.model.db.AnniversaryDao;
-import com.berber.orange.memories.model.db.GoogleLocation;
-import com.berber.orange.memories.model.db.ModelAnniversaryType;
-import com.berber.orange.memories.model.db.NotificationSending;
+import com.berber.orange.memories.dbmodel.Anniversary;
+import com.berber.orange.memories.dbmodel.AnniversaryDao;
+import com.berber.orange.memories.dbmodel.GoogleLocation;
+import com.berber.orange.memories.dbmodel.ModelAnniversaryType;
+import com.berber.orange.memories.dbmodel.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
 
 import org.joda.time.DateTime;
@@ -81,7 +82,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         String description = anniversary.getDescription();
         if (!TextUtils.isEmpty(description)) {
             holder.mDescriptionLabel.setText(description);
-        }else {
+        } else {
             holder.mDescriptionLabel.setText("暂无描述");
         }
 
@@ -144,9 +145,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.mTimeLine.setEndLineView(true);
         }
 
-        final int progress=calProgress;
-        holder.itemView.setOnClickListener(new View.OnClickListener()
-        {
+        final int progress = calProgress;
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Anniversary selectedTarget = mDateSets.get(position);
@@ -225,7 +225,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
 
-       // String label = restDayString + " / " + totalDayString;
+        // String label = restDayString + " / " + totalDayString;
         String label = restDayString;
         holder.mLeftDayLabel.setText(label);
         //holder.mCurrentAnniversaryProgress.setProgress(progress);
@@ -270,6 +270,9 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Anniversary anniversary = mDateSets.get(position);
+                        AnniversaryDao anniversaryDao = ((APP) mContext.getApplication()).getDaoSession().getAnniversaryDao();
+                        anniversaryDao.delete(anniversary);
                         mDateSets.remove(position);
                         notifyItemRemoved(position);
                     }
@@ -289,7 +292,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TextView mLeftDayLabel;
         TextView mAnniversaryStatusLabel;
         TextView mAnniversaryDate;
-       // NumberProgressBar mCurrentAnniversaryProgress;
+        // NumberProgressBar mCurrentAnniversaryProgress;
         ImageView mNotificationIcon;
         TextView mDescriptionLabel;
         TextView mPlaceLabel;

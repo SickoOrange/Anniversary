@@ -1,13 +1,11 @@
 package com.berber.orange.memories;
 
-import android.app.Application;
 import android.content.Context;
 import android.support.multidex.MultiDex;
 import android.support.multidex.MultiDexApplication;
 
-
-import com.berber.orange.memories.model.db.DaoMaster;
-import com.berber.orange.memories.model.db.DaoSession;
+import com.berber.orange.memories.dbmodel.DaoMaster;
+import com.berber.orange.memories.dbmodel.DaoSession;
 
 import org.greenrobot.greendao.database.Database;
 

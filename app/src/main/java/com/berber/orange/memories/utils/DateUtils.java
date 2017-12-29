@@ -1,6 +1,6 @@
 package com.berber.orange.memories.utils;
 
-import com.berber.orange.memories.model.db.Anniversary;
+import com.berber.orange.memories.dbmodel.Anniversary;
 
 import java.util.Date;
 

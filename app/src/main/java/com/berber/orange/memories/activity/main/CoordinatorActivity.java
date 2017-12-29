@@ -28,18 +28,18 @@ import android.widget.Toast;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
-import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.MatisseImagePicker;
+import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
+import com.berber.orange.memories.activity.helper.Constant;
+import com.berber.orange.memories.activity.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.setting.SettingActivity;
-import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.model.db.AnniversaryDao;
-import com.berber.orange.memories.model.db.DaoSession;
+import com.berber.orange.memories.dbmodel.Anniversary;
+import com.berber.orange.memories.dbmodel.AnniversaryDao;
+import com.berber.orange.memories.dbmodel.DaoSession;
+import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
-import com.berber.orange.memories.model.db.NotificationSendingDao;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
@@ -148,26 +148,11 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         mLandingPageImageView = findViewById(R.id.image_content);
 
-        int defaultRes = R.drawable.backgroud4;
-        String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", String.valueOf(defaultRes));
-        Log.e("TAG", "test: " + main_cover);
-        Glide.with(this).load(main_cover).into(mLandingPageImageView);
+        String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", null);
+        Glide.with(this).load(main_cover == null ? R.drawable.backgroud4 : main_cover).into(mLandingPageImageView);
 
         //save uri into shared preference
         initRecycler();
-
-        // TODO: 2017/12/1 service disable
-
-//        boolean notificationService = isMyServiceRunning(NotificationService.class);
-//        if (!notificationService) {
-//            Log.e("TAG", "服务不存在，正在启动服务");
-//
-//            Intent intent = new Intent(CoordinatorActivity.this, NotificationService.class);
-//            intent.setAction("AnniversaryNotificationAction");
-//            startService(intent);
-//        } else {
-//            Log.e("TAG", "服务已经存在");
-//        }
     }
 
     @Override

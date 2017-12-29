@@ -1,12 +1,12 @@
 package com.berber.orange.memories.activity.helper;
 
 import com.berber.orange.memories.APP;
-import com.berber.orange.memories.model.db.Anniversary;
-import com.berber.orange.memories.model.db.AnniversaryDao;
-import com.berber.orange.memories.model.db.DaoSession;
-import com.berber.orange.memories.model.db.GoogleLocation;
-import com.berber.orange.memories.model.db.GoogleLocationDao;
-import com.berber.orange.memories.model.db.NotificationSendingDao;
+import com.berber.orange.memories.dbmodel.Anniversary;
+import com.berber.orange.memories.dbmodel.AnniversaryDao;
+import com.berber.orange.memories.dbmodel.DaoSession;
+import com.berber.orange.memories.dbmodel.GoogleLocation;
+import com.berber.orange.memories.dbmodel.GoogleLocationDao;
+import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.google.android.gms.location.places.Place;
 
 import java.util.List;

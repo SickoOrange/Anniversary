@@ -7,12 +7,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.BitmapFactory;
-import android.media.audiofx.LoudnessEnhancer;
 import android.util.Log;
 
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
-import com.berber.orange.memories.model.db.NotificationSending;
-import com.berber.orange.memories.model.db.NotificationSendingDao;
+import com.berber.orange.memories.dbmodel.NotificationSending;
+import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 
 import java.util.Date;
 import java.util.List;
