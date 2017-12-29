@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -26,13 +25,11 @@ import com.berber.orange.memories.model.db.GoogleLocation;
 import com.berber.orange.memories.model.db.ModelAnniversaryType;
 import com.berber.orange.memories.model.db.NotificationSending;
 import com.berber.orange.memories.widget.TimeLineMarker;
-import com.daimajia.numberprogressbar.NumberProgressBar;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.Hours;
-import org.joda.time.Minutes;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -52,6 +49,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> implements onMoveAndSwipedListener {
     private List<Anniversary> mDateSets = new ArrayList<>();
     private CoordinatorActivity mContext;
+    private int calProgress = 0;
 
     public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {
         if (mDateSets == null) {
@@ -146,17 +144,15 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             holder.mTimeLine.setEndLineView(true);
         }
 
-
+        final int progress=calProgress;
         holder.itemView.setOnClickListener(new View.OnClickListener()
-
         {
             @Override
             public void onClick(View view) {
-                // TODO: 2017/11/14 open details page
                 Anniversary selectedTarget = mDateSets.get(position);
                 Intent intent = new Intent(mContext, DetailsActivity.class);
                 intent.putExtra("anniversaryId", selectedTarget.getId());
-                intent.putExtra("progressValue", holder.mCurrentAnniversaryProgress.getProgress());
+                intent.putExtra("progressValue", progress);
                 //intent.putExtra("dateInformation", holder.mLeftDayLabel.getText().toString());
                 mContext.startActivity(intent);
             }
@@ -229,9 +225,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
 
-        String label = restDayString + " / " + totalDayString;
+       // String label = restDayString + " / " + totalDayString;
+        String label = restDayString;
         holder.mLeftDayLabel.setText(label);
-        holder.mCurrentAnniversaryProgress.setProgress(progress);
+        //holder.mCurrentAnniversaryProgress.setProgress(progress);
+        calProgress = progress;
     }
 
 
@@ -291,7 +289,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         TextView mLeftDayLabel;
         TextView mAnniversaryStatusLabel;
         TextView mAnniversaryDate;
-        NumberProgressBar mCurrentAnniversaryProgress;
+       // NumberProgressBar mCurrentAnniversaryProgress;
         ImageView mNotificationIcon;
         TextView mDescriptionLabel;
         TextView mPlaceLabel;
@@ -304,7 +302,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
             mTimeLine = itemView.findViewById(R.id.item_time_line_view);
             mLeftDayLabel = itemView.findViewById(R.id.anniversary_left_day);
             mAnniversaryDate = itemView.findViewById(R.id.anniversary_date_label);
-            mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
+            //mCurrentAnniversaryProgress = itemView.findViewById(R.id.anniversary_progress_bar);
             mAnniversaryStatusLabel = itemView.findViewById(R.id.anniversary_status_label);
             mNotificationIcon = itemView.findViewById(R.id.anniversary_notification_icon);
             mDescriptionLabel = itemView.findViewById(R.id.anniversary_description_label);

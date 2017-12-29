@@ -22,18 +22,16 @@
 
     <PreferenceCategory android:title="云端备份">
 
-        <CheckBoxPreference
+        <Preference
             android:key="setting_cloud_save"
-            android:summary="时刻备份你的数据，永不丢失(需要账户登录)"
-            android:title="打开云端备份功能" />
+            android:summary="将数据备份在云端 (需要账户登录, 暂不支持照片备份)"
+            android:title="云端备份" />
 
-        <!-- The visual style of a child is defined by this styled theme attribute. -->
-        <CheckBoxPreference
-            android:dependency="setting_cloud_save"
-            android:key="child_checkbox_preference"
-            android:layout="?android:attr/preferenceLayoutChild"
-            android:summary="summary_child_preference"
-            android:title="title_child_preference" />
+
+        <Preference
+            android:key="setting_cloud_restore"
+            android:summary="从云端恢复您的数据 (需要账户登录)"
+            android:title="云端恢复" />
 
     </PreferenceCategory>
 

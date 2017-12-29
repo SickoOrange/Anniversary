@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
-    android:layout_height="130dp"
+    android:layout_height="110dp"
     android:background="@drawable/item_ripple"
     tools:ignore="MissingPrefix">
 
@@ -43,7 +43,7 @@
         android:paddingBottom="1dp"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
-        android:paddingTop="60dp"
+        android:paddingTop="45dp"
         app:beginLine="#E0E0E0"
         app:endLine="#E0E0E0"
         app:lineSize="2dp"
@@ -60,7 +60,7 @@
             android:id="@+id/anniversary_title_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="5dp"
             android:ellipsize="end"
             android:maxLines="1"
             android:padding="3dp"
@@ -126,7 +126,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="3dp"
-            android:padding="1dp">
+            android:padding="1dp"
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/anniversary_place_label"
@@ -149,24 +150,26 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
+                android:visibility="gone"
                 android:drawablePadding="5dp"
                 android:padding="3dp"
-                android:src="@drawable/ic_notifications_off_black_18px" />
+                app:srcCompat="@drawable/ic_notifications_off_black_18px" />
         </RelativeLayout>
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
+        <!--<RelativeLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent">-->
 
-            <com.daimajia.numberprogressbar.NumberProgressBar
-                android:id="@+id/anniversary_progress_bar"
-                style="@style/NumberProgressBar_Default"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:padding="3dp"
-                app:progress_current="100" />
-        </RelativeLayout>
+            <!--<com.daimajia.numberprogressbar.NumberProgressBar-->
+                <!--android:id="@+id/anniversary_progress_bar"-->
+                <!--style="@style/NumberProgressBar_Default"-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:layout_marginTop="5dp"-->
+                <!--android:padding="3dp"-->
+                <!--android:visibility="gone"-->
+                <!--app:progress_current="100" />-->
+        <!--</RelativeLayout>-->
 
     </LinearLayout>
 
