@@ -11,6 +11,7 @@ public class Constant {
     public static final int PLACE_PICKER_REQUEST = 2000;
 
 
+
     //details activity request pick image permission
     public static final int DETAILS_REQUEST_PICK_IMAGE_PERM = 2001;
 

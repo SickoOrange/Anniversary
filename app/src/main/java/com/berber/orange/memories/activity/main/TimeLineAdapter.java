@@ -83,6 +83,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         String description = anniversary.getDescription();
         if (!TextUtils.isEmpty(description)) {
             holder.mDescriptionLabel.setText(description);
+        }else {
+            holder.mDescriptionLabel.setText("暂无描述");
         }
 
         //set object date
