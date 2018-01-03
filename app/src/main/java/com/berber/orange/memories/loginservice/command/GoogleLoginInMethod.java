@@ -11,10 +11,12 @@ import com.berber.orange.memories.loginservice.service.BaseLoginInCallBack;
 import com.berber.orange.memories.loginservice.service.GoogleLoginInCallBack;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.drive.Drive;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
@@ -46,11 +48,12 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
         if (gso == null) {
             gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                     .requestIdToken(getStringFromResource(R.string.google_web_id))
+                    //driver api
+                    .requestScopes(Drive.SCOPE_FILE)
+                    .requestScopes(Drive.SCOPE_APPFOLDER)
                     .requestEmail()
                     .build();
         }
-
-
         if (mGoogleApiClient == null) {
             // Build a GoogleApiClient with access to the Google Sign-In API and the
             // options specified by gso.
@@ -64,6 +67,7 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
                     .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                     .build();
         }
+
     }
 
 
@@ -71,6 +75,7 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
     public void login() {
         Intent googleSignInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         getActivity().startActivityForResult(googleSignInIntent, RC_GOOGLE_SIGN_IN);
+
     }
 
     @Override
@@ -80,7 +85,6 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
 
     @Override
     public void signUp() {
-
     }
 
     public void handleGoogleSignResult(Object result, GoogleLoginInCallBack callback) {
@@ -102,8 +106,6 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
 
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-
-
         getmAuth().signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {
                     @Override
