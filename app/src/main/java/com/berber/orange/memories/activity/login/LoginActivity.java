@@ -14,6 +14,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
@@ -39,7 +40,7 @@ import org.json.JSONObject;
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity implements OnClickListener {
+public class LoginActivity extends BaseActivity implements OnClickListener {
 
     private static final String TAG = "LoginActivity";
 
@@ -48,21 +49,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private EditText mEmailView;
     private EditText mPasswordView;
 
-
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        setContentView(R.layout.activity_login);
-
+    protected void initView() {
+        super.initView();
         //init YY Smart Login
         YYLoginServer.INSTANCE.Init();
         // Set up the login form.
-        initView();
-    }
-
-    private void initView() {
         //init ui reference
         mEmailView = findViewById(R.id.email_text_view);
         mPasswordView = findViewById(R.id.password_text_view);
@@ -97,6 +89,17 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
 
 
     @Override
+    protected int setLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void doTaskAfterPermissionsGranted(int requestCode) {
+
+    }
+
+
+    @Override
     protected void onStart() {
         super.onStart();
         YYLoginServer.INSTANCE.addAuthStateListener();
@@ -124,7 +127,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                 break;
 
             case R.id.google_login_in:
-                YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this);
+                YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this,mGoogleApiClient);
                 break;
 
             case R.id.facebook_login_in:
@@ -169,6 +172,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     GoogleLoginInCallBack googleSignInCallBack = new GoogleLoginInCallBack() {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
+            firebaseDatabaseHelper.buildRootUser(firebaseUser);
             startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }
@@ -215,7 +219,6 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             myUser.setPhotoUri(user.getPhotoUrl().toString());
             Intent intent = new Intent(LoginActivity.this, CoordinatorActivity.class);
             intent.putExtra("user", myUser);
-
 
             //start to go to new activity
             LoginActivity.this.startActivity(intent);

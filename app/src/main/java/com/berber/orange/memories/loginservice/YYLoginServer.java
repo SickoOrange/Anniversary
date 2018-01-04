@@ -17,7 +17,9 @@ import com.berber.orange.memories.loginservice.service.GoogleLoginInCallBack;
 import com.berber.orange.memories.loginservice.service.UserExistingListener;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -90,8 +92,8 @@ public enum YYLoginServer {
         defaultLoginIn.login(email, password, baseLoginInCallBack);
     }
 
-    public void loginWithGoogle(Activity activity) {
-        googleLoginIn = new GoogleLoginInMethod(mAuth, activity, null);
+    public void loginWithGoogle(Activity activity, GoogleApiClient mgoogleApiClient) {
+        googleLoginIn = new GoogleLoginInMethod(mAuth, activity, null,mgoogleApiClient);
         googleLoginIn.login();
     }
 

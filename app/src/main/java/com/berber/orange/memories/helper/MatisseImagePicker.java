@@ -1,13 +1,11 @@
-package com.berber.orange.memories.activity.helper;
+package com.berber.orange.memories.helper;
 
-import android.app.Fragment;
 import android.content.pm.ActivityInfo;
 import android.support.v7.app.AppCompatActivity;
 
 import com.berber.orange.memories.R;
 import com.zhihu.matisse.Matisse;
 import com.zhihu.matisse.MimeType;
-import com.zhihu.matisse.SelectionCreator;
 import com.zhihu.matisse.engine.impl.GlideEngine;
 import com.zhihu.matisse.filter.Filter;
 

@@ -9,6 +9,12 @@
         app:showAsAction="never" />
 
     <item
+        android:id="@+id/action_create_folder"
+        android:orderInCategory="100"
+        android:title="create folder"
+        app:showAsAction="never" />
+
+    <item
         android:id="@+id/action_sync_from_cloud"
         android:orderInCategory="100"
         android:title="从云端恢复"

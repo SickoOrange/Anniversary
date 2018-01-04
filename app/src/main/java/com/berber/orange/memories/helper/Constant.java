@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity.helper;
+package com.berber.orange.memories.helper;
 
 /**
  * ya yin
@@ -27,4 +27,5 @@ public class Constant {
     public static final int PERMISSION_PICK_IMAGE = 2006;
 
 
+    public static final int REQUEST_CODE_SIGN_IN =1000 ;
 }

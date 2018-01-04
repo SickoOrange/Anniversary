@@ -7,29 +7,28 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.berber.orange.memories.APP;
-import com.berber.orange.memories.activity.helper.AnniversaryDaoUtils;
-import com.berber.orange.memories.activity.helper.FilebaseStorageHelper;
-import com.berber.orange.memories.activity.helper.GooglePlaceRequestHandler;
+import com.berber.orange.memories.R;
+import com.berber.orange.memories.helper.AnniversaryDaoUtils;
+import com.berber.orange.memories.helper.FilebaseStorageHelper;
+import com.berber.orange.memories.helper.FirebaseDatabaseHelper;
+import com.berber.orange.memories.helper.GoogleDriverHelper;
+import com.berber.orange.memories.helper.GooglePlaceRequestHandler;
+import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.Scope;
 import com.google.android.gms.drive.Drive;
-import com.google.android.gms.drive.DriveClient;
 import com.google.android.gms.drive.DriveResourceClient;
 import com.google.android.gms.location.places.Places;
-import com.google.firebase.storage.FirebaseStorage;
 import com.gyf.barlibrary.ImmersionBar;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -46,29 +45,42 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
     protected AnniversaryDaoUtils anniversaryDaoUtils;
     protected FilebaseStorageHelper filebaseStorageHelper;
-    private DriveClient mDriveClient;
-    private DriveResourceClient mDriveResourceClient;
+    protected GoogleDriverHelper googleDriverHelper;
+    protected FirebaseDatabaseHelper firebaseDatabaseHelper;
+    protected GoogleSignInOptions gso;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(setLayoutId());
+
+        //driver api
+        gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(this.getResources().getString(R.string.google_web_id))
+                //driver api
+                .requestScopes(Drive.SCOPE_FILE)
+                .requestScopes(Drive.SCOPE_APPFOLDER)
+                .requestEmail()
+                .build();
+
         mGoogleApiClient = new GoogleApiClient
                 .Builder(this)
                 .addApi(Places.GEO_DATA_API)
                 .addApi(Places.PLACE_DETECTION_API)
+                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
                 .enableAutoManage(this, this)
                 .build();
+
         mGooglePlaceRequestHandler = new GooglePlaceRequestHandler(mGoogleApiClient);
 
         anniversaryDaoUtils = new AnniversaryDaoUtils((APP) getApplication());
 
         filebaseStorageHelper = new FilebaseStorageHelper(this);
 
+        firebaseDatabaseHelper = new FirebaseDatabaseHelper();
 
-        initializeDriverClient();
-
-
+        // googleDriverHelper = initializeDriverClient(GoogleSignIn.getLastSignedInAccount(this));
         initView();
         // init immersion bar
         if (isImmersionBarEnabled()) {
@@ -76,32 +88,13 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
         }
     }
 
-    private void initializeDriverClient() {
-        Set<Scope> requiredScopes = new HashSet<>(2);
-        requiredScopes.add(Drive.SCOPE_FILE);
-        requiredScopes.add(Drive.SCOPE_APPFOLDER);
-        GoogleSignInAccount lastSignedInAccount = GoogleSignIn.getLastSignedInAccount(this);
-        if (lastSignedInAccount != null && lastSignedInAccount.getGrantedScopes().containsAll(requiredScopes)) {
-            mDriveClient = Drive.getDriveClient(getApplicationContext(), lastSignedInAccount);
-            mDriveResourceClient = Drive.getDriveResourceClient(getApplicationContext(), lastSignedInAccount);
-            //abstract method?
-            //onDriveClientReady();
-            System.out.println("initializeDriverClient");
-            System.out.println(mDriveClient);
-            System.out.println(mDriveResourceClient);
-        }
-    }
-
-    protected DriveClient getDriveClient() {
-        return mDriveClient;
-    }
-
-    protected DriveResourceClient getDriveResourceClient() {
-        return mDriveResourceClient;
-    }
-
 
     protected void initView() {
+    }
+
+    public GoogleDriverHelper initializeDriverClient(GoogleSignInAccount signInAccount) {
+        DriveResourceClient driveResourceClient = Drive.getDriveResourceClient(getApplicationContext(), signInAccount);
+        return new GoogleDriverHelper(driveResourceClient);
     }
 
     @Override
@@ -143,7 +136,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        // TODO: 2017/11/25  
+        // TODO: 2017/11/25
     }
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
@@ -187,5 +180,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected String getParentPath(Long anniversaryId, String flag) {
         return this.getFilesDir() + "/" + flag + "anniversary_" + String.valueOf(anniversaryId);
     }
+
 
 }

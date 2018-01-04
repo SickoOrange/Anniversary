@@ -5,7 +5,7 @@ import android.support.v4.view.ViewPager;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.helper.ImageUtils;
+import com.berber.orange.memories.helper.ImageUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
