@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * model for real time database
  * Created by orange on 2018/1/4.
  */
 
