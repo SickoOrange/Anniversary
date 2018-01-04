@@ -27,8 +27,8 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.GooglePlaceRequestHandler;
+import com.berber.orange.memories.helper.Constant;
+import com.berber.orange.memories.helper.GooglePlaceRequestHandler;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.dbmodel.Anniversary;
@@ -39,22 +39,32 @@ import com.berber.orange.memories.dbmodel.ModelAnniversaryType;
 import com.berber.orange.memories.dbmodel.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.dbmodel.NotificationSending;
 import com.berber.orange.memories.dbmodel.NotificationSendingDao;
+import com.berber.orange.memories.helper.firebasemodel.AnniversaryModel;
+import com.berber.orange.memories.helper.firebasemodel.AnniversaryTypeModel;
+import com.berber.orange.memories.helper.firebasemodel.GoogleLocationModel;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.gyf.barlibrary.ImmersionBar;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -86,6 +96,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Date currentPickDate = null;
     private TextView mAnniversaryLocation;
     private GoogleLocation googleLocation = null;
+    private GoogleLocationModel googleLocationModel=null;
     private GoogleLocationDao googleLocationDao;
     public static final String INTENT_ALARM_LOG = "intent_alarm_log";
     private AlarmManager alarmManager;
@@ -332,11 +343,13 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void writeInfo() {
+
         ModelAnniversaryTypeDTO currentImageResource = getCurrentTypeResource();
         if (currentImageResource == null) {
             alertWarningDialog("请选择事件类型");
             return;
         }
+
 
         // ensure anniversary title not empty
         String anniversaryTitle = mAnniversaryTitleEditText.getText().toString();
@@ -419,6 +432,33 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         if (!file.exists()) {
             file.mkdirs();
         }
+
+
+
+
+        //real time database
+        AnniversaryModel anniversaryModel = new AnniversaryModel();
+        anniversaryModel.setAnniversaryTypeModel(currentImageResource);
+        anniversaryModel.setTitle(anniversaryTitle);
+        anniversaryModel.setDate(new DateTime(currentPickDate).withZone(DateTimeZone.UTC).toString(DateTimeFormat.longDateTime())
+        );
+        anniversaryModel.setCreateDate(DateTime.now(DateTimeZone.UTC).toString(DateTimeFormat.longDateTime()));
+        anniversaryModel.setDescription(anniversaryDescription);
+        anniversaryModel.setGoogleLocation(googleLocationModel);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users/NTFuB0B1XPcDtgKVK1oNHPkSraA3");
+        reference.child("anniversaries").push().setValue(anniversaryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void aVoid){
+                Log.e("TAG","PUSH ANNIVERSARY LIST SUCCESS");
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.e("TAG","PUSH ANNIVERSARY LIST FAILURE");
+
+            }
+        });
 
         Intent intent = new Intent();
         intent.putExtra("obj", anniversary);
@@ -583,6 +623,16 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 googleLocation.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
                 googleLocation.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
                 googleLocation.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
+
+                googleLocationModel = new GoogleLocationModel();
+                googleLocationModel.setLocationName(place.getName() == null ? null : place.getName().toString());
+                googleLocationModel.setLocationAddress(place.getAddress() == null ? null : place.getAddress().toString());
+                googleLocationModel.setLocationPhoneNumber(place.getPhoneNumber() == null ? null : place.getPhoneNumber().toString());
+                googleLocationModel.setPlaceId(place.getId());
+                googleLocationModel.setAttribution(place.getAttributions() == null ? null : place.getAttributions().toString());
+                googleLocationModel.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
+                googleLocationModel.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
+                googleLocationModel.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
             }
         }
     }

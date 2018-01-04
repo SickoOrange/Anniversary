@@ -1,4 +1,4 @@
-package com.berber.orange.memories.activity.helper;
+package com.berber.orange.memories.helper;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.dbmodel.Anniversary;

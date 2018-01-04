@@ -2,15 +2,14 @@ package com.berber.orange.memories.activity.setting;
 
 import android.content.Intent;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.MatisseImagePicker;
+import com.berber.orange.memories.helper.Constant;
+import com.berber.orange.memories.helper.MatisseImagePicker;
 import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;

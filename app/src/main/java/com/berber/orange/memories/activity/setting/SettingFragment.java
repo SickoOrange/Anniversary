@@ -1,7 +1,6 @@
 package com.berber.orange.memories.activity.setting;
 
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -11,12 +10,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.MatisseImagePicker;
+import com.berber.orange.memories.helper.Constant;
+import com.berber.orange.memories.helper.MatisseImagePicker;
 
 import pub.devrel.easypermissions.EasyPermissions;
-
-import static com.berber.orange.memories.activity.main.CoordinatorActivity.RC_PICK_IMAGE_PERM;
 
 /**
  * ya yin

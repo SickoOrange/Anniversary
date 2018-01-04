@@ -38,9 +38,10 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
     private GoogleApiClient mGoogleApiClient;
     private GoogleSignInOptions gso;
 
-    public GoogleLoginInMethod(FirebaseAuth mAuth, Activity activity, BaseLoginInCallBack baseLoginInCallBack) {
+    public GoogleLoginInMethod(FirebaseAuth mAuth, Activity activity, BaseLoginInCallBack baseLoginInCallBack,GoogleApiClient mGoogleApiClient) {
         super(mAuth, activity, baseLoginInCallBack);
-        prepareLogin();
+        this.mGoogleApiClient=mGoogleApiClient;
+     //   prepareLogin();
     }
 
     private void prepareLogin() {
@@ -104,7 +105,6 @@ public class GoogleLoginInMethod extends BaseLoginInMethod {
 
     private void firebaseAuthWithGoogle(final GoogleSignInAccount acct, final GoogleLoginInCallBack callback) {
         Log.d(TAG, "firebaseAuthWithGoogle:" + acct.getId());
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
         getmAuth().signInWithCredential(credential)
                 .addOnCompleteListener(getActivity(), new OnCompleteListener<AuthResult>() {

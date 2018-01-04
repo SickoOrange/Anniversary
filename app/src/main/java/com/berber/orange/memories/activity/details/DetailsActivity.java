@@ -18,12 +18,12 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.ImageUtils;
-import com.berber.orange.memories.activity.helper.MatisseImagePicker;
+import com.berber.orange.memories.helper.Constant;
+import com.berber.orange.memories.helper.ImageUtils;
+import com.berber.orange.memories.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
-import com.berber.orange.memories.activity.helper.FileUtils;
+import com.berber.orange.memories.helper.FileUtils;
 import com.berber.orange.memories.dbmodel.Anniversary;
 import com.berber.orange.memories.dbmodel.GoogleLocation;
 import com.berber.orange.memories.dbmodel.NotificationSending;

@@ -32,8 +32,8 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
-import com.berber.orange.memories.activity.helper.Constant;
-import com.berber.orange.memories.activity.helper.MatisseImagePicker;
+import com.berber.orange.memories.helper.Constant;
+import com.berber.orange.memories.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.setting.SettingActivity;
 import com.berber.orange.memories.dbmodel.Anniversary;
 import com.berber.orange.memories.dbmodel.AnniversaryDao;
@@ -42,6 +42,8 @@ import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.zhihu.matisse.Matisse;
@@ -51,7 +53,7 @@ import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.berber.orange.memories.activity.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
+import static com.berber.orange.memories.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
 
 public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView recycler;
@@ -130,6 +132,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         TextView user_name = headerView.findViewById(R.id.user_display_name);
 
 
+
         String displayName;
         Uri photoUri;
         MyFireBaseUser user = getIntent().getParcelableExtra("user");
@@ -141,6 +144,11 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             displayName = user.getDisplayName();
             photoUri = Uri.parse(user.getPhotoUri());
         }
+
+        Glide.with(this).load(photoUri.toString()).into(user_photo);
+        user_name.setText("Hello, dear " + displayName);
+
+
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
@@ -209,9 +217,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         switch (item.getItemId()) {
             case R.id.action_add:
                 // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
@@ -239,10 +244,11 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
                 break;
             case R.id.action_sync_from_cloud:
                 break;
-
+            case R.id.action_create_folder:
+                    Log.e("TAG","create folder");
+                googleDriverHelper.query();
+                break;
         }
-
-
         return super.onOptionsItemSelected(item);
     }
 

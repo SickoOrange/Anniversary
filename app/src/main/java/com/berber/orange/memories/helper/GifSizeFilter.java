@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.berber.orange.memories.activity.helper;
+package com.berber.orange.memories.helper;
 
 import android.content.Context;
 import android.graphics.Point;
