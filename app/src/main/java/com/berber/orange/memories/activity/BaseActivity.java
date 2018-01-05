@@ -44,8 +44,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
     protected AnniversaryDaoUtils anniversaryDaoUtils;
     protected FilebaseStorageHelper filebaseStorageHelper;
-    protected GoogleDriverHelper googleDriverHelper;
-    protected FirebaseDatabaseHelper firebaseDatabaseHelper;
     protected GoogleSignInOptions gso;
 
 
@@ -77,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
         filebaseStorageHelper = new FilebaseStorageHelper(this);
 
-        firebaseDatabaseHelper = new FirebaseDatabaseHelper();
+        FirebaseDatabaseHelper.init();
 
         // googleDriverHelper = initializeDriverClient(GoogleSignIn.getLastSignedInAccount(this));
         initView();

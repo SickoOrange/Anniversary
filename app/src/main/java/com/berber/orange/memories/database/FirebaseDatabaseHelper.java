@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.berber.orange.memories.SharedPreferencesHelper;
+import com.berber.orange.memories.database.databaseinterface.QueryResultListener;
 import com.berber.orange.memories.helper.User;
 import com.berber.orange.memories.database.databaseinterface.ChildEventClass;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
@@ -11,8 +12,10 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,12 +29,26 @@ import java.util.Map;
 
 public class FirebaseDatabaseHelper {
 
+    private static FirebaseDatabaseHelper instance;
     private final FirebaseDatabase database;
 
-    public FirebaseDatabaseHelper() {
+    private QueryResultListener queryResultListener;
+
+    private FirebaseDatabaseHelper() {
         database = FirebaseDatabase.getInstance();
-        String uuid = (String) SharedPreferencesHelper.getInstance().getData("user_uuid", "undefined");
-        DatabaseReference reference = database.getReference("users" + "/" + uuid + "anniversaries");
+    }
+
+    public static synchronized void init() {
+        if (instance == null) {
+            instance = new FirebaseDatabaseHelper();
+        }
+    }
+
+    public static FirebaseDatabaseHelper getInstance() {
+        if (instance == null) {
+            throw new RuntimeException("class should init!");
+        }
+        return instance;
     }
 
     public void buildRootUser(FirebaseUser myUser) {
@@ -61,20 +78,28 @@ public class FirebaseDatabaseHelper {
                 });
     }
 
-    public List<AnniversaryModel> querybyChildAttribute(String attribute) {
-        if (attribute == null || "".equals(attribute)) {
+    public void queryByChildAttribute(String attr) {
+        if (attr == null || "".equals(attr)) {
             throw new IllegalArgumentException("query child attribute can't be null");
         }
-        final List<AnniversaryModel> list = new ArrayList<>();
-        getAnniversariesReference().orderByChild(attribute).addChildEventListener(new ChildEventClass() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                super.onChildAdded(dataSnapshot, s);
-                AnniversaryModel model = dataSnapshot.getValue(AnniversaryModel.class);
-                list.add(model);
-            }
-        });
-        return list;
+        getAnniversariesReference().orderByChild(attr)
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        List<AnniversaryModel> list = new ArrayList<>();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            AnniversaryModel model = snapshot.getValue(AnniversaryModel.class);
+                            list.add(model);
+                        }
+                        if (list.size() == dataSnapshot.getChildrenCount()) {
+                            queryResultListener.queryResult(list);
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
     }
 
     public List<AnniversaryModel> querybyKey() {
@@ -114,5 +139,12 @@ public class FirebaseDatabaseHelper {
 
     private DatabaseReference getAnniversariesReference() {
         return database.getReference("users/" + getUserUUID() + "/anniversaries");
+    }
+
+    public void setQueryResultListener(QueryResultListener queryResultListener) {
+        if (queryResultListener == null) {
+            throw new RuntimeException("query Result Listener can't be null");
+        }
+        this.queryResultListener = queryResultListener;
     }
 }

@@ -32,6 +32,8 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.setting.SettingActivity;
@@ -134,7 +136,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         TextView user_name = headerView.findViewById(R.id.user_display_name);
 
 
-
         String displayName;
         Uri photoUri;
         MyFireBaseUser user = getIntent().getParcelableExtra("user");
@@ -149,7 +150,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
-
 
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
@@ -191,7 +191,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        adapter = new TimeLineAdapter(getData(), this);
+        adapter = new TimeLineAdapter(this);
 
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(adapter);
@@ -204,10 +204,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
     }
 
-    private List<Anniversary> getData() {
-        List<Anniversary> anniversaries = anniversaryDao.queryBuilder().list();
-        return anniversaries.isEmpty() ? new ArrayList<Anniversary>() : anniversaries;
-    }
+//    private List<Anniversary> getData() {
+//        List<Anniversary> anniversaries = anniversaryDao.queryBuilder().list();
+//        return anniversaries.isEmpty() ? new ArrayList<Anniversary>() : anniversaries;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -247,36 +247,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             case R.id.action_sync_from_cloud:
                 break;
             case R.id.action_create_folder:
-                    Log.e("TAG","create folder");
-                String uuid = (String) SharedPreferencesHelper.getInstance().getData("user_uuid", "undefined");
-                Log.e("TAG","uuid: "+uuid);
-                FirebaseDatabase.getInstance().getReference("users/"+uuid+"/anniversaries").orderByChild("date").addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                        Log.e("TAG", String.valueOf(dataSnapshot.getChildrenCount()));
-                    }
-
-                    @Override
-                    public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                        Log.e("TAG",dataSnapshot.getKey());
-
-                    }
-
-                    @Override
-                    public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(DatabaseError databaseError) {
-
-                    }
-                });
+                Log.e("TAG", "create folder");
                 break;
         }
         return super.onOptionsItemSelected(item);

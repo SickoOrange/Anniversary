@@ -17,6 +17,7 @@ import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
@@ -174,7 +175,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
             SharedPreferencesHelper.getInstance().saveData("user_uuid", firebaseUser.getUid());
-            firebaseDatabaseHelper.buildRootUser(firebaseUser);
+            FirebaseDatabaseHelper.getInstance().buildRootUser(firebaseUser);
             startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }
