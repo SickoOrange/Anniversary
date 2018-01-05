@@ -1,4 +1,4 @@
-package com.berber.orange.memories.helper.firebasemodel;
+package com.berber.orange.memories.database.firebasemodel;
 
 import com.berber.orange.memories.dbmodel.Anniversary;
 

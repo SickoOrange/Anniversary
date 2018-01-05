@@ -1,4 +1,4 @@
-package com.berber.orange.memories.helper.firebasemodel;
+package com.berber.orange.memories.database.firebasemodel;
 
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 
@@ -112,5 +112,21 @@ public class AnniversaryModel {
 
     public void setGoogleLocation(GoogleLocationModel googleLocation) {
         this.googleLocation = googleLocation;
+    }
+
+    @Override
+    public String toString() {
+        return "AnniversaryModel{" +
+                "Title='" + Title + '\'' +
+                ", Description='" + Description + '\'' +
+                ", Location='" + Location + '\'' +
+                ", date='" + date + '\'' +
+                ", createDate='" + createDate + '\'' +
+                ", favorite=" + favorite +
+                ", coverUri='" + coverUri + '\'' +
+                ", photos=" + photos +
+                ", anniversaryTypeModel=" + anniversaryTypeModel +
+                ", googleLocation=" + googleLocation +
+                '}';
     }
 }
