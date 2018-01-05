@@ -14,11 +14,10 @@ import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.helper.AnniversaryDaoUtils;
 import com.berber.orange.memories.helper.FilebaseStorageHelper;
-import com.berber.orange.memories.helper.FirebaseDatabaseHelper;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
 import com.berber.orange.memories.helper.GoogleDriverHelper;
 import com.berber.orange.memories.helper.GooglePlaceRequestHandler;
 import com.google.android.gms.auth.api.Auth;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
@@ -45,8 +44,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
     protected AnniversaryDaoUtils anniversaryDaoUtils;
     protected FilebaseStorageHelper filebaseStorageHelper;
-    protected GoogleDriverHelper googleDriverHelper;
-    protected FirebaseDatabaseHelper firebaseDatabaseHelper;
     protected GoogleSignInOptions gso;
 
 
@@ -78,7 +75,7 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
         filebaseStorageHelper = new FilebaseStorageHelper(this);
 
-        firebaseDatabaseHelper = new FirebaseDatabaseHelper();
+        FirebaseDatabaseHelper.init();
 
         // googleDriverHelper = initializeDriverClient(GoogleSignIn.getLastSignedInAccount(this));
         initView();

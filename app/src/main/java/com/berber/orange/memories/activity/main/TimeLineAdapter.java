@@ -20,6 +20,9 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
+import com.berber.orange.memories.database.databaseinterface.QueryResultListener;
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.dbmodel.Anniversary;
 import com.berber.orange.memories.dbmodel.AnniversaryDao;
 import com.berber.orange.memories.dbmodel.GoogleLocation;
@@ -47,17 +50,16 @@ import de.hdodenhof.circleimageview.CircleImageView;
  * on 27.09.2017.
  */
 
-public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> implements onMoveAndSwipedListener {
+public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> implements onMoveAndSwipedListener, QueryResultListener {
     private List<Anniversary> mDateSets = new ArrayList<>();
     private CoordinatorActivity mContext;
     private int calProgress = 0;
 
-    public TimeLineAdapter(List<Anniversary> mDateSets, Context context) {
-        if (mDateSets == null) {
-            this.mDateSets = new ArrayList<>();
-        }
-        this.mDateSets = mDateSets;
+    public TimeLineAdapter(Context context) {
+
         mContext = (CoordinatorActivity) context;
+        FirebaseDatabaseHelper.getInstance().setQueryResultListener(this);
+
     }
 
     @Override
@@ -280,6 +282,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 .show();
         notifyDataSetChanged();
         Log.e("TAG", "onItemDismiss");
+    }
+
+    @Override
+    public void queryResult(List<AnniversaryModel> list) {
+        //   mDateSets = list;
+        Log.e("TAG", "query Result: " + String.valueOf(list.size()));
+
     }
 
 

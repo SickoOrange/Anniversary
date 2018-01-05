@@ -27,6 +27,7 @@ import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.GooglePlaceRequestHandler;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
@@ -39,9 +40,8 @@ import com.berber.orange.memories.dbmodel.ModelAnniversaryType;
 import com.berber.orange.memories.dbmodel.ModelAnniversaryTypeDao;
 import com.berber.orange.memories.dbmodel.NotificationSending;
 import com.berber.orange.memories.dbmodel.NotificationSendingDao;
-import com.berber.orange.memories.helper.firebasemodel.AnniversaryModel;
-import com.berber.orange.memories.helper.firebasemodel.AnniversaryTypeModel;
-import com.berber.orange.memories.helper.firebasemodel.GoogleLocationModel;
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
+import com.berber.orange.memories.database.firebasemodel.GoogleLocationModel;
 import com.berber.orange.memories.utils.Utils;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -50,6 +50,9 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.gyf.barlibrary.ImmersionBar;
@@ -57,14 +60,12 @@ import com.gyf.barlibrary.ImmersionBar;
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -96,7 +97,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private Date currentPickDate = null;
     private TextView mAnniversaryLocation;
     private GoogleLocation googleLocation = null;
-    private GoogleLocationModel googleLocationModel=null;
+    private GoogleLocationModel googleLocationModel = null;
     private GoogleLocationDao googleLocationDao;
     public static final String INTENT_ALARM_LOG = "intent_alarm_log";
     private AlarmManager alarmManager;
@@ -434,8 +435,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         }
 
 
-
-
         //real time database
         AnniversaryModel anniversaryModel = new AnniversaryModel();
         anniversaryModel.setAnniversaryTypeModel(currentImageResource);
@@ -446,16 +445,42 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         anniversaryModel.setDescription(anniversaryDescription);
         anniversaryModel.setGoogleLocation(googleLocationModel);
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users/NTFuB0B1XPcDtgKVK1oNHPkSraA3");
+        String uuid = (String) SharedPreferencesHelper.getInstance().getData("user_uuid", "undefined");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users" + "/" + uuid);
         reference.child("anniversaries").push().setValue(anniversaryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Void aVoid){
-                Log.e("TAG","PUSH ANNIVERSARY LIST SUCCESS");
+            public void onSuccess(Void aVoid) {
+                Log.e("TAG", "PUSH ANNIVERSARY LIST SUCCESS");
             }
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("TAG","PUSH ANNIVERSARY LIST FAILURE");
+                Log.e("TAG", "PUSH ANNIVERSARY LIST FAILURE");
+            }
+        });
+        reference.child("anniversaries").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                Log.e("TAG", "PUSH ANNIVERSARY onChildAdded");
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                Log.e("TAG", "PUSH ANNIVERSARY onChildChanged");
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
             }
         });

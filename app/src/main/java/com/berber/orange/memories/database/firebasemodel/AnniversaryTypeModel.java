@@ -1,4 +1,4 @@
-package com.berber.orange.memories.helper.firebasemodel;
+package com.berber.orange.memories.database.firebasemodel;
 
 /**
  * Created by orange on 2018/1/4.

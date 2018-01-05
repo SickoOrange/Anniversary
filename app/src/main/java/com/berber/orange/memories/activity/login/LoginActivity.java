@@ -14,8 +14,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import com.berber.orange.memories.R;
+import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
@@ -127,7 +129,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
                 break;
 
             case R.id.google_login_in:
-                YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this,mGoogleApiClient);
+                YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this, mGoogleApiClient);
                 break;
 
             case R.id.facebook_login_in:
@@ -172,7 +174,8 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     GoogleLoginInCallBack googleSignInCallBack = new GoogleLoginInCallBack() {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
-            firebaseDatabaseHelper.buildRootUser(firebaseUser);
+            SharedPreferencesHelper.getInstance().saveData("user_uuid", firebaseUser.getUid());
+            FirebaseDatabaseHelper.getInstance().buildRootUser(firebaseUser);
             startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }

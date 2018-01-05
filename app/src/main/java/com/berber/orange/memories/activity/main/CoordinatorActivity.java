@@ -32,6 +32,8 @@ import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
 import com.berber.orange.memories.activity.donate.DonateActivity;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.MatisseImagePicker;
 import com.berber.orange.memories.activity.setting.SettingActivity;
@@ -42,10 +44,12 @@ import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
 import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
-import com.google.android.gms.auth.api.signin.GoogleSignIn;
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
 import com.zhihu.matisse.Matisse;
 
 import java.util.ArrayList;
@@ -132,7 +136,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         TextView user_name = headerView.findViewById(R.id.user_display_name);
 
 
-
         String displayName;
         Uri photoUri;
         MyFireBaseUser user = getIntent().getParcelableExtra("user");
@@ -147,7 +150,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
         user_name.setText("Hello, dear " + displayName);
-
 
 
         Glide.with(this).load(photoUri.toString()).into(user_photo);
@@ -189,7 +191,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         linearLayoutManager = new LinearLayoutManager(this);
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
-        adapter = new TimeLineAdapter(getData(), this);
+        adapter = new TimeLineAdapter(this);
 
         recycler.setLayoutManager(linearLayoutManager);
         recycler.setAdapter(adapter);
@@ -202,10 +204,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
     }
 
-    private List<Anniversary> getData() {
-        List<Anniversary> anniversaries = anniversaryDao.queryBuilder().list();
-        return anniversaries.isEmpty() ? new ArrayList<Anniversary>() : anniversaries;
-    }
+//    private List<Anniversary> getData() {
+//        List<Anniversary> anniversaries = anniversaryDao.queryBuilder().list();
+//        return anniversaries.isEmpty() ? new ArrayList<Anniversary>() : anniversaries;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -245,8 +247,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             case R.id.action_sync_from_cloud:
                 break;
             case R.id.action_create_folder:
-                    Log.e("TAG","create folder");
-                googleDriverHelper.query();
+                Log.e("TAG", "create folder");
                 break;
         }
         return super.onOptionsItemSelected(item);
