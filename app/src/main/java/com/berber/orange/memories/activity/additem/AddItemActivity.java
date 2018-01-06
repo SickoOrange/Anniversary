@@ -447,43 +447,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         String uuid = (String) SharedPreferencesHelper.getInstance().getData("user_uuid", "undefined");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users" + "/" + uuid);
         DatabaseReference push = reference.child("anniversaries").push();
-        push.setValue(anniversaryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.e("TAG", "PUSH ANNIVERSARY LIST SUCCESS");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("TAG", "PUSH ANNIVERSARY LIST FAILURE");
-            }
-        });
-        reference.child("anniversaries").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                Log.e("TAG", "PUSH ANNIVERSARY onChildAdded");
-            }
+        push.setValue(anniversaryModel)
+                .addOnSuccessListener(aVoid -> Log.e("TAG", "PUSH ANNIVERSARY LIST SUCCESS"))
+                .addOnFailureListener(e -> Log.e("TAG", "PUSH ANNIVERSARY LIST FAILURE"));
 
-            @Override
-            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
-                Log.e("TAG", "PUSH ANNIVERSARY onChildChanged");
-            }
-
-            @Override
-            public void onChildRemoved(DataSnapshot dataSnapshot) {
-
-            }
-
-            @Override
-            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
 
 //        Intent intent = new Intent();
 //        intent.putExtra("obj", anniversary);

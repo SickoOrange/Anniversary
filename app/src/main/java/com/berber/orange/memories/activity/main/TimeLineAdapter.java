@@ -17,6 +17,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.annimon.stream.Stream;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
@@ -25,6 +26,7 @@ import com.berber.orange.memories.database.ItemType;
 import com.berber.orange.memories.database.databaseinterface.QueryResultListener;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.database.firebasemodel.GoogleLocationModel;
+import com.berber.orange.memories.dbmodel.Anniversary;
 import com.berber.orange.memories.widget.TimeLineMarker;
 import com.google.firebase.auth.FirebaseAuthRecentLoginRequiredException;
 import com.google.zxing.client.result.VINParsedResult;
@@ -42,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -145,7 +148,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             calculateDateWithJoda(viewHolder, anniversaryModel);
 
             ItemType type = FirebaseDatabaseHelper.getInstance().getItemType(anniversaryModel, itemTypeListMap);
-            Log.e("TAG",type.toString());
+            Log.e("TAG", type.toString());
             switch (type) {
                 case ALL:
                     viewHolder.mTimeLine.setBeginLineView(true);
@@ -324,17 +327,31 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public void queryResult(List<AnniversaryModel> list) {
+        updateList(list);
+    }
+
+    public void addItem(AnniversaryModel model) {
+        List<AnniversaryModel> modelList = Stream
+                .of(mDateSets)
+                .filter(o -> o instanceof AnniversaryModel)
+                .map(o -> {
+                    AnniversaryModel anni = (AnniversaryModel) o;
+                    return anni;
+                }).toList();
+
+        modelList.add(model);
+        updateList(modelList);
+    }
+
+    private void updateList(List<AnniversaryModel> list) {
         if (list.size() == 0) {
             return;
         }
-
         Map<String, List<AnniversaryModel>> sortedMap = FirebaseDatabaseHelper.getInstance().groupData(list);
         itemTypeListMap = FirebaseDatabaseHelper.getInstance().flateDate(sortedMap);
 
         mDateSets = itemTypeListMap.get(ItemType.DATA);
         notifyDataSetChanged();
-        Log.e("TAG", "query Result: " + String.valueOf(list.size()));
-
     }
 
 

@@ -116,7 +116,7 @@ public class FirebaseDatabaseHelper {
             throw new IllegalArgumentException("query child attribute can't be null");
         }
         getAnniversariesReference().orderByChild(attr)
-                .addValueEventListener(new ValueEventListener() {
+                .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         List<AnniversaryModel> list = new ArrayList<>();
@@ -137,6 +137,18 @@ public class FirebaseDatabaseHelper {
 
                     }
                 });
+        getAnniversariesReference().addChildEventListener(new ChildEventListenerWrapper() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                super.onChildAdded(dataSnapshot, s);
+                Log.e("TAG", "on ChildAdded: " + dataSnapshot.getChildrenCount());
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+                super.onChildChanged(dataSnapshot, s);
+            }
+        });
     }
 
     public List<AnniversaryModel> querybyKey() {
