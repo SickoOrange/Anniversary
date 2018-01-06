@@ -4,9 +4,9 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.berber.orange.memories.SharedPreferencesHelper;
+import com.berber.orange.memories.database.databaseinterface.ChildEventListenerWrapper;
 import com.berber.orange.memories.database.databaseinterface.QueryResultListener;
 import com.berber.orange.memories.helper.User;
-import com.berber.orange.memories.database.databaseinterface.ChildEventClass;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -78,6 +78,33 @@ public class FirebaseDatabaseHelper {
                 });
     }
 
+    public void deleteChildByKey(final String key) {
+        if (key == null || "".equals(key)) {
+            throw new IllegalArgumentException("query child attribute can't be null");
+        }
+
+        getAnniversaryReference(key).removeValue(new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Log.e("TAG", "delete anniversary id: " + key + " Successfully");
+            }
+        });
+    }
+
+    public void updateAnniversaryAttributeByKey(final String key, AnniversaryModel model) {
+        if (key == null || "".equals(key)) {
+            throw new IllegalArgumentException("query child attribute can't be null");
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put(key, model);
+        getAnniversariesReference().push().updateChildren(map, new DatabaseReference.CompletionListener() {
+            @Override
+            public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                Log.e("TAG", "update attribute with anniversary id: " + key + " Successfully");
+            }
+        });
+    }
+
     public void queryByChildAttribute(String attr) {
         if (attr == null || "".equals(attr)) {
             throw new IllegalArgumentException("query child attribute can't be null");
@@ -89,12 +116,16 @@ public class FirebaseDatabaseHelper {
                         List<AnniversaryModel> list = new ArrayList<>();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             AnniversaryModel model = snapshot.getValue(AnniversaryModel.class);
-                            list.add(model);
+                            if (model != null) {
+                                model.setUserUUID(snapshot.getKey());
+                                list.add(model);
+                            }
                         }
                         if (list.size() == dataSnapshot.getChildrenCount()) {
                             queryResultListener.queryResult(list);
                         }
                     }
+
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
 
@@ -104,10 +135,9 @@ public class FirebaseDatabaseHelper {
 
     public List<AnniversaryModel> querybyKey() {
         final List<AnniversaryModel> list = new ArrayList<>();
-        getAnniversariesReference().orderByKey().addChildEventListener(new ChildEventClass() {
+        getAnniversariesReference().orderByKey().addChildEventListener(new ChildEventListenerWrapper() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                super.onChildAdded(dataSnapshot, s);
                 AnniversaryModel model = dataSnapshot.getValue(AnniversaryModel.class);
                 list.add(model);
             }
@@ -117,10 +147,9 @@ public class FirebaseDatabaseHelper {
 
     public List<AnniversaryModel> querybyValue() {
         final List<AnniversaryModel> list = new ArrayList<>();
-        getAnniversariesReference().orderByValue().addChildEventListener(new ChildEventClass() {
+        getAnniversariesReference().orderByValue().addChildEventListener(new ChildEventListenerWrapper() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String s) {
-                super.onChildAdded(dataSnapshot, s);
                 AnniversaryModel model = dataSnapshot.getValue(AnniversaryModel.class);
                 list.add(model);
             }
@@ -139,6 +168,10 @@ public class FirebaseDatabaseHelper {
 
     private DatabaseReference getAnniversariesReference() {
         return database.getReference("users/" + getUserUUID() + "/anniversaries");
+    }
+
+    private DatabaseReference getAnniversaryReference(String key) {
+        return database.getReference("users/" + getUserUUID() + "/anniversaries" + "/" + key);
     }
 
     public void setQueryResultListener(QueryResultListener queryResultListener) {

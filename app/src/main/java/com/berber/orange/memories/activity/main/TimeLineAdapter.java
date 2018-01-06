@@ -17,28 +17,24 @@ import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.details.DetailsActivity;
+import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.database.FirebaseDatabaseHelper;
 import com.berber.orange.memories.database.databaseinterface.QueryResultListener;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
-import com.berber.orange.memories.dbmodel.Anniversary;
-import com.berber.orange.memories.dbmodel.AnniversaryDao;
-import com.berber.orange.memories.dbmodel.GoogleLocation;
-import com.berber.orange.memories.dbmodel.ModelAnniversaryType;
-import com.berber.orange.memories.dbmodel.NotificationSending;
+import com.berber.orange.memories.database.firebasemodel.GoogleLocationModel;
 import com.berber.orange.memories.widget.TimeLineMarker;
 
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.joda.time.Hours;
+import org.joda.time.format.DateTimeFormat;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -51,15 +47,15 @@ import de.hdodenhof.circleimageview.CircleImageView;
  */
 
 public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLineViewHolder> implements onMoveAndSwipedListener, QueryResultListener {
-    private List<Anniversary> mDateSets = new ArrayList<>();
+    private List<AnniversaryModel> mDateSets = new ArrayList<>();
     private CoordinatorActivity mContext;
     private int calProgress = 0;
 
-    public TimeLineAdapter(Context context) {
-
+    TimeLineAdapter(Context context) {
+        Log.e("TAG", "TimeLineAdapter Constructor");
         mContext = (CoordinatorActivity) context;
         FirebaseDatabaseHelper.getInstance().setQueryResultListener(this);
-
+        FirebaseDatabaseHelper.getInstance().queryByChildAttribute("date");
     }
 
     @Override
@@ -76,12 +72,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     @Override
     public void onBindViewHolder(final TimeLineViewHolder holder, final int position) {
-        Log.e("TAG", "onBindViewHolder");
+        Log.e("TAG", "ON BIND VIEW HOLDER");
         //get target object
-        final Anniversary anniversary = mDateSets.get(position);
-        holder.mAnniversaryTitle.setText(anniversary.getTitle());
+        final AnniversaryModel anniversaryModel = mDateSets.get(position);
+        holder.mAnniversaryTitle.setText(anniversaryModel.getTitle());
 
-        String description = anniversary.getDescription();
+        String description = anniversaryModel.getDescription();
         if (!TextUtils.isEmpty(description)) {
             holder.mDescriptionLabel.setText(description);
         } else {
@@ -89,12 +85,13 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         }
 
         //set object date
-        if (anniversary.getDate() != null) {
-            String date = SimpleDateFormat.getDateInstance().format(anniversary.getDate());
-            holder.mAnniversaryDate.setText(date);
+        if (anniversaryModel.getDate() != null) {
+            DateTime dateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(anniversaryModel.getDate()).withZone(DateTimeZone.getDefault());
+
+            holder.mAnniversaryDate.setText(dateTime.toString(DateTimeFormat.longDate()));
         }
 
-        GoogleLocation googleLocation = anniversary.getGoogleLocation();
+        GoogleLocationModel googleLocation = anniversaryModel.getGoogleLocation();
         //set location
         String location = null;
         if (googleLocation != null) {
@@ -112,22 +109,12 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
 
 
         //set image type
-        ModelAnniversaryType modelAnniversaryType = anniversary.getModelAnniversaryType();
-        if (modelAnniversaryType != null) {
-            holder.mAnniversaryTypeImage.setImageResource(modelAnniversaryType.getImageResource());
+        ModelAnniversaryTypeDTO anniversaryTypeMode = anniversaryModel.getAnniversaryTypeModel();
+        if (anniversaryTypeMode != null) {
+            holder.mAnniversaryTypeImage.setImageResource(anniversaryTypeMode.getImageResource());
         }
 
-        //notification icon switch
-        NotificationSending notificationSending = anniversary.getNotificationSending();
-        if (notificationSending != null) {
-            holder.mNotificationIcon.setImageResource(R.drawable.ic_notifications_black_18px);
-        } else {
-            holder.mNotificationIcon.setImageResource(R.drawable.ic_notifications_off_black_18px);
-        }
-
-
-        //calculateDate(holder, anniversary);
-        calculateDateWithJoda(holder, anniversary);
+        calculateDateWithJoda(holder, anniversaryModel);
 
 
         if (position == 0)
@@ -151,23 +138,25 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Anniversary selectedTarget = mDateSets.get(position);
+                AnniversaryModel selectedTarget = mDateSets.get(position);
                 Intent intent = new Intent(mContext, DetailsActivity.class);
-                intent.putExtra("anniversaryId", selectedTarget.getId());
-                intent.putExtra("progressValue", progress);
+                // intent.putExtra("anniversaryId", selectedTarget.getId());
+                //intent.putExtra("progressValue", progress);
                 //intent.putExtra("dateInformation", holder.mLeftDayLabel.getText().toString());
-                mContext.startActivity(intent);
+                //mContext.startActivity(intent);
             }
         });
     }
 
-    private void calculateDateWithJoda(TimeLineViewHolder holder, Anniversary anniversary) {
+    private void calculateDateWithJoda(TimeLineViewHolder holder, AnniversaryModel anniversary) {
         //纪念日时间
-        Date anniversaryDate = anniversary.getDate();
-        DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
+        String anniversaryDate = anniversary.getDate();
+
+        DateTime anniversaryDateWithJoda = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(anniversaryDate).withZone(DateTimeZone.getDefault());
+
         //纪念日创建时间
-        Date createDate = anniversary.getCreateDate();
-        DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
+        String createDate = anniversary.getCreateDate();
+        DateTime anniversaryCreateDateWithJoda = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(anniversaryDate).withZone(DateTimeZone.getDefault());
         //当前时间
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
@@ -243,15 +232,15 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
         return mDateSets.size();
     }
 
-    public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
-        List<Anniversary> list = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversary.getId())).list();
-        if (list.size() == 1) {
-            mDateSets.add(list.get(0));
-            notifyDataSetChanged();
-        }
-    }
+//    public void addNewItem(Anniversary anniversary, AnniversaryDao anniversaryDao) {
+//        List<Anniversary> list = anniversaryDao.queryBuilder().where(AnniversaryDao.Properties.Id.eq(anniversary.getId())).list();
+//        if (list.size() == 1) {
+//            mDateSets.add(list.get(0));
+//            notifyDataSetChanged();
+//        }
+//    }
 
-    public List<Anniversary> getDatas() {
+    public List<AnniversaryModel> getDatas() {
         return mDateSets;
     }
 
@@ -272,9 +261,8 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
                 .onPositive(new MaterialDialog.SingleButtonCallback() {
                     @Override
                     public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        Anniversary anniversary = mDateSets.get(position);
-                        AnniversaryDao anniversaryDao = ((APP) mContext.getApplication()).getDaoSession().getAnniversaryDao();
-                        anniversaryDao.delete(anniversary);
+                        AnniversaryModel anniversary = mDateSets.get(position);
+                        FirebaseDatabaseHelper.getInstance().deleteChildByKey(mDateSets.get(position).getUserUUID());
                         mDateSets.remove(position);
                         notifyItemRemoved(position);
                     }
@@ -287,6 +275,11 @@ public class TimeLineAdapter extends RecyclerView.Adapter<TimeLineAdapter.TimeLi
     @Override
     public void queryResult(List<AnniversaryModel> list) {
         //   mDateSets = list;
+        if (list.size() == 0) {
+            return;
+        }
+        mDateSets = list;
+        notifyDataSetChanged();
         Log.e("TAG", "query Result: " + String.valueOf(list.size()));
 
     }

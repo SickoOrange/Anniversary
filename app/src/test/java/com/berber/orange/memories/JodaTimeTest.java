@@ -1,9 +1,14 @@
 package com.berber.orange.memories;
 
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
+
 import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.Days;
 import org.junit.Test;
+
+import java.util.Arrays;
+import java.util.List;
 
 
 /**
@@ -14,19 +19,11 @@ public class JodaTimeTest {
 
     @Test
     public void calculateTest() {
-        //   DateTime dateTime = new DateTime(DateTimeZone.UTC);
-
-        //   DateTime dt = new DateTime(2017, 12, 13, 0, 0, 0);// 年,月,日,时,分,秒,毫秒
-        // System.out.println(dt.withZone(DateTimeZone.forID("America/New_York")));
-        //    System.out.println(dt.withZone(DateTimeZone.UTC));\
-
-        DateTime dt = new DateTime(2017, 12, 13, 0, 0, 0);// 年,月,日,时,分,秒,毫秒
-        DateTime dt2 = new DateTime(2017, 12, 12, 13, 0, 0);// 年,月,日,时,分,秒,毫秒
-
-        DateTime current = DateTime.now();
-
-        int days = Days.daysBetween(dt2, dt).getDays();
-        System.out.println(days);
+        String s1 = "25-01-2018 00:00:00";
+        String s2 = "10-02-2018 00:00:00";
+        String s3 = "25-02-2018 00:00:00";
+        String s4 = "25-03-2018 00:00:00";
+        List<AnniversaryModel> list = Arrays.asList();
 
     }
 }

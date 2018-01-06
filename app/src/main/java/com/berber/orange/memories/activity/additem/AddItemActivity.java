@@ -439,15 +439,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         AnniversaryModel anniversaryModel = new AnniversaryModel();
         anniversaryModel.setAnniversaryTypeModel(currentImageResource);
         anniversaryModel.setTitle(anniversaryTitle);
-        anniversaryModel.setDate(new DateTime(currentPickDate).withZone(DateTimeZone.UTC).toString(DateTimeFormat.longDateTime())
-        );
-        anniversaryModel.setCreateDate(DateTime.now(DateTimeZone.UTC).toString(DateTimeFormat.longDateTime()));
+        anniversaryModel.setDate(DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").print(new DateTime(currentPickDate).withZone(DateTimeZone.UTC)));
+        anniversaryModel.setCreateDate(DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").print(DateTime.now(DateTimeZone.UTC)));
         anniversaryModel.setDescription(anniversaryDescription);
         anniversaryModel.setGoogleLocation(googleLocationModel);
 
         String uuid = (String) SharedPreferencesHelper.getInstance().getData("user_uuid", "undefined");
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("users" + "/" + uuid);
-        reference.child("anniversaries").push().setValue(anniversaryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+        DatabaseReference push = reference.child("anniversaries").push();
+        push.setValue(anniversaryModel).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.e("TAG", "PUSH ANNIVERSARY LIST SUCCESS");
@@ -485,9 +485,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             }
         });
 
-        Intent intent = new Intent();
-        intent.putExtra("obj", anniversary);
-        setResult(REQUEST_NEW_ITEM, intent);
+//        Intent intent = new Intent();
+//        intent.putExtra("obj", anniversary);
+//        setResult(REQUEST_NEW_ITEM, intent);
+        setResult(REQUEST_NEW_ITEM, null);
         finish();
     }
 

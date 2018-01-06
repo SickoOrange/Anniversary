@@ -277,7 +277,8 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     @Override
     protected void onResume() {
         super.onResume();
-        adapter.notifyDataSetChanged();
+        //
+        //adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -286,12 +287,12 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         switch (requestCode) {
             case REQUEST_NEW_ITEM:
                 if (data == null) {
-                    Utils.showToast(CoordinatorActivity.this, "然而你并没有添加任何新的内容", Toast.LENGTH_LONG);
+                    Utils.showToast(CoordinatorActivity.this, "添加了新的事件", Toast.LENGTH_SHORT);
                     return;
                 }
-                Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
-                adapter.addNewItem(dto, anniversaryDao);
-                Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
+//                Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
+//                //adapter.addNewItem(dto, anniversaryDao);
+//                Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 break;
             case COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE:
                 if (data == null) {

@@ -27,6 +27,7 @@ public class AnniversaryModel {
     private String coverUri;
 
     private List<String> photos = new ArrayList<>();
+    private String userUUID;
 
 
     public List<String> getPhotos() {
@@ -128,5 +129,13 @@ public class AnniversaryModel {
                 ", anniversaryTypeModel=" + anniversaryTypeModel +
                 ", googleLocation=" + googleLocation +
                 '}';
+    }
+
+    public void setUserUUID(String userUUID) {
+        this.userUUID = userUUID;
+    }
+
+    public String getUserUUID() {
+        return userUUID;
     }
 }
