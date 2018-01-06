@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/item_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fafafa"
+    tools:ignore="MissingPrefix">
+
+
+    <TextView
+        android:id="@+id/item_date_tv"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:layout_margin="5dp"
+        android:gravity="center"
+        android:maxLines="1"
+        android:padding="2dp"
+        android:text="Test"
+        android:textColor="#A1A1A1"
+        android:textSize="14dp" />
+</RelativeLayout>

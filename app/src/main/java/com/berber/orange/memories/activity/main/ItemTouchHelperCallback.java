@@ -26,10 +26,15 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
             return makeMovementFlags(dragFlags, swipeFlags);
 
         } else {
-            // for recyclerView with linearLayoutManager, support drag up and down, and swipe lift and right
-            final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
-            final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
-            return makeMovementFlags(dragFlags, swipeFlags);
+            if (viewHolder instanceof TimeLineAdapter.TimeLineDateViewHolder) {
+                return makeMovementFlags(0, 0);
+            } else {
+                // for recyclerView with linearLayoutManager, support drag up and down, and swipe lift and right
+                final int dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
+                final int swipeFlags = ItemTouchHelper.START | ItemTouchHelper.END;
+                //disable drag
+                return makeMovementFlags(0, swipeFlags);
+            }
         }
     }
 
@@ -39,6 +44,7 @@ public class ItemTouchHelperCallback extends ItemTouchHelper.Callback {
         if (viewHolder.getItemViewType() != target.getItemViewType()) {
             return false;
         }
+
         moveAndSwipedListener.onItemMove(viewHolder.getAdapterPosition(), target.getAdapterPosition());
         return true;
     }

@@ -20,6 +20,10 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    compileOptions {
+        targetCompatibility 1.8
+        sourceCompatibility 1.8
+    }
 }
 
 
@@ -53,6 +57,7 @@ dependencies {
     compile 'org.apmem.tools:layouts:1.10@aar'
     compile 'com.github.jrvansuita:MaterialAbout:+'
     compile 'com.victor:lib:1.0.4'
+    compile 'com.annimon:stream:1.1.9'
     testCompile 'junit:junit:4.12'
 }
 apply plugin: 'com.google.gms.google-services'

@@ -17,8 +17,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
+import org.joda.time.format.DateTimeFormat;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -180,4 +186,69 @@ public class FirebaseDatabaseHelper {
         }
         this.queryResultListener = queryResultListener;
     }
+
+    public Map<String, List<AnniversaryModel>> groupData(List<AnniversaryModel> list) {
+        Map<String, List<AnniversaryModel>> sortedMap = new LinkedHashMap<>();
+        com.annimon.stream.Stream<AnniversaryModel> stream = com.annimon.stream.Stream.of(list);
+        stream
+                .sortBy(model -> DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(model.getDate()).withZone(DateTimeZone.getDefault()))
+                .chunkBy(model -> {
+                    String date = model.getDate();
+                    DateTime dateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(date).withZone(DateTimeZone.getDefault());
+                    return dateTime.getMonthOfYear() + "-" + dateTime.getYear();
+                })
+                .forEach(subList -> {
+                    AnniversaryModel model = subList.get(0);
+                    DateTime dateTime = DateTimeFormat.forPattern("dd-MM-yyyy HH:mm:ss").withZoneUTC().parseDateTime(model.getDate()).withZone(DateTimeZone.getDefault());
+                    sortedMap.put(dateTime.getMonthOfYear() + "-" + dateTime.getYear(), subList);
+                });
+        return sortedMap;
+    }
+
+    public Map<ItemType, List<Object>> flateDate(Map<String, List<AnniversaryModel>> map) {
+        Map<ItemType, List<Object>> positionMapping = new HashMap<>();
+        positionMapping.put(ItemType.DATE, new ArrayList<>());
+        positionMapping.put(ItemType.NONE, new ArrayList<>());
+        positionMapping.put(ItemType.ALL, new ArrayList<>());
+        positionMapping.put(ItemType.HEAD, new ArrayList<>());
+        positionMapping.put(ItemType.TAIL, new ArrayList<>());
+        positionMapping.put(ItemType.DATA, new ArrayList<>());
+        for (Map.Entry<String, List<AnniversaryModel>> entry : map.entrySet()) {
+            String key = entry.getKey();
+            List<AnniversaryModel> value = entry.getValue();
+
+            positionMapping.get(ItemType.DATE).add(key);
+
+            if (value.size() == 1) {
+                //NONE
+                positionMapping.get(ItemType.NONE).add(value.get(0));
+            } else {
+                int listSize = value.size();
+                positionMapping.get(ItemType.HEAD).add(value.get(0));
+                positionMapping.get(ItemType.TAIL).add(value.get(listSize - 1));
+                for (int i = 1; i < listSize - 1; i++) {
+                    positionMapping.get(ItemType.ALL).add(value.get(i));
+                }
+            }
+            positionMapping.get(ItemType.DATA).add(value.get(0).getDate());
+            positionMapping.get(ItemType.DATA).addAll(value);
+        }
+        return positionMapping;
+    }
+
+    public ItemType getItemType(Object o, Map<ItemType, List<Object>> map) {
+        List<ItemType> itemTypes = Arrays.asList(ItemType.HEAD, ItemType.TAIL, ItemType.ALL, ItemType.NONE);
+        for (ItemType type : itemTypes) {
+            List<Object> list = map.get(type);
+            if (list.contains(o)) {
+                return type;
+            }
+        }
+        return ItemType.UNDEFINED;
+    }
+
+
 }
+
+
+
