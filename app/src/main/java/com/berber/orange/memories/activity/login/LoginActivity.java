@@ -60,10 +60,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         signInGoogle.setOnClickListener(this);
         signInFacebook.setOnClickListener(this);
 
-
-        //  ImageView loginImageView = findViewById(R.id.login_bg_image_view);
-
-
     }
 
 
