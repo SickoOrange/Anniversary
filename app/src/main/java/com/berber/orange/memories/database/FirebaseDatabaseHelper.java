@@ -49,22 +49,18 @@ public class FirebaseDatabaseHelper {
         return instance;
     }
 
-    public void buildRootUser(FirebaseUser myUser) {
+    public void buildRootUser(User myUser) {
         Log.e("TAG", "BUILD ROOT USER");
         DatabaseReference reference = database.getReference("users").child(getUserUUID());
 
         Map<String, Object> map = new HashMap<>();
-//        User user = new User();
-//        user.setPhotoUri(myUser.getPhotoUrl().toString());
-//        user.setName(myUser.getDisplayName());
-//        user.setEmail(myUser.getEmail());
-        map.put("photoUri", myUser.getPhotoUrl().toString());
+        map.put("photoUri", myUser.getPhotoUri() == null ? "" : myUser.getPhotoUri());
         reference
                 .updateChildren(map, (databaseError, databaseReference) -> {
                     map.clear();
-                    map.put("Email",myUser.getEmail());
-                    map.put("Name",myUser.getDisplayName());
-                    databaseReference.updateChildren(map,(databaseError1,databaseReference1)->Log.e("TAG","update info finish"));
+                    map.put("Email", myUser.getEmail());
+                    map.put("Name", myUser.getName());
+                    databaseReference.updateChildren(map, (databaseError1, databaseReference1) -> Log.e("TAG", "update info finish"));
                 });
 
     }

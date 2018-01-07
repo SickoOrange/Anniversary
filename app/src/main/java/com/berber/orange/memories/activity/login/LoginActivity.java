@@ -18,6 +18,7 @@ import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.main.CoordinatorActivity;
 import com.berber.orange.memories.database.FirebaseDatabaseHelper;
+import com.berber.orange.memories.helper.User;
 import com.berber.orange.memories.loginservice.command.LoginType;
 import com.berber.orange.memories.loginservice.YYLoginServer;
 import com.berber.orange.memories.loginservice.command.GoogleLoginInMethod;
@@ -141,7 +142,11 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         @Override
         public void onGoogleSignInSuccess(GoogleSignInAccount acct, FirebaseUser firebaseUser) {
             SharedPreferencesHelper.getInstance().saveData("user_uuid", firebaseUser.getUid());
-            FirebaseDatabaseHelper.getInstance().buildRootUser(firebaseUser);
+            User user = new User();
+            user.setEmail(acct.getEmail());
+            user.setName(acct.getDisplayName());
+            user.setPhotoUri(acct.getPhotoUrl().toString());
+            FirebaseDatabaseHelper.getInstance().buildRootUser(user);
             startActivity(new Intent(LoginActivity.this, CoordinatorActivity.class));
             LoginActivity.this.finish();
         }
@@ -177,15 +182,21 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
         @Override
         public void facebookLoginWithFireBaseSucceed(FirebaseUser user, JSONObject object) {
+            User fbUser = new User();
 
             MyFireBaseUser myUser = new MyFireBaseUser();
             try {
                 myUser.setEmail(object.getString("email"));
+                fbUser.setEmail(object.getString("email"));
             } catch (JSONException e) {
                 e.printStackTrace();
             }
             SharedPreferencesHelper.getInstance().saveData("user_uuid", user.getUid());
-            FirebaseDatabaseHelper.getInstance().buildRootUser(user);
+
+
+            fbUser.setName(user.getDisplayName());
+            fbUser.setPhotoUri(user.getPhotoUrl().toString());
+            FirebaseDatabaseHelper.getInstance().buildRootUser(fbUser);
 
             myUser.setDisplayName(user.getDisplayName());
             myUser.setPhotoUri(user.getPhotoUrl().toString());
