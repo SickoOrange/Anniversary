@@ -45,9 +45,9 @@ public class AnniPreviewActivity extends BaseActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            long anniversaryId = intent.getLongExtra("anniversaryId", -1);
+            long anniuuid = intent.getLongExtra("anniversaryId", -1);
             int currentId = intent.getIntExtra("currentId", -1);
-            images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversaryId);
+            images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniuuid);
             if (!images.isEmpty()) {
                 setBannerImageLoader(banner, images);
             }

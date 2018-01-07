@@ -1,5 +1,8 @@
 package com.berber.orange.memories.database.firebasemodel;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 
 import java.util.ArrayList;
@@ -10,7 +13,7 @@ import java.util.List;
  * Created by orange on 2018/1/4.
  */
 
-public class AnniversaryModel {
+public class AnniversaryModel implements Parcelable {
     private String Title;
 
     private String Description;
@@ -27,7 +30,7 @@ public class AnniversaryModel {
     private String coverUri;
 
     private List<String> photos = new ArrayList<>();
-    private String userUUID;
+    private String anniuuid;
 
 
     public List<String> getPhotos() {
@@ -131,11 +134,60 @@ public class AnniversaryModel {
                 '}';
     }
 
-    public void setUserUUID(String userUUID) {
-        this.userUUID = userUUID;
+    public void setAnniuuid(String anniuuid) {
+        this.anniuuid = anniuuid;
     }
 
-    public String getUserUUID() {
-        return userUUID;
+    public String getAnniuuid() {
+        return anniuuid;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.Title);
+        dest.writeString(this.Description);
+        dest.writeString(this.Location);
+        dest.writeString(this.date);
+        dest.writeString(this.createDate);
+        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
+        dest.writeString(this.coverUri);
+        dest.writeStringList(this.photos);
+        dest.writeString(this.anniuuid);
+        dest.writeParcelable(this.anniversaryTypeModel, flags);
+        dest.writeParcelable(this.googleLocation, flags);
+    }
+
+    public AnniversaryModel() {
+    }
+
+    protected AnniversaryModel(Parcel in) {
+        this.Title = in.readString();
+        this.Description = in.readString();
+        this.Location = in.readString();
+        this.date = in.readString();
+        this.createDate = in.readString();
+        this.favorite = in.readByte() != 0;
+        this.coverUri = in.readString();
+        this.photos = in.createStringArrayList();
+        this.anniuuid = in.readString();
+        this.anniversaryTypeModel = in.readParcelable(ModelAnniversaryTypeDTO.class.getClassLoader());
+        this.googleLocation = in.readParcelable(GoogleLocationModel.class.getClassLoader());
+    }
+
+    public static final Creator<AnniversaryModel> CREATOR = new Creator<AnniversaryModel>() {
+        @Override
+        public AnniversaryModel createFromParcel(Parcel source) {
+            return new AnniversaryModel(source);
+        }
+
+        @Override
+        public AnniversaryModel[] newArray(int size) {
+            return new AnniversaryModel[size];
+        }
+    };
 }

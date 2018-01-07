@@ -18,15 +18,15 @@ import android.widget.Toast;
 
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.activity.BaseActivity;
+import com.berber.orange.memories.activity.BaseUtils;
+import com.berber.orange.memories.database.FirebaseDatabaseHelper;
+import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
+import com.berber.orange.memories.database.firebasemodel.GoogleLocationModel;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.ImageUtils;
 import com.berber.orange.memories.helper.MatisseImagePicker;
-import com.berber.orange.memories.activity.model.NotificationType;
 import com.berber.orange.memories.activity.preview.AnniPreviewActivity;
 import com.berber.orange.memories.helper.FileUtils;
-import com.berber.orange.memories.dbmodel.Anniversary;
-import com.berber.orange.memories.dbmodel.GoogleLocation;
-import com.berber.orange.memories.dbmodel.NotificationSending;
 
 import com.bumptech.glide.Glide;
 import com.daimajia.numberprogressbar.NumberProgressBar;
@@ -46,10 +46,10 @@ import org.joda.time.Hours;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -81,14 +81,13 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
 
     private FlowLayout imageFlowLayout;
-    private Long anniversaryId;
     private TextView imageFlowHint;
     private Intent intent;
     private ImageView mAnniversaryDescriptionEditBtn;
     private boolean isEditButtonClick;
     private EditText editAnniversaryDescription;
     private ImageView mAnniversaryCancelEdit;
-    private Anniversary anniversary;
+    private AnniversaryModel anniversary;
     private BookLoading bookLoading;
 
     @Override
@@ -116,15 +115,17 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             return;
         }
 
-        anniversaryId = intent.getLongExtra("anniversaryId", 0);
+        anniversary = intent.getParcelableExtra("anniversary");
+
+        // anniversaryId = intent.getLongExtra("anniversaryId", 0);
         //AnniversaryDao anniversaryDao = anniversaryDaoUtils.getAnniversaryDao();
-        anniversary = anniversaryDaoUtils.getAnniversary(anniversaryId);
+        //this.anniversary = anniversaryDaoUtils.getAnniversary(anniversaryId);
 
         initAllWidget();
         updateUI(anniversary);
 
         //update image flow layout
-        List<File> images = FileUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversaryId);
+        List<File> images = FileUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniversary.getAnniuuid());
         if (!images.isEmpty()) {
             imageFlowHint.setText("你在过去为此事件添加了如下照片:");
             for (int i = 0; i < images.size(); i++) {
@@ -135,7 +136,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         }
 
         //update place banner
-        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversary.getAnniuuid());
         if (!places.isEmpty()) {
             // updateGallery(placeFlowLayout, place);
             //setBannerResource(placePhotoBanner, places);
@@ -144,7 +145,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             placePhotoBanner.start();
         } else {
             //do network request to get relative place image and save it into local storage
-            mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), String.valueOf(anniversaryId));
+            mGooglePlaceRequestHandler.doPlacePhotoRequest(this, anniversary.getGoogleLocation().getPlaceId(), anniversary.getAnniuuid());
         }
     }
 
@@ -209,19 +210,18 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         Glide.with(this).load(R.drawable.backgroud4).into(detailsImageContent);
     }
 
-    private void updateUI(Anniversary anniversary) {
+    private void updateUI(AnniversaryModel anniversary) {
         //set anniversary information
-        String title = anniversary.getTitle();
-        mAnniversaryTitleTV.setText(title);
+        mAnniversaryTitleTV.setText(anniversary.getTitle());
 
         //set favorite or not
-        if (anniversary.getFavorite()) {
+        if (anniversary.isFavorite()) {
             favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
             isFavoriteClick = true;
         }
 
-        DateFormat instance = SimpleDateFormat.getDateInstance();
-        mAnniversaryDateTV.setText(instance.format(anniversary.getDate()));
+
+        mAnniversaryDateTV.setText(BaseUtils.formattDate(BaseUtils.parseUTCDateString(anniversary.getDate())));
 
         String description = anniversary.getDescription();
         if (TextUtils.isEmpty(description)) {
@@ -230,15 +230,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
             mAnniversaryDescriptionTV.setText(description);
         }
 
-        mAnniversaryTypeIV.setImageResource(anniversary.getModelAnniversaryType().getImageResource());
+        mAnniversaryTypeIV.setImageResource(anniversary.getAnniversaryTypeModel().getImageResource()
+
+        );
 
 
         //纪念日时间
-        Date anniversaryDate = anniversary.getDate();
-        DateTime anniversaryDateWithJoda = new DateTime(anniversaryDate, DateTimeZone.getDefault());
+        DateTime anniversaryDateWithJoda = BaseUtils.parseUTCDateString(anniversary.getDate());
         //纪念日创建时间
-        Date createDate = anniversary.getCreateDate();
-        DateTime anniversaryCreateDateWithJoda = new DateTime(createDate, DateTimeZone.getDefault());
+        DateTime anniversaryCreateDateWithJoda = BaseUtils.parseUTCDateString(anniversary.getCreateDate());
         //当前时间
         DateTime currentDate = DateTime.now(DateTimeZone.getDefault());
 
@@ -246,12 +246,15 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         String restDayString;
         String pastDayString = "0";
 
+        int progress = 0;
+
         if (anniversaryDateWithJoda.isBeforeNow()) {
             //纪念日时间比当前时间要早
             totalDayString = "该事件创建于: " + SimpleDateFormat.getDateInstance().format(anniversaryCreateDateWithJoda.toDate());
             restDayString = "0";
             int days = Days.daysBetween(anniversaryDateWithJoda, currentDate).getDays();
             pastDayString = String.valueOf(days);
+            progress = 100;
         } else {
             int totalHour = Hours.hoursBetween(anniversaryCreateDateWithJoda, anniversaryDateWithJoda).getHours();
             int restHour = Hours.hoursBetween(currentDate, anniversaryDateWithJoda).getHours();
@@ -263,9 +266,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
             if (restDay >= 1) {
                 restDayString = String.valueOf(restDay);
+                progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
             } else if (restDay == 0 && restHour > 0 && restHour < 24) {
+                progress = (int) ((totalHour - restHour) * 100.0 / totalHour);
                 restDayString = "less than 1 day ";
             } else {
+                progress = 100;
                 restDayString = "0 day";
             }
         }
@@ -278,60 +284,59 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         String label2 = "距离事件开始已过去天数: " + pastDayString;
         mTimeProgressLabel2.setText(label2);
 
-        detailsAnniProgressbar.setProgress(intent.getIntExtra("progressValue", 0));
+        detailsAnniProgressbar.setProgress(progress);
 
         //update location label
-        updateLocationLabel(anniversary);
+        updateLocationLabel(anniversary.getGoogleLocation());
 
 
-        // update notification ui
-        NotificationSending notificationSending = anniversary.getNotificationSending();
-        notificationButton.setChecked(notificationSending != null);
-        if (notificationSending != null) {
-            mNotificationDateTV.setText(SimpleDateFormat.getDateInstance().format(notificationSending.getSendingDate()));
-            NotificationType notificationType = notificationSending.getNotificationType();
-            String notificationString = "";
-            switch (notificationType) {
-                case ALL:
-                    notificationString = "系统消息，电子邮件";
-                    break;
-                case EMAIL:
-                    notificationString = "电子邮件";
-                    break;
-                case NOTIFICATION:
-                    notificationString = "系统消息";
-                    break;
-            }
-            mNotificationTypeTV.setText(notificationString);
-        } else {
-            //hide all the notification content
-            mNotificationHint.setVisibility(View.GONE);
-            mNotificationDateTV.setVisibility(View.GONE);
-            mNotificationTypeTV.setVisibility(View.GONE);
-            mNotificationEmailTV.setVisibility(View.GONE);
-
-        }
+//        // update notification ui
+//        NotificationSending notificationSending = anniversary.getNotificationSending();
+//        notificationButton.setChecked(notificationSending != null);
+//        if (notificationSending != null) {
+//            mNotificationDateTV.setText(SimpleDateFormat.getDateInstance().format(notificationSending.getSendingDate()));
+//            NotificationType notificationType = notificationSending.getNotificationType();
+//            String notificationString = "";
+//            switch (notificationType) {
+//                case ALL:
+//                    notificationString = "系统消息，电子邮件";
+//                    break;
+//                case EMAIL:
+//                    notificationString = "电子邮件";
+//                    break;
+//                case NOTIFICATION:
+//                    notificationString = "系统消息";
+//                    break;
+//            }
+//            mNotificationTypeTV.setText(notificationString);
+//        } else {
+//            //hide all the notification content
+//            mNotificationHint.setVisibility(View.GONE);
+//            mNotificationDateTV.setVisibility(View.GONE);
+//            mNotificationTypeTV.setVisibility(View.GONE);
+//            mNotificationEmailTV.setVisibility(View.GONE);
+//
+//        }
     }
 
-    private void updateLocationLabel(Anniversary anniversary) {
+    private void updateLocationLabel(GoogleLocationModel locationModel) {
         //set location information about location
-        GoogleLocation googleLocation = anniversary.getGoogleLocation();
-        if (googleLocation != null) {
-            String locationName = googleLocation.getLocationName();
+        if (locationModel != null) {
+            String locationName = locationModel.getLocationName();
             if (locationName == null || TextUtils.isEmpty(locationName)) {
                 mLocationNameTV.setVisibility(View.GONE);
             } else {
                 mLocationNameTV.setText(locationName);
             }
 
-            String locationAddress = googleLocation.getLocationAddress();
+            String locationAddress = locationModel.getLocationAddress();
             if (locationAddress == null || TextUtils.isEmpty(locationAddress)) {
                 mLocationAddressTV.setVisibility(View.GONE);
             } else {
                 mLocationAddressTV.setText(locationAddress);
             }
 
-            String locationPhoneNumber = googleLocation.getLocationPhoneNumber();
+            String locationPhoneNumber = locationModel.getLocationPhoneNumber();
             if (locationPhoneNumber == null || TextUtils.isEmpty(locationPhoneNumber)) {
                 mLocationNumberTV.setVisibility(View.GONE);
             } else {
@@ -376,7 +381,12 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     //update database
                     String newDescription = editAnniversaryDescription.getText().toString();
                     anniversary.setDescription(newDescription);
-                    anniversaryDaoUtils.getAnniversaryDao().update(anniversary);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("description", newDescription);
+                    FirebaseDatabaseHelper.getInstance().updateAnniversaryAttributeByKey(anniversary.getAnniuuid(), map);
+
+//                    anniversary.setDescription(newDescription);
+//                    anniversaryDaoUtils.getAnniversaryDao().update(anniversary);
                     mAnniversaryDescriptionTV.setText(newDescription);
                     Toast.makeText(this, "编辑成功", Toast.LENGTH_SHORT).show();
                     mAnniversaryCancelEdit.setVisibility(View.GONE);
@@ -386,17 +396,24 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                 }
                 break;
             case R.id.details_icon_favorite:
+                Map<String, Object> map = new HashMap<>();
                 if (!isFavoriteClick) {
                     favoriteButton.setImageResource(R.drawable.ic_favorite_black_24px);
                     anniversary.setFavorite(true);
-
                     isFavoriteClick = true;
+                    anniversary.setFavorite(true);
+                    map.put("favorite", true);
+
+
                 } else {
                     favoriteButton.setImageResource(R.drawable.ic_favorite_border_black_24px);
                     anniversary.setFavorite(false);
                     isFavoriteClick = false;
+                    anniversary.setFavorite(false);
+                    map.put("favorite", false);
                 }
-                anniversaryDaoUtils.getAnniversaryDao().update(anniversary);
+                //anniversaryDaoUtils.getAnniversaryDao().update(anniversary);
+                FirebaseDatabaseHelper.getInstance().updateAnniversaryAttributeByKey(anniversary.getAnniuuid(), map);
                 break;
             case R.id.details_add_image_btn:
                 if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
@@ -440,19 +457,16 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     for (String file : mSelectedFile) {
                         updateGallery(imageFlowLayout, file);
                     }
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String destPathParent = DetailsActivity.this.getFilesDir() + "/picture/anniversary_" + anniversaryId;
-                            for (String filePath : mSelectedFile) {
-                                try {
-                                    FileUtils.nioCopy(filePath, destPathParent);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
+                    new Thread(() -> {
+                        String destPathParent = DetailsActivity.this.getFilesDir() + "/picture/anniversary_" + anniversary.getAnniuuid();
+                        for (String filePath : mSelectedFile) {
+                            try {
+                                FileUtils.nioCopy(filePath, destPathParent);
+                            } catch (Exception e) {
+                                e.printStackTrace();
                             }
-
                         }
+
                     }).start();
                 }
                 break;
@@ -464,15 +478,26 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
 
                     //update google location into database
-                    anniversaryDaoUtils.updateGoogleLocationTable(place, anniversaryId);
+                    //anniversaryDaoUtils.updateGoogleLocationTable(place, anniversaryId);
+
+                    GoogleLocationModel googleLocationModel = new GoogleLocationModel();
+                    googleLocationModel.setLocationName(place.getName() == null ? null : place.getName().toString());
+                    googleLocationModel.setLocationAddress(place.getAddress() == null ? null : place.getAddress().toString());
+                    googleLocationModel.setLocationPhoneNumber(place.getPhoneNumber() == null ? null : place.getPhoneNumber().toString());
+                    googleLocationModel.setPlaceId(place.getId());
+                    googleLocationModel.setAttribution(place.getAttributions() == null ? null : place.getAttributions().toString());
+                    googleLocationModel.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
+                    googleLocationModel.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
+                    googleLocationModel.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
+
 
                     //update location label
-                    updateLocationLabel(anniversaryDaoUtils.getAnniversary(anniversaryId));
+                    updateLocationLabel(googleLocationModel);
 
                     //download new place photo, if already has old photos, then delete all old
-                    FileUtils.deleteAllFile(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+                    FileUtils.deleteAllFile(this.getFilesDir() + "/place/anniversary_" + anniversary.getAnniuuid());
                     // TODO: 2017/12/6  update location, banner image update problem
-                    mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), String.valueOf(anniversaryId));
+                    mGooglePlaceRequestHandler.doPlacePhotoRequest(DetailsActivity.this, place.getId(), anniversary.getAnniuuid());
                 }
                 break;
 
@@ -500,23 +525,20 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
         } else {
             Glide.with(this).load(image).into(imageView);
         }
-        imageView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        imageView.setOnClickListener(v -> {
 
-                int childCount = imageFlowLayout.getChildCount();
-                int index = 0;
-                for (int i = 0; i < childCount; i++) {
-                    CircleImageView currentImage = (CircleImageView) imageFlowLayout.getChildAt(i);
-                    if (v == currentImage) {
-                        index = i;
-                    }
+            int childCount = imageFlowLayout.getChildCount();
+            int index = 0;
+            for (int i = 0; i < childCount; i++) {
+                CircleImageView currentImage = (CircleImageView) imageFlowLayout.getChildAt(i);
+                if (v == currentImage) {
+                    index = i;
                 }
-                Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
-                intent.putExtra("anniversaryId", anniversaryId);
-                intent.putExtra("currentId", index);
-                startActivity(intent);
             }
+            Intent intent = new Intent(DetailsActivity.this, AnniPreviewActivity.class);
+            intent.putExtra("anniversaryId", anniversary.getAnniuuid());
+            intent.putExtra("currentId", index);
+            startActivity(intent);
         });
         layout.addView(imageView);
     }
@@ -535,7 +557,7 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
 
 
     public void setPlacePhotoBanner() {
-        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversaryId);
+        List<File> places = ImageUtils.readImages(this.getFilesDir() + "/place/anniversary_" + anniversary.getAnniuuid());
         setBannerResource(placePhotoBanner, places);
     }
 
