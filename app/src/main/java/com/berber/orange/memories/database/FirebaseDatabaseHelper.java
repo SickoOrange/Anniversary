@@ -1,5 +1,6 @@
 package com.berber.orange.memories.database;
 
+import android.icu.lang.UScript;
 import android.util.Log;
 
 import com.berber.orange.memories.SharedPreferencesHelper;
@@ -50,19 +51,22 @@ public class FirebaseDatabaseHelper {
 
     public void buildRootUser(FirebaseUser myUser) {
         Log.e("TAG", "BUILD ROOT USER");
-        DatabaseReference reference = database.getReference("users/");
-        User user = new User();
-        user.setAnniversaries(null);
-        user.setEmail(myUser.getEmail());
-        user.setName(myUser.getDisplayName());
-        user.setPhotoUri(myUser.getPhotoUrl().toString());
+        DatabaseReference reference = database.getReference("users").child(getUserUUID());
 
         Map<String, Object> map = new HashMap<>();
-        map.put(myUser.getUid(), user);
+//        User user = new User();
+//        user.setPhotoUri(myUser.getPhotoUrl().toString());
+//        user.setName(myUser.getDisplayName());
+//        user.setEmail(myUser.getEmail());
+        map.put("photoUri", myUser.getPhotoUrl().toString());
         reference
-                .updateChildren(map)
-                .addOnSuccessListener(aVoid -> Log.e("TAG", "SUCCESS"))
-                .addOnFailureListener(e -> Log.e("TAG", "Failure"));
+                .updateChildren(map, (databaseError, databaseReference) -> {
+                    map.clear();
+                    map.put("Email",myUser.getEmail());
+                    map.put("Name",myUser.getDisplayName());
+                    databaseReference.updateChildren(map,(databaseError1,databaseReference1)->Log.e("TAG","update info finish"));
+                });
+
     }
 
     public void deleteChildByKey(final String key) {

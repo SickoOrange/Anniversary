@@ -384,9 +384,6 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     Map<String, Object> map = new HashMap<>();
                     map.put("description", newDescription);
                     FirebaseDatabaseHelper.getInstance().updateAnniversaryAttributeByKey(anniversary.getAnniuuid(), map);
-
-//                    anniversary.setDescription(newDescription);
-//                    anniversaryDaoUtils.getAnniversaryDao().update(anniversary);
                     mAnniversaryDescriptionTV.setText(newDescription);
                     Toast.makeText(this, "编辑成功", Toast.LENGTH_SHORT).show();
                     mAnniversaryCancelEdit.setVisibility(View.GONE);
@@ -491,6 +488,9 @@ public class DetailsActivity extends BaseActivity implements View.OnClickListene
                     googleLocationModel.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
 
 
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("googleLocation", googleLocationModel);
+                    FirebaseDatabaseHelper.getInstance().updateAnniversaryAttributeByKey(anniversary.getAnniuuid(), map);
                     //update location label
                     updateLocationLabel(googleLocationModel);
 

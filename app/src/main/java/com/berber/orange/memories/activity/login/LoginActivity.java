@@ -44,12 +44,6 @@ import org.json.JSONObject;
  */
 public class LoginActivity extends BaseActivity implements OnClickListener {
 
-    private static final String TAG = "LoginActivity";
-
-
-    // UI references.
-    private EditText mEmailView;
-    private EditText mPasswordView;
 
     @Override
     protected void initView() {
@@ -58,33 +52,15 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         YYLoginServer.INSTANCE.Init();
         // Set up the login form.
         //init ui reference
-        mEmailView = findViewById(R.id.email_text_view);
-        mPasswordView = findViewById(R.id.password_text_view);
-        Button signInButton = findViewById(R.id.sign_in_button);
-        Button signOutButton = findViewById(R.id.sign_up_button);
+        Button signInGoogle = findViewById(R.id.sign_in_google);
+        Button signInFacebook = findViewById(R.id.sign_in_facebook);
 
         //add button event listener
-        signInButton.setOnClickListener(this);
-        signOutButton.setOnClickListener(this);
-
-        //google sign in button
-        ImageButton googleSignInButton = findViewById(R.id.google_login_in);
-        googleSignInButton.setOnClickListener(this);
-
-        //facebook sign in button
-        ImageButton facebookSignInButton = findViewById(R.id.facebook_login_in);
-        facebookSignInButton.setOnClickListener(this);
-//
-//        //twitter sign in button
-//        ImageButton twitterSignInButton = findViewById(R.id.twitter_login_in);
-//        twitterSignInButton.setOnClickListener(this);
+        signInGoogle.setOnClickListener(this);
+        signInFacebook.setOnClickListener(this);
 
 
-        ImageView loginImageView = findViewById(R.id.login_bg_image_view);
-
-        Glide.with(this).load(R.drawable.couple_love_silhouettes_happiness_116879_1080x1920).into(loginImageView);
-        ImageView appLogImageView = findViewById(R.id.app_logo_image_view);
-        Glide.with(this).load(R.drawable.logo).into(appLogImageView);
+        //  ImageView loginImageView = findViewById(R.id.login_bg_image_view);
 
 
     }
@@ -92,7 +68,7 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
 
     @Override
     protected int setLayoutId() {
-        return R.layout.activity_login;
+        return R.layout.activity_simple_login;
     }
 
     @Override
@@ -119,20 +95,10 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.sign_in_button:
-                String email = mEmailView.getText().toString();
-                String password = mPasswordView.getText().toString();
-                YYLoginServer.INSTANCE.loginWithDefault(LoginActivity.this, email, password, defaultSignInCallBack);
-                break;
-            case R.id.sign_up_button:
-                startActivity(new Intent(this, SignUpActivity.class));
-                break;
-
-            case R.id.google_login_in:
+            case R.id.sign_in_google:
                 YYLoginServer.INSTANCE.loginWithGoogle(LoginActivity.this, mGoogleApiClient);
                 break;
-
-            case R.id.facebook_login_in:
+            case R.id.sign_in_facebook:
                 YYLoginServer.INSTANCE.loginWithFacebook(LoginActivity.this, facebookLoginInCallBack);
                 break;
         }
@@ -218,6 +184,9 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+            SharedPreferencesHelper.getInstance().saveData("user_uuid", user.getUid());
+            FirebaseDatabaseHelper.getInstance().buildRootUser(user);
+
             myUser.setDisplayName(user.getDisplayName());
             myUser.setPhotoUri(user.getPhotoUrl().toString());
             Intent intent = new Intent(LoginActivity.this, CoordinatorActivity.class);

@@ -15,7 +15,6 @@ public class User {
     private String name;
     private String photoUri;
 
-    private List<Anniversary> anniversaries;
 
     public String getEmail() {
         return email;
@@ -41,11 +40,4 @@ public class User {
         this.photoUri = photoUri;
     }
 
-    public List<Anniversary> getAnniversaries() {
-        return anniversaries;
-    }
-
-    public void setAnniversaries(List<Anniversary> anniversaries) {
-        this.anniversaries = anniversaries == null ? new ArrayList<Anniversary>() : anniversaries;
-    }
 }

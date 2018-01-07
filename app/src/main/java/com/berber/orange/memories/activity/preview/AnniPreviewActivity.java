@@ -45,7 +45,7 @@ public class AnniPreviewActivity extends BaseActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            long anniuuid = intent.getLongExtra("anniversaryId", -1);
+            String anniuuid = intent.getStringExtra("anniversaryId");
             int currentId = intent.getIntExtra("currentId", -1);
             images = ImageUtils.readImages(this.getFilesDir() + "/picture/anniversary_" + anniuuid);
             if (!images.isEmpty()) {

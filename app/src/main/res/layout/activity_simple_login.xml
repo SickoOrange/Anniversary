@@ -1,0 +1,37 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/login_bg"
+    tools:context="com.berber.orange.memories.activity.login.LoginActivity">
+
+
+    <Button
+        android:id="@+id/sign_in_google"
+        style="?android:textAppearanceSmall"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/sign_in_facebook"
+        android:layout_marginBottom="32dp"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/round_button_bg"
+        android:text="sign in with google"
+        android:textColor="@android:color/white" />
+
+    <Button
+        android:id="@+id/sign_in_facebook"
+        style="?android:textAppearanceSmall"
+        android:layout_width="250dp"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/sign_in_google"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/sign_in_google"
+        android:layout_marginBottom="49dp"
+        android:background="@drawable/round_button_bg"
+        android:text="sign in with Facebook"
+        android:textColor="@android:color/white" />
+
+
+
+
+</RelativeLayout>

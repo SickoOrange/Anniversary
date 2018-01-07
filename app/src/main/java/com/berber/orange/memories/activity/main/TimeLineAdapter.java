@@ -320,6 +320,7 @@ public class TimeLineAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     AnniversaryModel anniversaryModel = (AnniversaryModel) mDateSets.get(position);
                     FirebaseDatabaseHelper.getInstance().deleteChildByKey(anniversaryModel.getAnniuuid());
                 })
+                .onNegative((dialog, which) -> notifyDataSetChanged())
                 .show();
     }
 
