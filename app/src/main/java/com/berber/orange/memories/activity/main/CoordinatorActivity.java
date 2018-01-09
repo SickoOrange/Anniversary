@@ -50,8 +50,11 @@ import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
+import com.youth.banner.Banner;
+import com.youth.banner.view.BannerViewPager;
 import com.zhihu.matisse.Matisse;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -156,10 +159,10 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         user_name.setText("Hello, dear " + displayName);
 
 
-        mLandingPageImageView = findViewById(R.id.image_content);
+       mLandingPageImageView = findViewById(R.id.image_content);
 
         String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", null);
-        Glide.with(this).load(main_cover == null ? R.drawable.backgroud4 : main_cover).into(mLandingPageImageView);
+        Glide.with(this).load(R.drawable.user_profile_bg).into(mLandingPageImageView);
 
         //save uri into shared preference
         initRecycler();

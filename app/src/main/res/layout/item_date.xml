@@ -4,7 +4,7 @@
     android:id="@+id/item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fafafa"
+    android:background="#F5F9FB"
     tools:ignore="MissingPrefix">
 
 
@@ -18,6 +18,6 @@
         android:maxLines="1"
         android:padding="2dp"
         android:text="Test"
-        android:textColor="#A1A1A1"
+        android:textColor="#71758B"
         android:textSize="14dp" />
 </RelativeLayout>
