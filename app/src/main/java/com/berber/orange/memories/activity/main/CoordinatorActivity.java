@@ -77,7 +77,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     private ImageView mLandingPageImageView;
 
     public static final int RC_PICK_IMAGE_PERM = 123;
-    private int defaultRes;
 
     @Override
     protected void initView() {
@@ -161,7 +160,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
        mLandingPageImageView = findViewById(R.id.image_content);
 
-        String main_cover = (String) SharedPreferencesHelper.getInstance().getData("main_cover", null);
         Glide.with(this).load(R.drawable.user_profile_bg).into(mLandingPageImageView);
 
         //save uri into shared preference

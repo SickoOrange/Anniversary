@@ -13,7 +13,7 @@ public class DonateActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_donate);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_donate);
+        Toolbar toolbar = findViewById(R.id.toolbar_donate);
         setSupportActionBar(toolbar);
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
