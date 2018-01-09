@@ -1,12 +1,10 @@
 package com.berber.orange.memories.database;
 
-import android.icu.lang.UScript;
 import android.util.Log;
 
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.helper.User;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 

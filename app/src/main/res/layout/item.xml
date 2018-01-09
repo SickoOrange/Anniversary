@@ -34,7 +34,6 @@
         android:textSize="7sp" />
 
 
-
     <com.berber.orange.memories.widget.TimeLineMarker
         android:id="@+id/item_time_line_view"
         android:layout_width="wrap_content"
@@ -82,41 +81,40 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="20dp"
             android:layout_marginTop="3dp"
-            android:layout_gravity="center"
-            android:gravity="center"
             android:padding="1dp">
 
             <TextView
                 android:id="@+id/anniversary_date_label"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
+                android:layout_height="match_parent"
                 android:drawableLeft="@drawable/ic_event_available_black_18px"
-                android:drawablePadding="5dp"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
                 android:maxLines="1"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp"
+                android:gravity="center"
                 android:text="11.11.2017"
                 android:textColor="#A1A1A1"
                 android:textSize="10dp" />
 
+            <View
+                android:id="@+id/anniversary_separator"
+                android:layout_width="1dp"
+                android:layout_height="10dp"
+                android:layout_marginLeft="5dp"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/anniversary_date_label"
+                android:background="#a1a1a1" />
+
             <TextView
                 android:id="@+id/anniversary_left_day"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/anniversary_separator"
+                android:layout_marginLeft="5dp"
                 android:gravity="center"
-                android:layout_marginTop="3dp"
-                android:paddingBottom="2dp"
-                android:paddingTop="2dp"
-                android:layout_marginRight="5dp"
                 android:text="10/20"
-                android:textColor="@color/greenlight"
+                android:textColor="#a1a1a1"
                 android:textSize="10sp" />
 
 
@@ -150,25 +148,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:visibility="gone"
                 android:drawablePadding="5dp"
                 android:padding="3dp"
+                android:visibility="gone"
                 app:srcCompat="@drawable/ic_notifications_off_black_18px" />
         </RelativeLayout>
 
         <!--<RelativeLayout-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent">-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent">-->
 
-            <!--<com.daimajia.numberprogressbar.NumberProgressBar-->
-                <!--android:id="@+id/anniversary_progress_bar"-->
-                <!--style="@style/NumberProgressBar_Default"-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:layout_marginTop="5dp"-->
-                <!--android:padding="3dp"-->
-                <!--android:visibility="gone"-->
-                <!--app:progress_current="100" />-->
+        <!--<com.daimajia.numberprogressbar.NumberProgressBar-->
+        <!--android:id="@+id/anniversary_progress_bar"-->
+        <!--style="@style/NumberProgressBar_Default"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginTop="5dp"-->
+        <!--android:padding="3dp"-->
+        <!--android:visibility="gone"-->
+        <!--app:progress_current="100" />-->
         <!--</RelativeLayout>-->
 
     </LinearLayout>
