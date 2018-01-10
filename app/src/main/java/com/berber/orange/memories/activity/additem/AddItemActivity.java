@@ -12,6 +12,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -25,21 +26,12 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
 import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.GooglePlaceRequestHandler;
 import com.berber.orange.memories.activity.model.ModelAnniversaryTypeDTO;
 import com.berber.orange.memories.activity.model.NotificationType;
-import com.berber.orange.memories.dbmodel.Anniversary;
-import com.berber.orange.memories.dbmodel.AnniversaryDao;
-import com.berber.orange.memories.dbmodel.GoogleLocation;
-import com.berber.orange.memories.dbmodel.GoogleLocationDao;
-import com.berber.orange.memories.dbmodel.ModelAnniversaryType;
-import com.berber.orange.memories.dbmodel.ModelAnniversaryTypeDao;
-import com.berber.orange.memories.dbmodel.NotificationSending;
-import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.database.firebasemodel.GoogleLocationModel;
 import com.berber.orange.memories.utils.Utils;
@@ -48,11 +40,6 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.gyf.barlibrary.ImmersionBar;
@@ -61,7 +48,6 @@ import org.joda.time.DateTime;
 import org.joda.time.DateTimeZone;
 import org.joda.time.format.DateTimeFormat;
 
-import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -87,19 +73,10 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
     private RadioButton selectedRadioFrequencyButton;
     private CircleImageView anniversaryTypeImage;
     private TextView anniversaryTypeName;
-    private Calendar notificationTimeInCalendar;
-    private final int REQUEST_NEW_ITEM = 9001;
-    private AnniversaryDao anniversaryDao;
-    private NotificationSendingDao notificationSendingDao;
-    private ModelAnniversaryTypeDao modelAnniversaryTypeDao;
     private RadioButton selectedRadioTypeButton;
-    private boolean isNotificationEnable = false;
     private Date currentPickDate = null;
     private TextView mAnniversaryLocation;
-    private GoogleLocation googleLocation = null;
     private GoogleLocationModel googleLocationModel = null;
-    private GoogleLocationDao googleLocationDao;
-    public static final String INTENT_ALARM_LOG = "intent_alarm_log";
     private AlarmManager alarmManager;
     private GooglePlaceRequestHandler googlePlaceRequestHandler;
 
@@ -134,13 +111,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         initAnniversaryTypeData();
         initView();
         init();
-
-        anniversaryDao = ((APP) getApplication()).getDaoSession().getAnniversaryDao();
-        notificationSendingDao = ((APP) getApplication()).getDaoSession().getNotificationSendingDao();
-        modelAnniversaryTypeDao = ((APP) getApplication()).getDaoSession().getModelAnniversaryTypeDao();
-
-        googleLocationDao = ((APP) getApplication()).getDaoSession().getGoogleLocationDao();
-
     }
 
     private void init() {
@@ -222,8 +192,7 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         mAnniversaryLocation.setOnClickListener(this);
 
         //anniversary notification
-        anniversaryNotificationTextView = findViewById(R.id.anniversary_add_anni_notification);
-        anniversaryNotificationTextView.setOnClickListener(this);
+
 
         //anniversary description
         anniversaryDescriptionEditText = findViewById(R.id.anniversary_edit_anni_description);
@@ -276,8 +245,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 }
                 String msg = frequencyString + " " + selectedRadioFrequencyButton.getText().toString() + " before" + ",   " + selectedRadioTypeButton.getText().toString();
                 anniversaryNotificationTextView.setText(msg);
-                notificationTimeInCalendar = calculateNotificationTimeInCalendar(frequencyString, selectedRadioFrequencyButton.getText().toString());
-                isNotificationEnable = true;
             }
         });
         dialog.getBuilder().onNegative(new MaterialDialog.SingleButtonCallback() {
@@ -325,10 +292,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 //get current description
                 //currentAnniversaryDescription = anniversaryDescriptionEditText.getText().toString();
                 break;
-
-            case R.id.anniversary_add_anni_notification:
-                openNotificationSettingDialog();
-                break;
             case R.id.anniversary_add_btn_save:
                 //collectInfo();
                 writeInfo();
@@ -358,83 +321,18 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
             alertWarningDialog("标题不能为空");
             return;
         }
+
         //handle date
         if (currentPickDate == null) {
             alertWarningDialog("请选择一个日期");
             return;
         }
-        if (googleLocation == null) {
+        if (googleLocationModel == null) {
             alertWarningDialog("请选择一个地点");
             return;
         }
 
-        //save all information into entity
-        Anniversary anniversary = new Anniversary();
-
-        //handle anniversary title
-        anniversary.setTitle(anniversaryTitle);
-
-        //handle pick date
-        anniversary.setDate(currentPickDate);
-
-        //handle create Date
-        DateTime dateTime = DateTime.now(DateTimeZone.UTC);
-        anniversary.setCreateDate(dateTime.toDate());
-
-        //handle description
         String anniversaryDescription = anniversaryDescriptionEditText.getText().toString();
-        anniversary.setDescription(anniversaryDescription);
-
-        long anniversaryId = anniversaryDao.insert(anniversary);
-
-        //handle remind date
-        if (isNotificationEnable) {
-            Date notificationDate = notificationTimeInCalendar.getTime();
-            Log.e("TAG", notificationDate.toString());
-            //setting a alarm
-            //setupAlarm(notificationDate);
-            NotificationSending notificationSending = new NotificationSending();
-            notificationSending.setSendingDate(notificationDate);
-            notificationSending.setRecipient("heylbly@gmail.com");
-            notificationSending.setNotificationType(getNotificationType(selectedRadioTypeButton.getText().toString()));
-
-            notificationSending.setAnniversaryId(anniversaryId);
-            notificationSending.setAnniversary(anniversary);
-            long notificationSendingId = notificationSendingDao.insert(notificationSending);
-            anniversary.setNotificationSending(notificationSending);
-            anniversary.setNotificationSendingId(notificationSendingId);
-            anniversaryDao.update(anniversary);
-            isNotificationEnable = false;
-        }
-
-
-        //handle anniversaryType
-        ModelAnniversaryType modelAnniversaryType = new ModelAnniversaryType();
-        modelAnniversaryType.setName(currentImageResource.getName());
-        modelAnniversaryType.setImageResource(currentImageResource.getImageResource());
-        long modelAnniversaryTypeId = modelAnniversaryTypeDao.insert(modelAnniversaryType);
-
-        anniversary.setModelAnniversaryType(modelAnniversaryType);
-        anniversary.setModelAnniversaryTypeId(modelAnniversaryTypeId);
-        anniversaryDao.update(anniversary);
-
-
-        //handle location information
-        googleLocation.setAnniversary(anniversary);
-        googleLocation.setAnniversaryId(anniversaryId);
-        long insertGoogleLocationId = googleLocationDao.insert(googleLocation);
-        anniversary.setGoogleLocation(googleLocation);
-        anniversary.setGoogleLocationId(insertGoogleLocationId);
-        anniversaryDao.update(anniversary);
-        googleLocation = null;
-
-        //create folder to cache files
-        File file = new File(this.getFilesDir(), "picture" + "/" + "anniversary_" + anniversary.getId());
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-
-
         //real time database
         AnniversaryModel anniversaryModel = new AnniversaryModel();
         anniversaryModel.setAnniversaryTypeModel(currentImageResource);
@@ -452,10 +350,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 .addOnFailureListener(e -> Log.e("TAG", "PUSH ANNIVERSARY LIST FAILURE"));
 
 
-//        Intent intent = new Intent();
-//        intent.putExtra("obj", anniversary);
-//        setResult(REQUEST_NEW_ITEM, intent);
-        setResult(REQUEST_NEW_ITEM, null);
         finish();
     }
 
@@ -465,13 +359,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
         return adapter.getCurrentImageResource();
     }
 
-//    private void setupAlarm(Date notificationDate) {
-//        Intent intent = new Intent(INTENT_ALARM_LOG);
-//        Log.e("TAG", "Create A Alarm");
-//        PendingIntent pi = PendingIntent.getBroadcast(AddItemActivity.this, 0, intent, 0);
-//        // alarmManager.set(AlarmManager.RTC_WAKEUP, System.currentTimeMillis() +1000, pi);
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis(), 60 * 10 * 1000, pi);
-//    }
 
     private NotificationType getNotificationType(String notificationTypeString) {
         NotificationType notificationType = null;
@@ -563,18 +450,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 .title(R.string.date_picker_title)
                 .customView(R.layout.dialog_datepicker, false)
                 .positiveText(android.R.string.ok)
-                .onPositive(new MaterialDialog.SingleButtonCallback() {
-                    @Override
-                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                        View customView = dialog.getCustomView();
-                        DatePicker datePicker = customView.findViewById(R.id.datePicker);
-                        int currentYear = datePicker.getYear();
-                        int currentMonth = datePicker.getMonth();
-                        int currentDay = datePicker.getDayOfMonth();
-                        DateTime dateTime = new DateTime(currentYear, currentMonth + 1, currentDay, 0, 0);
-                        currentPickDate = dateTime.withZone(DateTimeZone.UTC).toDate();
-                        anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
-                    }
+                .onPositive((dialog, which) -> {
+                    View customView = dialog.getCustomView();
+                    DatePicker datePicker = customView.findViewById(R.id.datePicker);
+                    int currentYear = datePicker.getYear();
+                    int currentMonth = datePicker.getMonth();
+                    int currentDay = datePicker.getDayOfMonth();
+                    DateTime dateTime = new DateTime(currentYear, currentMonth + 1, currentDay, 0, 0);
+                    currentPickDate = dateTime.withZone(DateTimeZone.UTC).toDate();
+                    anniversaryDateTextView.setText(SimpleDateFormat.getDateInstance().format(currentPickDate));
                 })
                 .negativeText(android.R.string.cancel);
         builder.show();
@@ -607,15 +491,6 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 String toastMsg = String.format("Place: %s", place.getName() + "/n" + place.getAddress() + "/n" + place.getPhoneNumber());
                 Toast.makeText(this, toastMsg, Toast.LENGTH_LONG).show();
                 mAnniversaryLocation.setText(place.getAddress());
-                googleLocation = new GoogleLocation();
-                googleLocation.setLocationName(place.getName() == null ? null : place.getName().toString());
-                googleLocation.setLocationAddress(place.getAddress() == null ? null : place.getAddress().toString());
-                googleLocation.setLocationPhoneNumber(place.getPhoneNumber() == null ? null : place.getPhoneNumber().toString());
-                googleLocation.setPlaceId(place.getId());
-                googleLocation.setAttribution(place.getAttributions() == null ? null : place.getAttributions().toString());
-                googleLocation.setWebSiteUri(place.getAttributions() == null ? null : place.getAttributions().toString());
-                googleLocation.setLatitude(place.getLatLng() == null ? 0 : place.getLatLng().latitude);
-                googleLocation.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
 
                 googleLocationModel = new GoogleLocationModel();
                 googleLocationModel.setLocationName(place.getName() == null ? null : place.getName().toString());
@@ -628,6 +503,15 @@ public class AddItemActivity extends AppCompatActivity implements View.OnClickLi
                 googleLocationModel.setLongitude(place.getLatLng() == null ? 0 : place.getLatLng().longitude);
             }
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            finish();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override

@@ -31,45 +31,25 @@ import com.berber.orange.memories.SharedPreferencesHelper;
 import com.berber.orange.memories.activity.BaseActivity;
 import com.berber.orange.memories.activity.about.AboutActivity;
 import com.berber.orange.memories.activity.additem.AddItemActivity;
-import com.berber.orange.memories.activity.donate.DonateActivity;
-import com.berber.orange.memories.database.FirebaseDatabaseHelper;
-import com.berber.orange.memories.database.firebasemodel.AnniversaryModel;
 import com.berber.orange.memories.helper.Constant;
 import com.berber.orange.memories.helper.MatisseImagePicker;
-import com.berber.orange.memories.activity.setting.SettingActivity;
-import com.berber.orange.memories.dbmodel.Anniversary;
-import com.berber.orange.memories.dbmodel.AnniversaryDao;
-import com.berber.orange.memories.dbmodel.DaoSession;
-import com.berber.orange.memories.dbmodel.NotificationSendingDao;
 import com.berber.orange.memories.loginservice.user.MyFireBaseUser;
-import com.berber.orange.memories.utils.Utils;
 import com.bumptech.glide.Glide;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.FirebaseDatabase;
-import com.youth.banner.Banner;
-import com.youth.banner.view.BannerViewPager;
 import com.zhihu.matisse.Matisse;
 
-import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
-import static com.berber.orange.memories.helper.Constant.COORDINATOR_OPEN_SETTING_ACTIVITY;
 
 public class CoordinatorActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener {
     private RecyclerView recycler;
-    private DaoSession daoSession;
-    private AnniversaryDao anniversaryDao;
+
     private TimeLineAdapter adapter;
     private final int REQUEST_NEW_ITEM = 9001;
     private LinearLayoutManager linearLayoutManager;
-    private NotificationSendingDao notificationSendingDao;
     private Toolbar toolbar;
     //因为setExpanded会调用事件监听，所以通过标志过滤掉
     public static int expendedtag = 2;
@@ -88,10 +68,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
 
-
-        daoSession = ((APP) getApplication()).getDaoSession();
-        anniversaryDao = daoSession.getAnniversaryDao();
-        notificationSendingDao = daoSession.getNotificationSendingDao();
 
         AppBarLayout appBarLayout = findViewById(R.id.app_bar);
         appBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
@@ -158,7 +134,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         user_name.setText("Hello, dear " + displayName);
 
 
-       mLandingPageImageView = findViewById(R.id.image_content);
+        mLandingPageImageView = findViewById(R.id.image_content);
 
         Glide.with(this).load(R.drawable.user_profile_bg).into(mLandingPageImageView);
 
@@ -222,33 +198,7 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add:
-                // Utils.showToast(CoordinatorActivity.this, "add new item", 0);
-                startActivityForResult(new Intent(CoordinatorActivity.this, AddItemActivity.class), REQUEST_NEW_ITEM);
-//            case R.id.action_change_image:
-//                // TODO: 2017/11/16 pick image and change the background
-//                if (hasPermissionToPickImage(android.Manifest.permission.WRITE_EXTERNAL_STORAGE, android.Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                    MatisseImagePicker.open(CoordinatorActivity.this, COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE);
-//                    return true;
-//                } else {
-//                    EasyPermissions.requestPermissions(
-//                            this,
-//                            "Pick Image",
-//                            RC_PICK_IMAGE_PERM,
-//                            android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-//                            android.Manifest.permission.READ_EXTERNAL_STORAGE
-//                    );
-//                    return true;
-//                }
-                break;
-
-            case R.id.action_sync_to_cloud:
-                //save the place, save the images save the database
-                filebaseStorageHelper.SyncToCloud();
-                break;
-            case R.id.action_sync_from_cloud:
-                break;
-            case R.id.action_create_folder:
-                Log.e("TAG", "create folder");
+                startActivity(new Intent(CoordinatorActivity.this, AddItemActivity.class));
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -261,15 +211,9 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
 
         if (id == R.id.nav_anniversary) {
             // Handle the camera action
-        } else if (id == R.id.nav_setting) {
-            startActivityForResult(new Intent(this, SettingActivity.class), COORDINATOR_OPEN_SETTING_ACTIVITY);
         } else if (id == R.id.nav_about) {
             startActivity(new Intent(this, AboutActivity.class));
-        } else if (id == R.id.nav_donate) {
-            startActivity(new Intent(this, DonateActivity.class));
-
         }
-
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
@@ -287,13 +231,6 @@ public class CoordinatorActivity extends BaseActivity implements NavigationView.
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
             case REQUEST_NEW_ITEM:
-                if (data == null) {
-                    Utils.showToast(CoordinatorActivity.this, "添加了新的事件", Toast.LENGTH_SHORT);
-                    return;
-                }
-//                Anniversary dto = (Anniversary) data.getSerializableExtra("obj");
-//                //adapter.addNewItem(dto, anniversaryDao);
-//                Utils.showToast(CoordinatorActivity.this, "添加了新的纪念日", Toast.LENGTH_LONG);
                 break;
             case COORDINATOR_ACTIVITY_REQUEST_CHOOSE_IMAGE:
                 if (data == null) {

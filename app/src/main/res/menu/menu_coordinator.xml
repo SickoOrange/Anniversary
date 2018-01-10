@@ -3,22 +3,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.berber.orange.memories.activity.main.CoordinatorActivity">
     <item
-        android:id="@+id/action_sync_to_cloud"
         android:orderInCategory="100"
-        android:title="同步到云端"
+        android:title="Test"
         app:showAsAction="never" />
 
-    <item
-        android:id="@+id/action_create_folder"
-        android:orderInCategory="100"
-        android:title="create folder"
-        app:showAsAction="never" />
-
-    <item
-        android:id="@+id/action_sync_from_cloud"
-        android:orderInCategory="100"
-        android:title="从云端恢复"
-        app:showAsAction="never" />
 
     <item
         android:id="@+id/action_add"

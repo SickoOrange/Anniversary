@@ -3,9 +3,6 @@ package com.berber.orange.memories.database.firebasemodel;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.berber.orange.memories.dbmodel.Anniversary;
-
-import org.greenrobot.greendao.annotation.ToOne;
 
 /**
  * Created by orange on 2018/1/4.

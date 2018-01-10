@@ -1,9 +1,6 @@
 package com.berber.orange.memories.helper;
 
-import com.berber.orange.memories.dbmodel.Anniversary;
 
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by orange on 2018/1/4.

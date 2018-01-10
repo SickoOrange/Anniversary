@@ -12,7 +12,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import com.berber.orange.memories.APP;
 import com.berber.orange.memories.R;
-import com.berber.orange.memories.helper.AnniversaryDaoUtils;
 import com.berber.orange.memories.helper.FilebaseStorageHelper;
 import com.berber.orange.memories.database.FirebaseDatabaseHelper;
 import com.berber.orange.memories.helper.GoogleDriverHelper;
@@ -42,7 +41,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
     private InputMethodManager imm;
     protected GoogleApiClient mGoogleApiClient;
     protected GooglePlaceRequestHandler mGooglePlaceRequestHandler;
-    protected AnniversaryDaoUtils anniversaryDaoUtils;
     protected FilebaseStorageHelper filebaseStorageHelper;
     protected GoogleSignInOptions gso;
 
@@ -71,7 +69,6 @@ public abstract class BaseActivity extends AppCompatActivity implements GoogleAp
 
         mGooglePlaceRequestHandler = new GooglePlaceRequestHandler(mGoogleApiClient);
 
-        anniversaryDaoUtils = new AnniversaryDaoUtils((APP) getApplication());
 
         filebaseStorageHelper = new FilebaseStorageHelper(this);
 

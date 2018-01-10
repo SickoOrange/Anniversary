@@ -162,73 +162,8 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="5dp"
                     android:hint="请选择地点"
-                    android:textSize="16sp"/>
-
-                <!--<Switch-->
-                    <!--android:id="@+id/location_enable_btn"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="#ffffff"-->
-                    <!--android:checked="false" />-->
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/notification_layout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/location_layout"
-                android:layout_marginTop="5dp"
-                android:visibility="gone"
-                android:padding="5dp"
-                >
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="#ffffff"
-                    android:scaleType="center"
-                    android:src="@drawable/ic_access_alarms_black_18dp" />
-
-
-
-                <TextView
-                    android:id="@+id/anniversary_add_anni_notification"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="6"
-                    android:background="@drawable/item_ripple"
-                    android:clickable="true"
-                    android:paddingBottom="5dp"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="5dp"
-                    android:hint="请设定通知频率以及通知类型"
-                    android:textSize="16sp"/>
-
-                <!--<TextView-->
-                    <!--android:id="@+id/anniversary_add_anni_notification_type"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="wrap_content"-->
-                    <!--android:layout_weight="3"-->
-                    <!--android:background="@drawable/item_ripple"-->
-                    <!--android:clickable="true"-->
-                    <!--android:paddingBottom="10dp"-->
-                    <!--android:paddingLeft="15dp"-->
-                    <!--android:paddingTop="10dp"-->
-                    <!--android:text="Notification Type" />-->
-
-                <!--<Switch-->
-                    <!--android:id="@+id/notification_enable_btn"-->
-                    <!--android:layout_width="0dp"-->
-                    <!--android:layout_height="match_parent"-->
-                    <!--android:layout_marginRight="10dp"-->
-                    <!--android:layout_weight="1"-->
-                    <!--android:background="#ffffff"-->
-                    <!--android:checked="false" />-->
+                    android:textSize="16sp"
+                    android:focusable="true" />
 
             </LinearLayout>
 
@@ -237,9 +172,9 @@
                 android:id="@+id/anniversary_edit_anni_description"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/notification_layout"
                 android:layout_margin="5dp"
                 android:background="@drawable/edit_bg"
+                android:layout_below="@id/location_layout"
                 android:elevation="5dp"
                 android:enabled="true"
                 android:gravity="top"

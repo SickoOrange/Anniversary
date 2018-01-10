@@ -18,7 +18,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         <TextView
-            android:id="@+id/tv_donate_title"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginBottom="@dimen/text_margin"
@@ -33,7 +32,6 @@
     </android.support.design.widget.AppBarLayout>
 
     <LinearLayout
-        android:id="@+id/relative_donate_low"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -60,14 +58,12 @@
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btn_donate_low"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="捐赠" />
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/relative_donate_mid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -76,7 +72,6 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/img_donate_mid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/text_margin"
@@ -94,7 +89,6 @@
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btn_donate_mid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="捐赠" />

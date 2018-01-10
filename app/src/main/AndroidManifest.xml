@@ -64,23 +64,10 @@
             android:label="@string/title_activity_coordinator"
             android:theme="@style/AppTheme.NoActionBar" />
 
-        <receiver
-            android:name=".MyReceiver"
-            android:enabled="true"
-            android:exported="true" />
-
-        <service
-            android:name=".NotificationService"
-            android:enabled="true"
-            android:exported="true" />
-
         <activity android:name=".activity.details.DetailsActivity" />
         <activity android:name=".activity.preview.AnniPreviewActivity" />
         <activity android:name=".activity.about.AboutActivity" />
         <activity android:name=".activity.donate.DonateActivity" />
-        <activity
-            android:name=".activity.setting.SettingActivity"
-            android:label="@string/title_activity_settings" />
     </application>
 
 </manifest>

@@ -6,7 +6,6 @@
 
 
     <android.support.v4.widget.NestedScrollView
-        android:id="@+id/bottom_sheet_notification_scroll_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -48,13 +47,11 @@
 
 
                 <RadioButton
-                    android:id="@+id/radio_Day"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="day" />
 
                 <RadioButton
-                    android:id="@+id/radio_week"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="week" />
@@ -69,7 +66,6 @@
 
 
             <TextView
-                android:id="@+id/bottom_sheet_notification_title"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -87,19 +83,16 @@
 
 
                 <RadioButton
-                    android:id="@+id/radio_system_notification"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="System Notification" />
 
                 <RadioButton
-                    android:id="@+id/radio_email"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Email" />
 
                 <RadioButton
-                    android:id="@+id/radio_all"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="All" />
